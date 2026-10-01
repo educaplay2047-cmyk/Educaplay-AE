@@ -1,0 +1,61 @@
+# ==============================================================================
+# .gitignore — EducaPlay Secundaria (Corrientes) — Motor After Effects
+# ==============================================================================
+
+# Dependencias de paquetes Node
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Medios pesados, renders y archivos de video/audio en disco local
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+*.flac
+*.rar
+*.zip
+*.7z
+*.tar.gz
+SECUNDARIA.rar
+SECUNDARIA/
+
+# Proyectos binarios de After Effects y cachés
+*.aep
+*.aepx
+*.autosave
+Adobe After Effects Auto-Save/
+
+# Carpeta de salida de episodios:
+# Se versionan manifest.json y revision/ (contacto.jpg, log.txt, estado.json)
+# NO se versionan assets/ (videos transcodificados) ni el .aep
+episodios/**/assets/
+episodios/**/*.aep
+
+# Videos locales y assets de motor/
+motor/public/videos/
+motor/public/*/*.mp4
+motor/public/*/*.mov
+motor/public/*/*.avi
+
+# Scripts y archivos de pruebas temporales
+scratch/
+tmp/
+temp/
+.temp/
+
+# Modelos y caches de IA
+models/
+*.bin
+
+# Archivos del sistema operativo e IDE
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

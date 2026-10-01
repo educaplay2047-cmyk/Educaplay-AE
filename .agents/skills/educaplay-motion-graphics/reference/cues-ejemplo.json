@@ -1,0 +1,18 @@
+[
+  {"_comment": "Palabras-gatillo de la escaleta, tal como quedaron en LEO016. Copiar a src/episodes/<CODE>/cues.def.json. `nth` elige la ocurrencia; `after` acota la búsqueda a partir de otro cue y es ESTRICTAMENTE posterior — si no lo fuera, un cue anclado a otro se resuelve a sí mismo (pasaba con biologia2 → after biologia1, los dos caían en f1353). Hacen falta cuando una palabra se repite: en LEO016 'ejemplo' está en f636 y f1980, 'tiempo' en f2483 y f3533."},
+
+  {"_comment": "DESPUÉS de correr `npm run cues -- <CODE> --report`, leer la tabla entera. Un score de 1.00 NO valida el cue: significa que esa palabra existe en algún lado del audio. Y buscar además cada palabra-gatillo en words.json una por una: la escaleta se escribe antes de grabar, el docente parafrasea, y a veces falta grabado un fragmento entero. En LEO016 la escaleta pedía el titular 3 'desde descubrir' y el profesor no dice 'descubrir' en todo el video."},
+
+  {"key": "falta",        "word": "falta"},
+  {"key": "ejemplo1",     "word": "ejemplo"},
+  {"key": "biologia1",    "word": "biologia"},
+  {"key": "biologia2",    "word": "biologia", "after": "biologia1"},
+  {"key": "comoEste",     "word": "este",     "after": "biologia2"},
+  {"key": "dificiles",    "word": "dificiles"},
+  {"key": "estas",        "word": "estas",    "after": "dificiles"},
+  {"key": "diccionario",  "word": "diccionario"},
+  {"key": "tarjetas",     "word": "tarjetas"},
+  {"key": "fichas",       "word": "fichas"},
+  {"key": "llevaTiempo",  "word": "tiempo",   "after": "fichas"},
+  {"key": "chau",         "word": "chau"}
+]

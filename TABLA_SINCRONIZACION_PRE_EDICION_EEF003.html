@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz de Sincronización Pre-Edición — EEF003</title>
+  <style>
+    :root {
+      --corrientes-red: #D43453;
+      --corrientes-yellow: #F0BA46;
+      --corrientes-blue: #60B6D3;
+      --corrientes-green: #5DAA46;
+      --text-main: #0C2B24;
+      --text-muted: #4A635D;
+      --bg-main: #F4F7F5;
+      --border-color: #DDE7E4;
+      --diff-color: #DC2626;
+      --diff-bg: #FEF2F2;
+      --accent-deep: #006876;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.45;
+      padding: 24px;
+      padding-bottom: 120px;
+    }
+    
+    .header-container {
+      background: white;
+      border-radius: 16px;
+      padding: 28px 36px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(12, 43, 36, 0.06);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cmyk-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      display: flex;
+    }
+    .cmyk-bar .c1 { flex: 1; background: var(--corrientes-red); }
+    .cmyk-bar .c2 { flex: 1; background: var(--corrientes-yellow); }
+    .cmyk-bar .c3 { flex: 1; background: var(--corrientes-blue); }
+    .cmyk-bar .c4 { flex: 1; background: var(--corrientes-green); }
+    
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0C2B24;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.5px;
+    }
+    
+    .badge-episode {
+      background: #E0F2FE;
+      color: #0369A1;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      border: 1px solid #BAE6FD;
+    }
+    
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    
+    .meta-item strong { color: var(--text-muted); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .meta-item span { color: var(--text-main); font-weight: 700; font-size: 13.5px; }
+    
+    .legend-box {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .legend-card {
+      background: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .legend-card.diff { border-left: 4px solid var(--diff-color); }
+    .legend-card.baja { border-left: 4px solid #16A34A; }
+    .legend-card.media { border-left: 4px solid #D97706; }
+    .legend-card.alta { border-left: 4px solid #DC2626; }
+    
+    .legend-title {
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+    
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+    
+    .matrix-table th {
+      background: #F8FAFC;
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 12px;
+      border-bottom: 2px solid var(--border-color);
+      text-align: left;
+    }
+    
+    .matrix-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #EEF2F6;
+      font-size: 12px;
+      vertical-align: top;
+    }
+    .matrix-table tr:hover td { background-color: #F8FAFC; }
+    
+    .time-badge {
+      display: inline-block;
+      background: #E0F2FE;
+      color: #0369A1;
+      font-family: ui-monospace, monospace;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+    
+    .frame-badge {
+      display: inline-block;
+      font-family: ui-monospace, monospace;
+      font-weight: 600;
+      color: #475569;
+      font-size: 10.5px;
+    }
+    
+    .tag-cat {
+      display: inline-block;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-cat.baja { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; }
+    .tag-cat.media { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+    .tag-cat.alta { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+    
+    .sub-selector-container {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .sub-option-row {
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 6px 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #F8FAFC;
+    }
+    .sub-option-row.active {
+      border-color: #3B82F6;
+      background: #EFF6FF;
+      box-shadow: 0 0 0 1px #3B82F6;
+    }
+    
+    .sub-option-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E293B;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    
+    .sub-text-preview {
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: #334155;
+      padding-left: 22px;
+    }
+    
+    .custom-input-box {
+      margin-top: 6px;
+      padding-left: 22px;
+    }
+    .custom-input-textarea {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid #94A3B8;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: #0F172A;
+      background: #FFFFFF;
+      resize: vertical;
+    }
+    .custom-input-textarea:focus {
+      outline: none;
+      border-color: #2563EB;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    
+    .diff-red {
+      color: var(--diff-color);
+      font-weight: 800;
+      background-color: var(--diff-bg);
+      padding: 0 2px;
+      border-radius: 2px;
+      text-decoration: underline wavy var(--diff-color) 1px;
+    }
+    
+    .spoken-action-box {
+      background: #F8FAFC;
+      border-left: 3px solid #6366F1;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+      font-size: 11px;
+      color: #1E293B;
+      line-height: 1.4;
+    }
+    
+    .titular-box {
+      background: #F1F5F9;
+      border-left: 3px solid #8B5CF6;
+      padding: 6px 8px;
+      border-radius: 0 6px 6px 0;
+      font-size: 11px;
+    }
+    .titular-badge {
+      display: inline-block;
+      font-weight: 700;
+      color: #6D28D9;
+      background: #EDE9FE;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+    .titular-timing {
+      font-size: 10px;
+      color: #475569;
+      font-family: monospace;
+    }
+    
+    .missing-resource-card {
+      border: 2px solid #EF4444;
+      background: #FEF2F2;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 6px;
+    }
+    .missing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #DC2626;
+      color: white;
+      font-weight: 800;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .missing-text {
+      font-size: 11px;
+      color: #991B1B;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .relink-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: white;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #FECACA;
+    }
+    .relink-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+    }
+    .relink-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .relink-input {
+      flex: 1;
+      padding: 4px 8px;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #0F172A;
+    }
+    .btn-browse-file {
+      background: #F1F5F9;
+      color: #1E293B;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    
+    .resource-card {
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+    
+    .proposal-box {
+      background: #FAF5FF;
+      border: 1px solid #D8B4FE;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 11px;
+      color: #581C87;
+    }
+    .toggle-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .toggle-label input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: #9333EA;
+    }
+    
+    .empty-cell {
+      color: #94A3B8;
+      font-style: italic;
+      font-size: 11px;
+      text-align: center;
+      padding: 8px 0;
+    }
+    
+    .notes-input {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 6px;
+      font-family: inherit;
+      font-size: 11px;
+      background: #FFFFFF;
+      resize: vertical;
+    }
+    
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #E2E8F0;
+      padding: 14px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+      z-index: 100;
+    }
+    .bar-summary {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .bar-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #F1F5F9;
+      color: #334155;
+    }
+    .bar-badge.ok { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+    .bar-badge.warn { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+    
+    .btn-sticky-generate {
+      background: linear-gradient(135deg, #0284C7 0%, #00ADC3 100%);
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-sticky-generate:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-window {
+      background: white;
+      width: 90%;
+      max-width: 580px;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 13px;
+      color: #334155;
+    }
+    .modal-step .icon { font-size: 16px; }
+    .modal-btn-open {
+      display: block;
+      width: 100%;
+      background: #0284C7;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-top: 18px;
+      box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
+    }
+    .modal-btn-open:hover { background: #0369A1; }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748B;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <div class="cmyk-bar">
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+      <div class="c4"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 6px;">
+      <div>
+        <h1>
+          <span>Matriz de Sincronización y Carga de Atención Pre-Edición</span>
+          <span class="badge-episode">EEF003</span>
+        </h1>
+        <p style="color: #4A635D; font-size: 14px;"><strong>Materia:</strong> Educación Económica y Financiera &nbsp;|&nbsp; <strong>Tema:</strong> Estrategias de marketing y compras por impulso</p>
+      </div>
+      <div style="text-align: right;">
+        <span style="background:#E0F2FE; color:#0369A1; font-weight:800; font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid #BAE6FD;">FASE 0 — CONTROL PRE-EDICIÓN</span>
+      </div>
+    </div>
+    
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Video Primer Corte</strong>
+        <span>RENDER/EEF003 - PRIMER CORTE.mp4</span>
+      </div>
+      <div class="meta-item">
+        <strong>Resolución / FPS</strong>
+        <span>1920x1080 @ 25.000 fps</span>
+      </div>
+      <div class="meta-item">
+        <strong>Duración Máster</strong>
+        <span>02:33.00 (3825 frames)</span>
+      </div>
+      <div class="meta-item">
+        <strong>Docente en Placa (Lower Third)</strong>
+        <span>Prof. Lorena Quiñonez (F217 a F438)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend-box">
+    <div class="legend-card diff">
+      <div class="legend-title"><span class="diff-red">Diferencias en Rojo</span> Diálogo Real vs. Guion</div>
+      <div class="legend-desc">Toda discrepancia textual está <strong>resaltada en rojo</strong> para decidir la fuente exacta del subtítulo antes del render.</div>
+    </div>
+    <div class="legend-card baja">
+      <div class="legend-title"><span class="tag-cat baja">Baja Carga</span> Docente al CENTRO</div>
+      <div class="legend-desc">Stickers y titulares breves (1-2 líneas). Anclados flotantes a la <strong>IZQUIERDA</strong> respetando silueta y márgenes.</div>
+    </div>
+    <div class="legend-card media">
+      <div class="legend-title"><span class="tag-cat media">Media Carga</span> Docente al CENTRO</div>
+      <div class="legend-desc">Layout Dual: Titular conceptual a la <strong>IZQUIERDA</strong> (200px) y Recurso gráfico anclado a la <strong>DERECHA</strong> bajo el logo.</div>
+    </div>
+    <div class="legend-card alta">
+      <div class="legend-title"><span class="tag-cat alta">Alta Carga</span> Docente FUERA DE CUADRO</div>
+      <div class="legend-desc">Videos y recursos en off. El docente <strong>desaparece de pantalla</strong> y el recurso ocupa <strong>1480x832 centrado</strong>.</div>
+    </div>
+  </div>
+
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width: 35px; text-align:center;">Fila</th>
+        <th style="width: 125px;">Tiempo & Frames</th>
+        <th style="width: 75px;">Carga</th>
+        <th style="width: 140px;">Coreografía</th>
+        <th style="width: 310px;">Diálogo & Elección Subtítulo (🔴 Difs)</th>
+        <th style="width: 250px;">🗣️ Acción Hablada Natural</th>
+        <th style="width: 160px;">Titulares (Escaleta)</th>
+        <th style="width: 200px;">Recurso Escaleta & Archivo</th>
+        <th style="width: 200px;">🟣 Propuestas (Filas Vacías)</th>
+        <th style="width: 110px;">Validación</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    <tr id="table_row_01">
+      <td style="font-weight: 700; text-align: center;">01</td>
+      <td>
+        <div class="time-badge">8.68s - 18.64s</div>
+        <div class="frame-badge">f217 - f466 (249 f | 9.96s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_01" onclick="selectSubSource('01', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_01" value="escaleta" checked onchange="selectSubSource('01', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_01">
+              "¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_01" onclick="selectSubSource('01', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_01" value="real" onchange="selectSubSource('01', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_01">
+              "¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_01" onclick="selectSubSource('01', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_01" value="custom" onchange="selectSubSource('01', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_01" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_01" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('01', this.value)">¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 1 aparece cuando se nombra y desaparece cuando se nombra 'pasillos'. El recurso 2 aparece cuando se nombra y desaparece cuando se dice 'compraste'."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f245 (9.80s) con 'lácteos' (1. leche.png) y conmuta en f350 (14.00s) a 'golosina' (2. golosinas.png), cerrando en f466 (18.64s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> lácteos (f245 / 9.80s)<br>
+            <strong>Cierra:</strong> oferta (f466 / 18.64s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 1. Lácteos / 2. Golosinas</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">1. leche.png (22.6 KB) / 2. golosinas.png (56.7 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Coincide con la Placa Lower Third de la Prof. Lorena Quiñonez (F217 a F438). Los subtítulos se elevan automáticamente a bottom: 230px para despejar el zócalo.</div>
+        </div>
+        <textarea class="notes-input" id="notes_01" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_02">
+      <td style="font-weight: 700; text-align: center;">02</td>
+      <td>
+        <div class="time-badge">19.17s - 26.43s</div>
+        <div class="frame-badge">f479 - f661 (182 f | 7.26s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_02" onclick="selectSubSource('02', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_02" value="escaleta" checked onchange="selectSubSource('02', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_02">
+              "O <span class="diff-red">quizá</span> adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con <span class="diff-red">rebaja</span> <span class="diff-red">especial</span>"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_02" onclick="selectSubSource('02', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_02" value="real" onchange="selectSubSource('02', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_02">
+              "O <span class="diff-red">quizás</span> adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con <span class="diff-red">una</span> <span class="diff-red">rebaja</span> <span class="diff-red">especial,</span>"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_02" onclick="selectSubSource('02', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_02" value="custom" onchange="selectSubSource('02', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_02" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_02" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('02', this.value)">O quizá adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con rebaja especial</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso aparece cuando se nombra y desaparece al final."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f495 (19.80s) con 'redes' y permanece en banda izquierda hasta rematar en 'especial' en f661 (26.43s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> redes (f495 / 19.80s)<br>
+            <strong>Cierra:</strong> especial (f661 / 26.43s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 3. Redes</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">3. Redes.jpg (JPG 2.46 MB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ '3. Redes.jpg' pesa 2.46 MB. Optimizado para remotion en tarjeta opaca con RainbowEyebrow.</div>
+        </div>
+        <textarea class="notes-input" id="notes_02" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_03">
+      <td style="font-weight: 700; text-align: center;">03</td>
+      <td>
+        <div class="time-badge">26.94s - 33.14s</div>
+        <div class="frame-badge">f674 - f829 (155 f | 6.2s)</div>
+      </td>
+      <td>
+        <span class="tag-cat media">Media</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recurso a la DERECHA</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_03" onclick="selectSubSource('03', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_03" value="escaleta" checked onchange="selectSubSource('03', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_03">
+              "Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_03" onclick="selectSubSource('03', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_03" value="real" onchange="selectSubSource('03', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_03">
+              "Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_03" onclick="selectSubSource('03', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_03" value="custom" onchange="selectSubSource('03', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_03" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_03" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('03', this.value)">Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso aparece cuando inicia la pregunta y desaparece cuando termina. El titular aparece cuando inicia la pregunta y desaparece cuando termina."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f705 (28.20s) al enunciar '¿lo elegiste...?' con el titular '¿Realmente lo necesitabas?' a la izquierda (left: 200px) y '4. pregunta.gif' en banda derecha.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> pregunta (f705 / 28.20s)<br>
+            <strong>Cierra:</strong> decisión (f829 / 33.14s)
+          </div>
+        </div>
+      </td>
+      <td>
+        
+      <div class="titular-box">
+        <div class="titular-badge">TITULAR OFICIAL</div>
+        <div style="font-weight: 700; color: #0C2B24; margin-bottom: 2px;">¿Realmente lo necesitabas?</div>
+        <div class="titular-timing">⏱️ f674 - f829 (6.2s)</div>
+      </div>
+    
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 4. Pregunta</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">4. pregunta.gif (GIF 33.5 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Titular pautado en escaleta original convive con sticker pregunta sin invadir al docente.</div>
+        </div>
+        <textarea class="notes-input" id="notes_03" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_04">
+      <td style="font-weight: 700; text-align: center;">04</td>
+      <td>
+        <div class="time-badge">33.93s - 36.25s</div>
+        <div class="frame-badge">f848 - f906 (58 f | 2.32s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_04" onclick="selectSubSource('04', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_04" value="escaleta" checked onchange="selectSubSource('04', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_04">
+              "Te cuento que esto no ocurre por casualidad."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_04" onclick="selectSubSource('04', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_04" value="real" onchange="selectSubSource('04', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_04">
+              "Te cuento que esto no ocurre por casualidad."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_04" onclick="selectSubSource('04', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_04" value="custom" onchange="selectSubSource('04', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_04" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_04" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('04', this.value)">Te cuento que esto no ocurre por casualidad.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Sin recursos especificados en escaleta."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Frase de puente cognitivo entre f848 (33.93s) y f906 (36.25s) anticipando la entrada a voz en off.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> Te cuento (f848 / 33.93s)<br>
+            <strong>Cierra:</strong> casualidad (f906 / 36.25s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Docente al centro sin recursos gráficos adicionales según pauta de escaleta.</div>
+        </div>
+        <textarea class="notes-input" id="notes_04" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_05">
+      <td style="font-weight: 700; text-align: center;">05</td>
+      <td>
+        <div class="time-badge">36.64s - 43.19s</div>
+        <div class="frame-badge">f916 - f1080 (164 f | 6.55s)</div>
+      </td>
+      <td>
+        <span class="tag-cat alta">Alta</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Fuera de cuadro (Voz en off)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente FUERA DE CUADRO (Voz en off) | Recurso PANTALLA COMPLETA (1920x1080)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_05" onclick="selectSubSource('05', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_05" value="escaleta" checked onchange="selectSubSource('05', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_05">
+              "Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_05" onclick="selectSubSource('05', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_05" value="real" onchange="selectSubSource('05', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_05">
+              "Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_05" onclick="selectSubSource('05', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_05" value="custom" onchange="selectSubSource('05', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_05" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_05" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('05', this.value)">Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Voz en off. El video aparece al inicio de la fila y desaparece al final de la fila."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>El plató queda completamente libre de docente. El video ocupa pantalla completa entre f916 y f1080.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> Muchas (f916 / 36.64s)<br>
+            <strong>Cierra:</strong> comprar (f1080 / 43.19s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 5. decisiones (Envato)</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">5. decisiones.mov (Apple ProRes 422 LT, 716 MB) / 5. decisiones.mp4 (Full HD 1080p, 10.7 MB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Recurso 5 reconocido y convertido a MP4 Full HD 1080p. Video en voz en off sin elementos superpuestos.</div>
+        </div>
+        <textarea class="notes-input" id="notes_05" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_06">
+      <td style="font-weight: 700; text-align: center;">06</td>
+      <td>
+        <div class="time-badge">43.59s - 53.83s</div>
+        <div class="frame-badge">f1090 - f1346 (256 f | 10.24s)</div>
+      </td>
+      <td>
+        <span class="tag-cat media">Media</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recursos a la DERECHA</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_06" onclick="selectSubSource('06', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_06" value="escaleta" checked onchange="selectSubSource('06', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_06">
+              "Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_06" onclick="selectSubSource('06', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_06" value="real" onchange="selectSubSource('06', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_06">
+              "Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_06" onclick="selectSubSource('06', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_06" value="custom" onchange="selectSubSource('06', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_06" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_06" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('06', this.value)">Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular aparece cuando se nombra y desaparece cuando termina la fila. El recurso 6 aparece cuando se nombra y desaparece cuando se nombra 'interés'. El recurso 7 aparece cuando se nombra y desaparece al final."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Titular 'Estrategias de marketing' entra en f1110 (44.40s). Recurso 6 'para captar' en f1135 (45.40s) hasta 'interés' en f1230. Conmuta a recurso 7 'lograr' en f1230 hasta f1346.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> marketing (f1110 / 44.40s)<br>
+            <strong>Cierra:</strong> productos (f1346 / 53.83s)
+          </div>
+        </div>
+      </td>
+      <td>
+        
+      <div class="titular-box">
+        <div class="titular-badge">TITULAR OFICIAL</div>
+        <div style="font-weight: 700; color: #0C2B24; margin-bottom: 2px;">Estrategias de marketing</div>
+        <div class="titular-timing">⏱️ f1090 - f1346 (10.24s)</div>
+      </div>
+    
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 6. para captar / 7. lograr</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">6. para captar.gif (75.4 KB) / 7. lograr.gif (766.3 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Titular pautado en escaleta convive con los dos GIFs secuenciados en banda derecha.</div>
+        </div>
+        <textarea class="notes-input" id="notes_06" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_07">
+      <td style="font-weight: 700; text-align: center;">07</td>
+      <td>
+        <div class="time-badge">54.26s - 63.35s</div>
+        <div class="frame-badge">f1357 - f1584 (227 f | 9.09s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_07" onclick="selectSubSource('07', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_07" value="escaleta" checked onchange="selectSubSource('07', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_07">
+              "Por ejemplo, frases como: <span class="diff-red">”Últimas</span> <span class="diff-red">unidades”,</span> <span class="diff-red">“Oferta</span> por tiempo <span class="diff-red">limitado”</span> o el clásico <span class="diff-red">“Dos</span> por <span class="diff-red">uno”</span> son muy comunes."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_07" onclick="selectSubSource('07', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_07" value="real" onchange="selectSubSource('07', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_07">
+              "Por ejemplo, frases como: <span class="diff-red">últimas</span> <span class="diff-red">unidades,</span> <span class="diff-red">oferta</span> por tiempo <span class="diff-red">limitado</span> o el clásico <span class="diff-red">dos</span> por <span class="diff-red">uno</span> son muy comunes."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_07" onclick="selectSubSource('07', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_07" value="custom" onchange="selectSubSource('07', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_07" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_07" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('07', this.value)">Por ejemplo, frases como:
+”Últimas unidades”, “Oferta por tiempo limitado” o el clásico “Dos por uno” son muy comunes.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 8 aparece cuando se nombra y desaparece al final."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f1380 (55.20s) al decir 'Últimas unidades' y acompaña los llamados de urgencia hasta f1584 (63.35s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> Últimas (f1380 / 55.20s)<br>
+            <strong>Cierra:</strong> comunes (f1584 / 63.35s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 8. últimas</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">8. últimas.png (PNG 36.6 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Sticker '8. últimas.png' flotante a la izquierda según escaleta.</div>
+        </div>
+        <textarea class="notes-input" id="notes_07" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_08">
+      <td style="font-weight: 700; text-align: center;">08</td>
+      <td>
+        <div class="time-badge">63.84s - 69.42s</div>
+        <div class="frame-badge">f1596 - f1736 (140 f | 5.58s)</div>
+      </td>
+      <td>
+        <span class="tag-cat alta">Alta</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Fuera de cuadro (Voz en off)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente FUERA DE CUADRO (Voz en off) | Recurso PANTALLA COMPLETA (1920x1080)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_08" onclick="selectSubSource('08', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_08" value="escaleta" checked onchange="selectSubSource('08', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_08">
+              "Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_08" onclick="selectSubSource('08', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_08" value="real" onchange="selectSubSource('08', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_08">
+              "Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_08" onclick="selectSubSource('08', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_08" value="custom" onchange="selectSubSource('08', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_08" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_08" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('08', this.value)">Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Voz en off. El video aparece al inicio de la fila y desaparece al final de la fila."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Segundo tramo en voz en off con plató libre. Video en pantalla completa desde f1596 a f1736.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> Estas (f1596 / 63.84s)<br>
+            <strong>Cierra:</strong> rápido (f1736 / 69.42s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 9. estas estrategias (Envato)</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">9.estas estrategias.mov (4K 60fps, 148 MB) / 9.estas estrategias.mp4 (Full HD 1080p, 3.7 MB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Recurso 9 reconocido y convertido a MP4 Full HD 1080p. Video en voz en off sin elementos superpuestos.</div>
+        </div>
+        <textarea class="notes-input" id="notes_08" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_09">
+      <td style="font-weight: 700; text-align: center;">09</td>
+      <td>
+        <div class="time-badge">69.83s - 72.22s</div>
+        <div class="frame-badge">f1746 - f1806 (60 f | 2.39s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_09" onclick="selectSubSource('09', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_09" value="escaleta" checked onchange="selectSubSource('09', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_09">
+              "Pero no es lo único que influye."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_09" onclick="selectSubSource('09', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_09" value="real" onchange="selectSubSource('09', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_09">
+              "Pero no es lo único que influye."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_09" onclick="selectSubSource('09', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_09" value="custom" onchange="selectSubSource('09', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_09" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_09" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('09', this.value)">Pero no es lo único que influye.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Sin recursos especificados en escaleta."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Transición oral de la docente al retornar al cuadro entre f1746 (69.83s) y f1806 (72.22s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> Pero (f1746 / 69.83s)<br>
+            <strong>Cierra:</strong> influye (f1806 / 72.22s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Docente al centro sin recursos adicionales según pauta de escaleta.</div>
+        </div>
+        <textarea class="notes-input" id="notes_09" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_10">
+      <td style="font-weight: 700; text-align: center;">10</td>
+      <td>
+        <div class="time-badge">72.67s - 83.60s</div>
+        <div class="frame-badge">f1817 - f2090 (273 f | 10.93s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recursos secuenciales a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_10" onclick="selectSubSource('10', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_10" value="escaleta" checked onchange="selectSubSource('10', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_10">
+              "También incide la forma en que se presentan los productos, es decir, los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_10" onclick="selectSubSource('10', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_10" value="real" onchange="selectSubSource('10', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_10">
+              "También incide la forma en que se presentan los productos, es decir, los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_10" onclick="selectSubSource('10', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_10" value="custom" onchange="selectSubSource('10', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_10" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_10" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('10', this.value)">También incide la forma en que se presentan los productos, es decir,
+los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 10 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 11 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 12 aparece cuando se nombra y desaparece al final de la fila."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Recurso 10 'colores' entra en f1850 (74.00s); conmuta a recurso 11 'música' en f1930 (77.20s); conmuta a recurso 12 'recomendaciones' en f2010 (80.40s) hasta f2090.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> colores (f1850 / 74.00s)<br>
+            <strong>Cierra:</strong> influencers (f2090 / 83.60s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 10. colores / 11. música / 12. recomendaciones</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">10. colores.png (34.9 KB) / 11. música.png (17.5 KB) / 12. recomendaciones.png (58.5 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Secuencia ágil de 3 stickers con transiciones suaves spring respetando el ritmo de la locución.</div>
+        </div>
+        <textarea class="notes-input" id="notes_10" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_11">
+      <td style="font-weight: 700; text-align: center;">11</td>
+      <td>
+        <div class="time-badge">83.98s - 91.14s</div>
+        <div class="frame-badge">f2100 - f2279 (179 f | 7.16s)</div>
+      </td>
+      <td>
+        <span class="tag-cat media">Media</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recurso a la DERECHA</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_11" onclick="selectSubSource('11', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_11" value="escaleta" checked onchange="selectSubSource('11', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_11">
+              "Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_11" onclick="selectSubSource('11', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_11" value="real" onchange="selectSubSource('11', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_11">
+              "Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_11" onclick="selectSubSource('11', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_11" value="custom" onchange="selectSubSource('11', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_11" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_11" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('11', this.value)">Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular aparece cuando se nombra y desaparece cuando termina. El recurso 13 aparece cuando se nombra y desaparece cuando termina."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f2120 (84.80s) con 'impulso de compra'. Titular a la izquierda (left: 200px) y GIF animado '13. impulso.gif' a la derecha hasta f2279 (91.14s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> impulso (f2120 / 84.80s)<br>
+            <strong>Cierra:</strong> planificado (f2279 / 91.14s)
+          </div>
+        </div>
+      </td>
+      <td>
+        
+      <div class="titular-box">
+        <div class="titular-badge">TITULAR OFICIAL</div>
+        <div style="font-weight: 700; color: #0C2B24; margin-bottom: 2px;">Impulso de compra</div>
+        <div class="titular-timing">⏱️ f2100 - f2279 (7.16s)</div>
+      </div>
+    
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 13. impulso</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">13. impulso.gif (GIF 89.8 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Definición conceptual clave del capítulo. Titular en Museo 900 con filete turquesa inferior.</div>
+        </div>
+        <textarea class="notes-input" id="notes_11" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_12">
+      <td style="font-weight: 700; text-align: center;">12</td>
+      <td>
+        <div class="time-badge">91.66s - 94.68s</div>
+        <div class="frame-badge">f2292 - f2367 (75 f | 3.02s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_12" onclick="selectSubSource('12', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_12" value="escaleta" checked onchange="selectSubSource('12', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_12">
+              "Entonces, ¿qué podés hacer antes de comprar?"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_12" onclick="selectSubSource('12', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_12" value="real" onchange="selectSubSource('12', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_12">
+              "Entonces, ¿qué podés hacer antes de comprar?"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_12" onclick="selectSubSource('12', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_12" value="custom" onchange="selectSubSource('12', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_12" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_12" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('12', this.value)">Entonces, ¿qué podés hacer antes de comprar?</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 14 aparece cuando inicia la pregunta y desaparece cuando termina."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f2300 (92.00s) al formular la pregunta y se sostiene hasta f2367 (94.68s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> ¿qué podés (f2300 / 92.00s)<br>
+            <strong>Cierra:</strong> comprar (f2367 / 94.68s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 14. pregunta 2</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">14. pregunta 2.png (PNG 20.9 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Sticker badge sobre superficie blanca con RainbowEyebrow.</div>
+        </div>
+        <textarea class="notes-input" id="notes_12" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_13">
+      <td style="font-weight: 700; text-align: center;">13</td>
+      <td>
+        <div class="time-badge">95.16s - 99.97s</div>
+        <div class="frame-badge">f2379 - f2499 (120 f | 4.81s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_13" onclick="selectSubSource('13', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_13" value="escaleta" checked onchange="selectSubSource('13', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_13">
+              "Usá la técnica de los cuatro pasos, que consiste en preguntarte:"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_13" onclick="selectSubSource('13', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_13" value="real" onchange="selectSubSource('13', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_13">
+              "Usá la técnica de los cuatro pasos, que consiste en preguntarte:"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_13" onclick="selectSubSource('13', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_13" value="custom" onchange="selectSubSource('13', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_13" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_13" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('13', this.value)">Usá la técnica de los cuatro pasos, que consiste en preguntarte:</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 15 aparece cuando se nombra y desaparece cuando termina."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f2395 (95.80s) con 'cuatro pasos' y acompaña la introducción metodológica hasta f2499 (99.97s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> técnica (f2395 / 95.80s)<br>
+            <strong>Cierra:</strong> preguntarte (f2499 / 99.97s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 15. cuatro</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">15. cuatro.gif (GIF 216.3 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Introduce el bloque modular de toma de decisiones.</div>
+        </div>
+        <textarea class="notes-input" id="notes_13" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_14">
+      <td style="font-weight: 700; text-align: center;">14</td>
+      <td>
+        <div class="time-badge">100.45s - 118.37s</div>
+        <div class="frame-badge">f2511 - f2959 (448 f | 17.92s)</div>
+      </td>
+      <td>
+        <span class="tag-cat media">Media</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Layout Cuádruple Acumulativo (Paso 1 y 2 Izquierda, Paso 3 y 4 Derecha)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_14" onclick="selectSubSource('14', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_14" value="escaleta" checked onchange="selectSubSource('14', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_14">
+              "<span class="diff-red">1.</span> ¿Lo necesito realmente? <span class="diff-red">2.</span> ¿Lo había planificado? <span class="diff-red">3.</span> ¿Puedo pagarlo sin afectar otros gastos? <span class="diff-red">4.</span> ¿Lo compraría si no estuviera en oferta?"
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_14" onclick="selectSubSource('14', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_14" value="real" onchange="selectSubSource('14', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_14">
+              "<span class="diff-red">Uno.</span> ¿Lo necesito realmente? <span class="diff-red">Dos.</span> ¿Lo había planificado? <span class="diff-red">Tres.</span> ¿Puedo pagarlo sin afectar otros gastos? <span class="diff-red">Cuatro.</span> ¿Lo compraría si no estuviera en oferta?"
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_14" onclick="selectSubSource('14', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_14" value="custom" onchange="selectSubSource('14', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_14" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_14" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('14', this.value)">1. ¿Lo necesito realmente?
+2. ¿Lo había planificado?
+3. ¿Puedo pagarlo sin afectar otros gastos?
+4. ¿Lo compraría si no estuviera en oferta?</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 16 aparece cuando se nombra y permanece al costado de la docente. El recurso 17 aparece cuando se nombra 'Lo había' y se ubica debajo del recurso anterior. El recurso 18 aparece cuando se nombra 'puedo' y se ubica en el otro costado de la docente. El recurso 19 aparece cuando se nombra 'Lo compraría' y se ubica debajo del recurso anterior."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Paso 1 (16. necesito) entra en f2515 (100.60s); Paso 2 (17. lista) entra en f2610 (104.40s); Paso 3 (18. pagarlo) entra en f2720 (108.80s); Paso 4 (19. oferta) entra en f2820 (112.80s). Todos permanecen acumulados hasta f2959.</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> necesito (f2515 / 100.60s)<br>
+            <strong>Cierra:</strong> oferta (f2959 / 118.37s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 16. necesito / 17. lista / 18. pagarlo / 19. oferta</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">16. necesito.png / 17. lista.png / 18. pagarlo.png / 19. oferta.png</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Composición cuádruple simétrica calibrada sin pisar a la docente en el centro ni la marca de agua superior derecha.</div>
+        </div>
+        <textarea class="notes-input" id="notes_14" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_15">
+      <td style="font-weight: 700; text-align: center;">15</td>
+      <td>
+        <div class="time-badge">119.10s - 125.57s</div>
+        <div class="frame-badge">f2978 - f3139 (161 f | 6.47s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_15" onclick="selectSubSource('15', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_15" value="escaleta" checked onchange="selectSubSource('15', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_15">
+              "Si la respuesta es <span class="diff-red">“no”</span> o <span class="diff-red">“no</span> estoy <span class="diff-red">seguro”,</span> quizás estás frente a una compra por impulso."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_15" onclick="selectSubSource('15', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_15" value="real" onchange="selectSubSource('15', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_15">
+              "Si la respuesta es <span class="diff-red">no</span> o <span class="diff-red">no</span> estoy <span class="diff-red">seguro,</span> quizás estás frente a una compra por impulso."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_15" onclick="selectSubSource('15', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_15" value="custom" onchange="selectSubSource('15', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_15" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_15" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('15', this.value)">Si la respuesta es “no” o “no estoy seguro”, quizás estás frente a una compra por impulso.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Sin recursos especificados en escaleta."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Reflexión evaluativa de la docente entre f2978 (119.10s) y f3139 (125.57s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> respuesta (f2978 / 119.10s)<br>
+            <strong>Cierra:</strong> impulso (f3139 / 125.57s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Docente al centro sin recursos adicionales según pauta de escaleta.</div>
+        </div>
+        <textarea class="notes-input" id="notes_15" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_16">
+      <td style="font-weight: 700; text-align: center;">16</td>
+      <td>
+        <div class="time-badge">126.06s - 134.04s</div>
+        <div class="frame-badge">f3152 - f3351 (199 f | 7.98s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recursos secuenciales a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_16" onclick="selectSubSource('16', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_16" value="escaleta" checked onchange="selectSubSource('16', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_16">
+              "Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_16" onclick="selectSubSource('16', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_16" value="real" onchange="selectSubSource('16', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_16">
+              "Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_16" onclick="selectSubSource('16', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_16" value="custom" onchange="selectSubSource('16', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_16" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_16" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('16', this.value)">Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 20 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 21 aparece cuando se nombra y desaparece al final."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Recurso 20 'pausa' entra en f3160 (126.40s) y conmuta en f3250 (130.00s) a '21. decision.gif' hasta f3351 (134.04s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> pausa (f3160 / 126.40s)<br>
+            <strong>Cierra:</strong> consciente (f3351 / 134.04s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 20. pausa / 21. decisión</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">20. pausa.gif (63.2 KB) / 21. decision.gif (1.56 MB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ '21. decision.gif' pesa 1.56 MB. Precargado en memoria.</div>
+        </div>
+        <textarea class="notes-input" id="notes_16" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    <tr id="table_row_17">
+      <td style="font-weight: 700; text-align: center;">17</td>
+      <td>
+        <div class="time-badge">134.45s - 142.15s</div>
+        <div class="frame-badge">f3361 - f3554 (193 f | 7.7s)</div>
+      </td>
+      <td>
+        <span class="tag-cat baja">Baja</span>
+      </td>
+      <td>
+        <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+        <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)</div>
+      </td>
+      <td style="min-width: 290px;">
+        <div class="sub-selector-container">
+          <!-- Opción 1: Guion Escaleta (Default) -->
+          <div class="sub-option-row active" id="row_opt_esc_17" onclick="selectSubSource('17', 'escaleta')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_17" value="escaleta" checked onchange="selectSubSource('17', 'escaleta')">
+              <span>Guion Escaleta (Recomendado por Defecto)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_esc_17">
+              "Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra."
+            </div>
+          </div>
+
+          <!-- Opción 2: Real Grabado -->
+          <div class="sub-option-row" id="row_opt_real_17" onclick="selectSubSource('17', 'real')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_17" value="real" onchange="selectSubSource('17', 'real')">
+              <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+            </label>
+            <div class="sub-text-preview" id="preview_real_17">
+              "Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra."
+            </div>
+          </div>
+
+          <!-- Opción 3: Corrección Manual / Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_17" onclick="selectSubSource('17', 'custom')">
+            <label class="sub-option-label" onclick="event.stopPropagation()">
+              <input type="radio" name="sub_source_17" value="custom" onchange="selectSubSource('17', 'custom')">
+              <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_17" style="display:none;" onclick="event.stopPropagation()">
+              <textarea class="custom-input-textarea" id="custom_text_17" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('17', this.value)">Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra.</textarea>
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 22 aparece cuando se nombra y desaparece al final de la fila."</em></div>
+        </div>
+      </td>
+      <td>
+        <div class="spoken-action-box">
+          <div style="font-weight: 700; color: #4338CA; margin-bottom: 3px;">🗣️ Acción Hablada Natural</div>
+          <div>Entra en f3410 (136.40s) con 'sos vos' y acompaña el remate del capítulo hasta f3554 (142.15s).</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #64748B;">
+            <strong>Inicia:</strong> sos vos (f3410 / 136.40s)<br>
+            <strong>Cierra:</strong> palabra (f3554 / 142.15s)
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        
+      <div class="resource-card">
+        <div style="font-size: 11px; font-weight: 700; color: #0369A1; margin-bottom: 2px;">📦 22. sos vos</div>
+        <div style="font-size: 10px; color: #475569; font-family: monospace;">22. sos vos.gif (GIF 50.8 KB)</div>
+      </div>
+    
+      </td>
+      <td>
+        <div class="empty-cell">—</div>
+      </td>
+      <td>
+        <div style="font-size: 10px; line-height: 1.35; margin-bottom: 4px; color: #334155;">
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; padding:4px 6px; border-radius:4px; margin-bottom:4px;">⚠️ Cierre del episodio con mensaje empoderador al estudiante.</div>
+        </div>
+        <textarea class="notes-input" id="notes_17" placeholder="Notas de edición..."></textarea>
+      </td>
+    </tr>
+  
+    </tbody>
+  </table>
+
+  <!-- Barra Flotante Inferior -->
+  <div class="sticky-bottom-bar">
+    <div class="bar-summary">
+      <span class="bar-badge ok">✅ 17 Filas Mapeadas</span>
+      <span class="bar-badge warn">🚨 2 Recursos Faltantes Auditados (Envato 5 y 9)</span>
+      <span class="bar-badge">🟣 3 Propuestas Vacías</span>
+      <span class="bar-badge ok">🛡️ Evasión Lower Third F217-F438</span>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-sticky-generate" onclick="triggerRemotionGeneration()">
+        🚀 Aceptar y Generar Proyecto Remotion
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Generación -->
+  <div class="modal-backdrop" id="modal-generation">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-title">
+        <span>🚀 Generando Entorno Remotion</span>
+      </div>
+      <div id="modal-steps-container">
+        <div class="modal-step" id="step-1"><span class="icon">⏳</span><span class="text">Validando elecciones de subtítulos y recursos...</span></div>
+        <div class="modal-step" id="step-2"><span class="icon">⏳</span><span class="text">Conectando con Bridge Local (puerto 3210)...</span></div>
+        <div class="modal-step" id="step-3"><span class="icon">⏳</span><span class="text">Compilando data.ts y captions.ts...</span></div>
+        <div class="modal-step" id="step-4"><span class="icon">⏳</span><span class="text">Iniciando Remotion Preview...</span></div>
+      </div>
+      <div id="modal-actions-container" style="margin-top: 16px;"></div>
+    </div>
+  </div>
+
+  <script>
+    const APP_STATE = {
+      episodeId: 'EEF003',
+      subject: 'Educación Económica y Financiera',
+      title: 'Estrategias de marketing y compras por impulso',
+      rows: {}
+    };
+
+    // Inicializar estado de filas
+    [{"row":1,"start_time":8.68,"end_time":18.64,"start_frame":217,"end_frame":466,"dialogo_escaleta":"¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?","dialogo_real":"¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?","titular_esc":"","rec_esc":"1. Lácteos\n2. Golosinas","archivo_real":"1. leche.png (22.6 KB) / 2. golosinas.png (56.7 KB)","obs_escaleta":"El recurso 1 aparece cuando se nombra y desaparece cuando se nombra 'pasillos'. El recurso 2 aparece cuando se nombra y desaparece cuando se dice 'compraste'.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f245 (9.80s) con 'lácteos' (1. leche.png) y conmuta en f350 (14.00s) a 'golosina' (2. golosinas.png), cerrando en f466 (18.64s).","palabra_inicio":"lácteos (f245 / 9.80s)","palabra_fin":"oferta (f466 / 18.64s)","propuesta_extra":"","alertas":"Coincide con la Placa Lower Third de la Prof. Lorena Quiñonez (F217 a F438). Los subtítulos se elevan automáticamente a bottom: 230px para despejar el zócalo.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":9.96,"duration_frames":249,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?","dialogo_real_html":"¿Alguna vez fuiste al supermercado en busca de lácteos y terminaste llevando una golosina porque estaba en oferta?","titular_nombre":"","titular_timing":""},{"row":2,"start_time":19.17,"end_time":26.43,"start_frame":479,"end_frame":661,"dialogo_escaleta":"O quizá adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con rebaja especial","dialogo_real":"O quizás adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con una rebaja especial,","titular_esc":"","rec_esc":"3. Redes","archivo_real":"3. Redes.jpg (JPG 2.46 MB)","obs_escaleta":"El recurso aparece cuando se nombra y desaparece al final.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f495 (19.80s) con 'redes' y permanece en banda izquierda hasta rematar en 'especial' en f661 (26.43s).","palabra_inicio":"redes (f495 / 19.80s)","palabra_fin":"especial (f661 / 26.43s)","propuesta_extra":"","alertas":"'3. Redes.jpg' pesa 2.46 MB. Optimizado para remotion en tarjeta opaca con RainbowEyebrow.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":7.26,"duration_frames":182,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"O <span class=\"diff-red\">quizá</span> adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con <span class=\"diff-red\">rebaja</span> <span class=\"diff-red\">especial</span>","dialogo_real_html":"O <span class=\"diff-red\">quizás</span> adquiriste algo que apareció en tus redes, te lo recomendaron o lo viste con <span class=\"diff-red\">una</span> <span class=\"diff-red\">rebaja</span> <span class=\"diff-red\">especial,</span>","titular_nombre":"","titular_timing":""},{"row":3,"start_time":26.94,"end_time":33.14,"start_frame":674,"end_frame":829,"dialogo_escaleta":"Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?","dialogo_real":"Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?","titular_esc":"¿Realmente lo necesitabas?","rec_esc":"4. Pregunta","archivo_real":"4. pregunta.gif (GIF 33.5 KB)","obs_escaleta":"El recurso aparece cuando inicia la pregunta y desaparece cuando termina. El titular aparece cuando inicia la pregunta y desaparece cuando termina.","categoria":"Media","coreografia_norma":"Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recurso a la DERECHA","indicacion_hablada":"Entra en f705 (28.20s) al enunciar '¿lo elegiste...?' con el titular '¿Realmente lo necesitabas?' a la izquierda (left: 200px) y '4. pregunta.gif' en banda derecha.","palabra_inicio":"pregunta (f705 / 28.20s)","palabra_fin":"decisión (f829 / 33.14s)","propuesta_extra":"","alertas":"Titular pautado en escaleta original convive con sticker pregunta sin invadir al docente.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":6.2,"duration_frames":155,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?","dialogo_real_html":"Entonces surge la pregunta: ¿lo elegiste porque era imprescindible o porque algún factor externo condicionó tu decisión?","titular_nombre":"¿Realmente lo necesitabas?","titular_timing":"f674 - f829"},{"row":4,"start_time":33.93,"end_time":36.25,"start_frame":848,"end_frame":906,"dialogo_escaleta":"Te cuento que esto no ocurre por casualidad.","dialogo_real":"Te cuento que esto no ocurre por casualidad.","titular_esc":"","rec_esc":"—","archivo_real":"Sin recurso en escaleta original","obs_escaleta":"Sin recursos especificados en escaleta.","categoria":"Baja","coreografia_norma":"Docente al CENTRO","indicacion_hablada":"Frase de puente cognitivo entre f848 (33.93s) y f906 (36.25s) anticipando la entrada a voz en off.","palabra_inicio":"Te cuento (f848 / 33.93s)","palabra_fin":"casualidad (f906 / 36.25s)","propuesta_extra":"","alertas":"Docente al centro sin recursos gráficos adicionales según pauta de escaleta.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":2.32,"duration_frames":58,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Te cuento que esto no ocurre por casualidad.","dialogo_real_html":"Te cuento que esto no ocurre por casualidad.","titular_nombre":"","titular_timing":""},{"row":5,"start_time":36.64,"end_time":43.19,"start_frame":916,"end_frame":1080,"dialogo_escaleta":"Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar.","dialogo_real":"Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar.","titular_esc":"","rec_esc":"5. decisiones (Envato)","archivo_real":"5. decisiones.mov (Apple ProRes 422 LT, 716 MB) / 5. decisiones.mp4 (Full HD 1080p, 10.7 MB)","obs_escaleta":"Voz en off. El video aparece al inicio de la fila y desaparece al final de la fila.","categoria":"Alta","coreografia_norma":"Docente FUERA DE CUADRO (Voz en off) | Recurso PANTALLA COMPLETA (1920x1080)","indicacion_hablada":"El plató queda completamente libre de docente. El video ocupa pantalla completa entre f916 y f1080.","palabra_inicio":"Muchas (f916 / 36.64s)","palabra_fin":"comprar (f1080 / 43.19s)","propuesta_extra":"","alertas":"Recurso 5 reconocido y convertido a MP4 Full HD 1080p. Video en voz en off sin elementos superpuestos.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":6.55,"duration_frames":164,"posicion_video_actual":"Fuera de cuadro (Voz en off)","dialogo_escaleta_html":"Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar.","dialogo_real_html":"Muchas de nuestras decisiones de consumo están influenciadas por factores que no siempre reconocemos al momento de comprar.","titular_nombre":"","titular_timing":""},{"row":6,"start_time":43.59,"end_time":53.83,"start_frame":1090,"end_frame":1346,"dialogo_escaleta":"Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos.","dialogo_real":"Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos.","titular_esc":"Estrategias de marketing","rec_esc":"6. para captar\n7. lograr","archivo_real":"6. para captar.gif (75.4 KB) / 7. lograr.gif (766.3 KB)","obs_escaleta":"El titular aparece cuando se nombra y desaparece cuando termina la fila. El recurso 6 aparece cuando se nombra y desaparece cuando se nombra 'interés'. El recurso 7 aparece cuando se nombra y desaparece al final.","categoria":"Media","coreografia_norma":"Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recursos a la DERECHA","indicacion_hablada":"Titular 'Estrategias de marketing' entra en f1110 (44.40s). Recurso 6 'para captar' en f1135 (45.40s) hasta 'interés' en f1230. Conmuta a recurso 7 'lograr' en f1230 hasta f1346.","palabra_inicio":"marketing (f1110 / 44.40s)","palabra_fin":"productos (f1346 / 53.83s)","propuesta_extra":"","alertas":"Titular pautado en escaleta convive con los dos GIFs secuenciados en banda derecha.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":10.24,"duration_frames":256,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos.","dialogo_real_html":"Estos factores conforman las estrategias de marketing y están diseñadas para captar nuestra atención, despertar nuestro interés y lograr que elijamos determinados productos.","titular_nombre":"Estrategias de marketing","titular_timing":"f1090 - f1346"},{"row":7,"start_time":54.26,"end_time":63.35,"start_frame":1357,"end_frame":1584,"dialogo_escaleta":"Por ejemplo, frases como:\n”Últimas unidades”, “Oferta por tiempo limitado” o el clásico “Dos por uno” son muy comunes.","dialogo_real":"Por ejemplo, frases como: últimas unidades, oferta por tiempo limitado o el clásico dos por uno son muy comunes.","titular_esc":"","rec_esc":"8. últimas","archivo_real":"8. últimas.png (PNG 36.6 KB)","obs_escaleta":"El recurso 8 aparece cuando se nombra y desaparece al final.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f1380 (55.20s) al decir 'Últimas unidades' y acompaña los llamados de urgencia hasta f1584 (63.35s).","palabra_inicio":"Últimas (f1380 / 55.20s)","palabra_fin":"comunes (f1584 / 63.35s)","propuesta_extra":"","alertas":"Sticker '8. últimas.png' flotante a la izquierda según escaleta.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":9.09,"duration_frames":227,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Por ejemplo, frases como: <span class=\"diff-red\">”Últimas</span> <span class=\"diff-red\">unidades”,</span> <span class=\"diff-red\">“Oferta</span> por tiempo <span class=\"diff-red\">limitado”</span> o el clásico <span class=\"diff-red\">“Dos</span> por <span class=\"diff-red\">uno”</span> son muy comunes.","dialogo_real_html":"Por ejemplo, frases como: <span class=\"diff-red\">últimas</span> <span class=\"diff-red\">unidades,</span> <span class=\"diff-red\">oferta</span> por tiempo <span class=\"diff-red\">limitado</span> o el clásico <span class=\"diff-red\">dos</span> por <span class=\"diff-red\">uno</span> son muy comunes.","titular_nombre":"","titular_timing":""},{"row":8,"start_time":63.84,"end_time":69.42,"start_frame":1596,"end_frame":1736,"dialogo_escaleta":"Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido.","dialogo_real":"Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido.","titular_esc":"","rec_esc":"9. estas estrategias (Envato)","archivo_real":"9.estas estrategias.mov (4K 60fps, 148 MB) / 9.estas estrategias.mp4 (Full HD 1080p, 3.7 MB)","obs_escaleta":"Voz en off. El video aparece al inicio de la fila y desaparece al final de la fila.","categoria":"Alta","coreografia_norma":"Docente FUERA DE CUADRO (Voz en off) | Recurso PANTALLA COMPLETA (1920x1080)","indicacion_hablada":"Segundo tramo en voz en off con plató libre. Video en pantalla completa desde f1596 a f1736.","palabra_inicio":"Estas (f1596 / 63.84s)","palabra_fin":"rápido (f1736 / 69.42s)","propuesta_extra":"","alertas":"Recurso 9 reconocido y convertido a MP4 Full HD 1080p. Video en voz en off sin elementos superpuestos.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":5.58,"duration_frames":140,"posicion_video_actual":"Fuera de cuadro (Voz en off)","dialogo_escaleta_html":"Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido.","dialogo_real_html":"Estas estrategias pueden generar una sensación de oportunidad o de urgencia y llevarnos a comprar más rápido.","titular_nombre":"","titular_timing":""},{"row":9,"start_time":69.83,"end_time":72.22,"start_frame":1746,"end_frame":1806,"dialogo_escaleta":"Pero no es lo único que influye.","dialogo_real":"Pero no es lo único que influye.","titular_esc":"","rec_esc":"—","archivo_real":"Sin recurso en escaleta original","obs_escaleta":"Sin recursos especificados en escaleta.","categoria":"Baja","coreografia_norma":"Docente al CENTRO","indicacion_hablada":"Transición oral de la docente al retornar al cuadro entre f1746 (69.83s) y f1806 (72.22s).","palabra_inicio":"Pero (f1746 / 69.83s)","palabra_fin":"influye (f1806 / 72.22s)","propuesta_extra":"","alertas":"Docente al centro sin recursos adicionales según pauta de escaleta.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":2.39,"duration_frames":60,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Pero no es lo único que influye.","dialogo_real_html":"Pero no es lo único que influye.","titular_nombre":"","titular_timing":""},{"row":10,"start_time":72.67,"end_time":83.6,"start_frame":1817,"end_frame":2090,"dialogo_escaleta":"También incide la forma en que se presentan los productos, es decir,\nlos colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers.","dialogo_real":"También incide la forma en que se presentan los productos, es decir, los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers.","titular_esc":"","rec_esc":"10. colores\n11. música\n12. recomendaciones","archivo_real":"10. colores.png (34.9 KB) / 11. música.png (17.5 KB) / 12. recomendaciones.png (58.5 KB)","obs_escaleta":"El recurso 10 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 11 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 12 aparece cuando se nombra y desaparece al final de la fila.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recursos secuenciales a la IZQUIERDA (small_left)","indicacion_hablada":"Recurso 10 'colores' entra en f1850 (74.00s); conmuta a recurso 11 'música' en f1930 (77.20s); conmuta a recurso 12 'recomendaciones' en f2010 (80.40s) hasta f2090.","palabra_inicio":"colores (f1850 / 74.00s)","palabra_fin":"influencers (f2090 / 83.60s)","propuesta_extra":"","alertas":"Secuencia ágil de 3 stickers con transiciones suaves spring respetando el ritmo de la locución.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":10.93,"duration_frames":273,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"También incide la forma en que se presentan los productos, es decir, los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers.","dialogo_real_html":"También incide la forma en que se presentan los productos, es decir, los colores, las imágenes, la música, la ubicación de un producto en una tienda, las recomendaciones en redes sociales o la participación de influencers.","titular_nombre":"","titular_timing":""},{"row":11,"start_time":83.98,"end_time":91.14,"start_frame":2100,"end_frame":2279,"dialogo_escaleta":"Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado.","dialogo_real":"Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado.","titular_esc":"Impulso de compra","rec_esc":"13. impulso","archivo_real":"13. impulso.gif (GIF 89.8 KB)","obs_escaleta":"El titular aparece cuando se nombra y desaparece cuando termina. El recurso 13 aparece cuando se nombra y desaparece cuando termina.","categoria":"Media","coreografia_norma":"Docente al CENTRO | Layout Dual: Titular a la IZQUIERDA (200px) y Recurso a la DERECHA","indicacion_hablada":"Entra en f2120 (84.80s) con 'impulso de compra'. Titular a la izquierda (left: 200px) y GIF animado '13. impulso.gif' a la derecha hasta f2279 (91.14s).","palabra_inicio":"impulso (f2120 / 84.80s)","palabra_fin":"planificado (f2279 / 91.14s)","propuesta_extra":"","alertas":"Definición conceptual clave del capítulo. Titular en Museo 900 con filete turquesa inferior.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":7.16,"duration_frames":179,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado.","dialogo_real_html":"Todo esto puede favorecer el impulso de compra, es decir, cuando sentís ganas de comprar algo que no habías planificado.","titular_nombre":"Impulso de compra","titular_timing":"f2100 - f2279"},{"row":12,"start_time":91.66,"end_time":94.68,"start_frame":2292,"end_frame":2367,"dialogo_escaleta":"Entonces, ¿qué podés hacer antes de comprar?","dialogo_real":"Entonces, ¿qué podés hacer antes de comprar?","titular_esc":"","rec_esc":"14. pregunta 2","archivo_real":"14. pregunta 2.png (PNG 20.9 KB)","obs_escaleta":"El recurso 14 aparece cuando inicia la pregunta y desaparece cuando termina.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f2300 (92.00s) al formular la pregunta y se sostiene hasta f2367 (94.68s).","palabra_inicio":"¿qué podés (f2300 / 92.00s)","palabra_fin":"comprar (f2367 / 94.68s)","propuesta_extra":"","alertas":"Sticker badge sobre superficie blanca con RainbowEyebrow.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":3.02,"duration_frames":75,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Entonces, ¿qué podés hacer antes de comprar?","dialogo_real_html":"Entonces, ¿qué podés hacer antes de comprar?","titular_nombre":"","titular_timing":""},{"row":13,"start_time":95.16,"end_time":99.97,"start_frame":2379,"end_frame":2499,"dialogo_escaleta":"Usá la técnica de los cuatro pasos, que consiste en preguntarte:","dialogo_real":"Usá la técnica de los cuatro pasos, que consiste en preguntarte:","titular_esc":"","rec_esc":"15. cuatro","archivo_real":"15. cuatro.gif (GIF 216.3 KB)","obs_escaleta":"El recurso 15 aparece cuando se nombra y desaparece cuando termina.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f2395 (95.80s) con 'cuatro pasos' y acompaña la introducción metodológica hasta f2499 (99.97s).","palabra_inicio":"técnica (f2395 / 95.80s)","palabra_fin":"preguntarte (f2499 / 99.97s)","propuesta_extra":"","alertas":"Introduce el bloque modular de toma de decisiones.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":4.81,"duration_frames":120,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Usá la técnica de los cuatro pasos, que consiste en preguntarte:","dialogo_real_html":"Usá la técnica de los cuatro pasos, que consiste en preguntarte:","titular_nombre":"","titular_timing":""},{"row":14,"start_time":100.45,"end_time":118.37,"start_frame":2511,"end_frame":2959,"dialogo_escaleta":"1. ¿Lo necesito realmente?\n2. ¿Lo había planificado?\n3. ¿Puedo pagarlo sin afectar otros gastos?\n4. ¿Lo compraría si no estuviera en oferta?","dialogo_real":"Uno. ¿Lo necesito realmente? Dos. ¿Lo había planificado? Tres. ¿Puedo pagarlo sin afectar otros gastos? Cuatro. ¿Lo compraría si no estuviera en oferta?","titular_esc":"","rec_esc":"16. necesito\n17. lista\n18. pagarlo\n19. oferta","archivo_real":"16. necesito.png / 17. lista.png / 18. pagarlo.png / 19. oferta.png","obs_escaleta":"El recurso 16 aparece cuando se nombra y permanece al costado de la docente. El recurso 17 aparece cuando se nombra 'Lo había' y se ubica debajo del recurso anterior. El recurso 18 aparece cuando se nombra 'puedo' y se ubica en el otro costado de la docente. El recurso 19 aparece cuando se nombra 'Lo compraría' y se ubica debajo del recurso anterior.","categoria":"Media","coreografia_norma":"Docente al CENTRO | Layout Cuádruple Acumulativo (Paso 1 y 2 Izquierda, Paso 3 y 4 Derecha)","indicacion_hablada":"Paso 1 (16. necesito) entra en f2515 (100.60s); Paso 2 (17. lista) entra en f2610 (104.40s); Paso 3 (18. pagarlo) entra en f2720 (108.80s); Paso 4 (19. oferta) entra en f2820 (112.80s). Todos permanecen acumulados hasta f2959.","palabra_inicio":"necesito (f2515 / 100.60s)","palabra_fin":"oferta (f2959 / 118.37s)","propuesta_extra":"","alertas":"Composición cuádruple simétrica calibrada sin pisar a la docente en el centro ni la marca de agua superior derecha.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":17.92,"duration_frames":448,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"<span class=\"diff-red\">1.</span> ¿Lo necesito realmente? <span class=\"diff-red\">2.</span> ¿Lo había planificado? <span class=\"diff-red\">3.</span> ¿Puedo pagarlo sin afectar otros gastos? <span class=\"diff-red\">4.</span> ¿Lo compraría si no estuviera en oferta?","dialogo_real_html":"<span class=\"diff-red\">Uno.</span> ¿Lo necesito realmente? <span class=\"diff-red\">Dos.</span> ¿Lo había planificado? <span class=\"diff-red\">Tres.</span> ¿Puedo pagarlo sin afectar otros gastos? <span class=\"diff-red\">Cuatro.</span> ¿Lo compraría si no estuviera en oferta?","titular_nombre":"","titular_timing":""},{"row":15,"start_time":119.1,"end_time":125.57,"start_frame":2978,"end_frame":3139,"dialogo_escaleta":"Si la respuesta es “no” o “no estoy seguro”, quizás estás frente a una compra por impulso.","dialogo_real":"Si la respuesta es no o no estoy seguro, quizás estás frente a una compra por impulso.","titular_esc":"","rec_esc":"—","archivo_real":"Sin recurso en escaleta original","obs_escaleta":"Sin recursos especificados en escaleta.","categoria":"Baja","coreografia_norma":"Docente al CENTRO","indicacion_hablada":"Reflexión evaluativa de la docente entre f2978 (119.10s) y f3139 (125.57s).","palabra_inicio":"respuesta (f2978 / 119.10s)","palabra_fin":"impulso (f3139 / 125.57s)","propuesta_extra":"","alertas":"Docente al centro sin recursos adicionales según pauta de escaleta.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":6.47,"duration_frames":161,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Si la respuesta es <span class=\"diff-red\">“no”</span> o <span class=\"diff-red\">“no</span> estoy <span class=\"diff-red\">seguro”,</span> quizás estás frente a una compra por impulso.","dialogo_real_html":"Si la respuesta es <span class=\"diff-red\">no</span> o <span class=\"diff-red\">no</span> estoy <span class=\"diff-red\">seguro,</span> quizás estás frente a una compra por impulso.","titular_nombre":"","titular_timing":""},{"row":16,"start_time":126.06,"end_time":134.04,"start_frame":3152,"end_frame":3351,"dialogo_escaleta":"Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente.","dialogo_real":"Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente.","titular_esc":"","rec_esc":"20. pausa\n21. decisión","archivo_real":"20. pausa.gif (63.2 KB) / 21. decision.gif (1.56 MB)","obs_escaleta":"El recurso 20 aparece cuando se nombra y desaparece cuando aparece el siguiente. El recurso 21 aparece cuando se nombra y desaparece al final.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recursos secuenciales a la IZQUIERDA (small_left)","indicacion_hablada":"Recurso 20 'pausa' entra en f3160 (126.40s) y conmuta en f3250 (130.00s) a '21. decision.gif' hasta f3351 (134.04s).","palabra_inicio":"pausa (f3160 / 126.40s)","palabra_fin":"consciente (f3351 / 134.04s)","propuesta_extra":"","alertas":"'21. decision.gif' pesa 1.56 MB. Precargado en memoria.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":7.98,"duration_frames":199,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente.","dialogo_real_html":"Hacer esta pausa puede ayudarte a transformar una compra impulsiva en una decisión de consumo más consciente.","titular_nombre":"","titular_timing":""},{"row":17,"start_time":134.45,"end_time":142.15,"start_frame":3361,"end_frame":3554,"dialogo_escaleta":"Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra.","dialogo_real":"Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra.","titular_esc":"","rec_esc":"22. sos vos","archivo_real":"22. sos vos.gif (GIF 50.8 KB)","obs_escaleta":"El recurso 22 aparece cuando se nombra y desaparece al final de la fila.","categoria":"Baja","coreografia_norma":"Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA (small_left)","indicacion_hablada":"Entra en f3410 (136.40s) con 'sos vos' y acompaña el remate del capítulo hasta f3554 (142.15s).","palabra_inicio":"sos vos (f3410 / 136.40s)","palabra_fin":"palabra (f3554 / 142.15s)","propuesta_extra":"","alertas":"Cierre del episodio con mensaje empoderador al estudiante.","tiene_propuesta":false,"propuesta_texto":"","is_missing":false,"duration_sec":7.7,"duration_frames":193,"posicion_video_actual":"Centro (plató)","dialogo_escaleta_html":"Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra.","dialogo_real_html":"Porque cuando entendés qué influye en tus decisiones, sos vos quien tiene la última palabra.","titular_nombre":"","titular_timing":""}].forEach(r => {
+      const rk = r.row < 10 ? '0' + r.row : '' + r.row;
+      APP_STATE.rows[rk] = {
+        row: r.row,
+        start_frame: r.start_frame,
+        end_frame: r.end_frame,
+        start_time: r.start_time,
+        end_time: r.end_time,
+        dialogo_escaleta: r.dialogo_escaleta,
+        dialogo_real: r.dialogo_real,
+        subSource: 'escaleta',
+        customText: r.dialogo_escaleta,
+        hasProposal: r.tiene_propuesta,
+        proposalActive: r.tiene_propuesta,
+        relinkFile: '',
+        notes: ''
+      };
+    });
+
+    function selectSubSource(rowId, source) {
+      APP_STATE.rows[rowId].subSource = source;
+      
+      const optEsc = document.getElementById(`row_opt_esc_${rowId}`);
+      const optReal = document.getElementById(`row_opt_real_${rowId}`);
+      const optCustom = document.getElementById(`row_opt_custom_${rowId}`);
+      const boxCustom = document.getElementById(`box_custom_${rowId}`);
+
+      [optEsc, optReal, optCustom].forEach(el => el.classList.remove('active'));
+
+      if (source === 'escaleta') {
+        optEsc.classList.add('active');
+        optEsc.querySelector('input').checked = true;
+        boxCustom.style.display = 'none';
+      } else if (source === 'real') {
+        optReal.classList.add('active');
+        optReal.querySelector('input').checked = true;
+        boxCustom.style.display = 'none';
+      } else if (source === 'custom') {
+        optCustom.classList.add('active');
+        optCustom.querySelector('input').checked = true;
+        boxCustom.style.display = 'block';
+      }
+    }
+
+    function updateCustomText(rowId, text) {
+      APP_STATE.rows[rowId].customText = text;
+    }
+
+    function toggleProposal(rowId) {
+      const chk = document.getElementById(`prop_${rowId}`);
+      if (chk) APP_STATE.rows[rowId].proposalActive = chk.checked;
+    }
+
+    function browseFile(rowId) {
+      const input = prompt('Ingrese el nombre o ruta del archivo de reemplazo para esta fila:');
+      if (input && input.trim()) {
+        const inpEl = document.getElementById(`relink_${rowId}`);
+        if (inpEl) inpEl.value = input.trim();
+        APP_STATE.rows[rowId].relinkFile = input.trim();
+      }
+    }
+
+    function buildApprovedPayload() {
+      Object.keys(APP_STATE.rows).forEach(rk => {
+        const noteEl = document.getElementById(`notes_${rk}`);
+        if (noteEl) APP_STATE.rows[rk].notes = noteEl.value;
+        const relinkEl = document.getElementById(`relink_${rk}`);
+        if (relinkEl) APP_STATE.rows[rk].relinkFile = relinkEl.value;
+      });
+
+      const sortedRows = Object.values(APP_STATE.rows).sort(
+        (a, b) => parseInt(a.row, 10) - parseInt(b.row, 10)
+      );
+
+      return {
+        episodeId: APP_STATE.episodeId,
+        subject: APP_STATE.subject,
+        approvedAt: new Date().toISOString(),
+        rows: sortedRows
+      };
+    }
+
+    function downloadApprovedManifest() {
+      const payload = buildApprovedPayload();
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'TABLA_SINCRONIZACION_APROBADA.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function triggerRemotionGeneration() {
+      const modal = document.getElementById('modal-generation');
+      const actions = document.getElementById('modal-actions-container');
+      actions.innerHTML = '';
+      modal.classList.add('active');
+
+      const setStep = (num, icon, text) => {
+        const stepEl = document.getElementById(`step-${num}`);
+        if (stepEl) {
+          stepEl.querySelector('.icon').textContent = icon;
+          if (text) stepEl.querySelector('.text').textContent = text;
+        }
+      };
+
+      setStep(1, '✅', 'Elecciones de subtítulos y recursos validadas.');
+      const payload = buildApprovedPayload();
+
+      try {
+        setStep(2, '⏳', 'Conectando con Bridge Local (puerto 3210)...');
+        const res = await fetch('http://localhost:3210/api/generate-and-preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setStep(2, '✅', 'Conexión con Bridge exitosa.');
+          setStep(3, '✅', 'Archivos data.ts, captions.ts y assets generados.');
+          setStep(4, '🚀', 'Remotion Preview iniciado en puerto 3000.');
+
+          actions.innerHTML = `
+            <a href="http://localhost:3000" target="_blank" class="modal-btn-open">
+              🎬 ABRIR REMOTION STUDIO (localhost:3000)
+            </a>
+          `;
+          window.open('http://localhost:3000', '_blank');
+        } else {
+          throw new Error('El servidor respondió con código ' + res.status);
+        }
+      } catch (err) {
+        setStep(2, '⚠️', 'Bridge local no detectado en puerto 3210.');
+        setStep(3, '💾', 'Se descargó automáticamente TABLA_SINCRONIZACION_APROBADA.json.');
+        downloadApprovedManifest();
+
+        actions.innerHTML = `
+          <div style="background:#FEF2F2; border:1px solid #FECACA; padding:12px; border-radius:8px; font-size:12px; color:#991B1B;">
+            <strong>⚠️ Para lanzar el preview manualmente:</strong><br>
+            Ejecuta en terminal:<br>
+            <code style="background:white; padding:2px 6px; border-radius:4px; display:block; margin:6px 0; font-family:monospace;">node local_bridge_server.mjs</code>
+          </div>
+        `;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-generation').classList.remove('active');
+    }
+  </script>
+</body>
+</html>

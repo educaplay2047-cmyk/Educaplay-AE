@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz de Sincronización Pre-Edición — EEF002</title>
+  <style>
+
+    :root {
+      --corrientes-red: #D32F2F;
+      --corrientes-yellow: #FBC02D;
+      --corrientes-green: #388E3C;
+      --corrientes-blue: #1976D2;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --bg-main: #F8FAFC;
+      --border-color: #E2E8F0;
+      --diff-color: #DC2626;
+      --diff-bg: #FEF2F2;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.45;
+      padding: 24px;
+      padding-bottom: 120px;
+    }
+    
+    .header-container {
+      background: white;
+      border-radius: 12px;
+      padding: 24px 32px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cmyk-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      display: flex;
+    }
+    .cmyk-bar .c1 { flex: 1; background: var(--corrientes-red); }
+    .cmyk-bar .c2 { flex: 1; background: var(--corrientes-yellow); }
+    .cmyk-bar .c3 { flex: 1; background: var(--corrientes-green); }
+    .cmyk-bar .c4 { flex: 1; background: var(--corrientes-blue); }
+    
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .badge-episode {
+      background: #EFF6FF;
+      color: var(--corrientes-blue);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid #BFDBFE;
+    }
+    
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    
+    .meta-item strong { color: #475569; display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .meta-item span { color: #0F172A; font-weight: 600; font-size: 14px; }
+    
+    .legend-box {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .legend-card {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 12px;
+    }
+    
+    .legend-card.diff { border-left: 4px solid var(--diff-color); background: #FFF5F5; }
+    .legend-card.baja { border-left: 4px solid #10B981; }
+    .legend-card.media { border-left: 4px solid #F59E0B; }
+    .legend-card.alta { border-left: 4px solid #EF4444; }
+    
+    .legend-title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .legend-desc { color: var(--text-muted); font-size: 11px; line-height: 1.35; }
+    
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      font-size: 12px;
+    }
+    
+    .matrix-table th {
+      background: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 2px solid var(--border-color);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+    }
+    
+    .matrix-table td {
+      padding: 14px 10px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+    
+    .matrix-table tr:hover { background-color: #F8FAFC; }
+    
+    .time-badge {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 700;
+      color: #0F172A;
+      background: #E2E8F0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+    
+    .frame-badge {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 600;
+      color: #475569;
+      font-size: 10.5px;
+    }
+    
+    .tag-cat {
+      display: inline-block;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-cat.baja { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0; }
+    .tag-cat.media { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+    .tag-cat.alta { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+    
+    /* Selector de Diálogo de 3 vías */
+    .sub-selector-container {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .sub-option-row {
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 6px 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #F8FAFC;
+    }
+    .sub-option-row.active {
+      border-color: #3B82F6;
+      background: #EFF6FF;
+      box-shadow: 0 0 0 1px #3B82F6;
+    }
+    
+    .sub-option-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E293B;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+    
+    .sub-text-preview {
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: #334155;
+      padding-left: 22px;
+    }
+    
+    .custom-input-box {
+      margin-top: 6px;
+      padding-left: 22px;
+    }
+    .custom-input-textarea {
+      width: 100%;
+      min-height: 52px;
+      border: 1px solid #94A3B8;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: #0F172A;
+      background: #FFFFFF;
+      resize: vertical;
+    }
+    .custom-input-textarea:focus {
+      outline: none;
+      border-color: #2563EB;
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    
+    .diff-red {
+      color: var(--diff-color);
+      font-weight: 800;
+      background-color: var(--diff-bg);
+      padding: 0 2px;
+      border-radius: 2px;
+      text-decoration: underline wavy var(--diff-color) 1px;
+    }
+    
+    .spoken-action-box {
+      background: #F8FAFC;
+      border-left: 3px solid #6366F1;
+      padding: 6px 10px;
+      border-radius: 0 6px 6px 0;
+      font-size: 11px;
+      color: #1E293B;
+      line-height: 1.4;
+    }
+    
+    .titular-box {
+      background: #F1F5F9;
+      border-left: 3px solid #8B5CF6;
+      padding: 6px 8px;
+      border-radius: 0 6px 6px 0;
+      font-size: 11px;
+    }
+    .titular-badge {
+      display: inline-block;
+      font-weight: 700;
+      color: #6D28D9;
+      background: #EDE9FE;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+    .titular-timing {
+      font-size: 10px;
+      color: #475569;
+      font-family: ui-monospace, monospace;
+    }
+    
+    /* Alerta y Enlace de Recursos Faltantes */
+    .missing-resource-card {
+      border: 2px solid #EF4444;
+      background: #FEF2F2;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 6px;
+    }
+    .missing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #DC2626;
+      color: white;
+      font-weight: 800;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .missing-text {
+      font-size: 11px;
+      color: #991B1B;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .relink-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: white;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #FECACA;
+    }
+    .relink-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+    }
+    .relink-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .relink-input {
+      flex: 1;
+      padding: 4px 8px;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #0F172A;
+    }
+    .relink-input:focus {
+      outline: none;
+      border-color: #EF4444;
+      box-shadow: 0 0 0 2px rgba(239,68,68,0.2);
+    }
+    .btn-browse-file {
+      background: #F1F5F9;
+      color: #1E293B;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .btn-browse-file:hover { background: #E2E8F0; }
+    .relink-status {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .relink-status.pending { color: #B91C1C; }
+    .relink-status.linked { color: #15803D; }
+
+    .alert-tag {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+    
+    .propuesta-toggle-box {
+      background: #FAF5FF;
+      border: 1px solid #D8B4FE;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 11px;
+      color: #581C87;
+    }
+    
+    .toggle-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-label input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #9333EA;
+    }
+    
+    .empty-cell {
+      color: #94A3B8;
+      font-style: italic;
+      font-size: 11px;
+      text-align: center;
+      padding: 8px 0;
+    }
+    
+    .notes-input {
+      width: 100%;
+      min-height: 50px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 6px;
+      font-family: inherit;
+      font-size: 11px;
+      background: #FFFFFF;
+      resize: vertical;
+    }
+    
+    /* Panel de Generación Final */
+    .generation-panel {
+      background: #FFFFFF;
+      border: 2px solid #3B82F6;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 32px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .generation-header h2 {
+      font-size: 20px;
+      color: #0F172A;
+      margin-bottom: 6px;
+    }
+    .generation-header p {
+      font-size: 13px;
+      color: #64748B;
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+    }
+    .generation-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-generate-main {
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px -1px rgba(37,99,235,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .btn-generate-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 12px -1px rgba(37,99,235,0.4);
+      background: linear-gradient(135deg, #1D4ED8, #1E40AF);
+    }
+    .btn-download-json {
+      background: #F1F5F9;
+      color: #334155;
+      border: 1px solid #CBD5E1;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-download-json:hover { background: #E2E8F0; }
+
+    /* Barra Flotante Inferior */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #334155;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+      color: white;
+    }
+    .bar-summary {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+    }
+    .bar-badge {
+      background: #334155;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .bar-badge.warn { background: #7F1D1D; color: #FECACA; }
+    .bar-badge.ok { background: #064E3B; color: #A7F3D0; }
+    
+    .btn-sticky-generate {
+      background: #2563EB;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-sticky-generate:hover { background: #1D4ED8; }
+
+    /* Modal emergente */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.active { display: flex; }
+    .modal-window {
+      background: white;
+      width: 90%;
+      max-width: 580px;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 13px;
+      color: #334155;
+    }
+    .modal-step .icon { font-size: 16px; }
+    .modal-btn-open {
+      display: block;
+      width: 100%;
+      background: #10B981;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-top: 18px;
+      box-shadow: 0 4px 6px -1px rgba(16,185,129,0.3);
+    }
+    .modal-btn-open:hover { background: #059669; }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #64748B;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <div class="cmyk-bar">
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+      <div class="c4"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 6px;">
+      <div>
+        <h1>
+          <span>Matriz de Sincronización y Carga de Atención Pre-Edición</span>
+          <span class="badge-episode">EEF002</span>
+        </h1>
+        <p style="color: #64748B; font-size: 14px;"><strong>Materia:</strong> Educación Económica y Financiera &nbsp;|&nbsp; <strong>Tema:</strong> Necesidades y Deseos</p>
+      </div>
+      <div style="text-align: right;">
+        <span style="background:#FEF3C7; color:#B45309; font-weight:700; font-size:11px; padding:4px 8px; border-radius:6px; border:1px solid #FDE68A;">FASE 0 — CONTROL PRE-EDICIÓN</span>
+      </div>
+    </div>
+    
+    <div class="meta-grid">
+      <div class="meta-item">
+        <strong>Video Primer Corte</strong>
+        <span>EEF002 - PRIMER CORTE.mp4</span>
+      </div>
+      <div class="meta-item">
+        <strong>Resolución / FPS</strong>
+        <span>1920x1080 @ 25.000 fps</span>
+      </div>
+      <div class="meta-item">
+        <strong>Duración Máster</strong>
+        <span>02:59.12 (4478 frames)</span>
+      </div>
+      <div class="meta-item">
+        <strong>Docente en Placa (Lower Third)</strong>
+        <span>Prof. Claudio Sena (f240 a f430)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend-box">
+    <div class="legend-card diff">
+      <div class="legend-title"><span class="diff-red">Diferencias en Rojo</span> Diálogo Real vs. Guion</div>
+      <div class="legend-desc">Toda discrepancia textual está <strong>resaltada en rojo con subrayado ondulado</strong> para decidir la fuente exacta del subtítulo.</div>
+    </div>
+    <div class="legend-card baja">
+      <div class="legend-title"><span class="tag-cat baja">Baja Carga</span> Docente al CENTRO</div>
+      <div class="legend-desc">Stickers y titulares breves (1-2 líneas). Se anclan flotantes a la <strong>IZQUIERDA</strong> del docente sin invadir su silueta.</div>
+    </div>
+    <div class="legend-card media">
+      <div class="legend-title"><span class="tag-cat media">Media Carga</span> Docente a la IZQUIERDA</div>
+      <div class="legend-desc">Textos largos, videos cortos y gráficos. El docente se posiciona a la <strong>IZQUIERDA</strong>, dejando la <strong>DERECHA</strong> libre bajo el logo.</div>
+    </div>
+    <div class="legend-card alta">
+      <div class="legend-title"><span class="tag-cat alta">Alta Carga</span> Docente FUERA DE CUADRO</div>
+      <div class="legend-desc">Videos demostrativos o infografías complejas (Voz en off). El docente <strong>desaparece de pantalla</strong> y el recurso ocupa <strong>PANTALLA COMPLETA</strong>.</div>
+    </div>
+  </div>
+  
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width: 35px; text-align:center;">Fila</th>
+        <th style="width: 125px;">Tiempo & Frames</th>
+        <th style="width: 75px;">Carga</th>
+        <th style="width: 130px;">Coreografía</th>
+        <th style="width: 300px;">Diálogo & Elección Subtítulo (🔴 Difs)</th>
+        <th style="width: 250px;">🗣️ Acción Hablada Natural</th>
+        <th style="width: 160px;">Titulares (Escaleta Original)</th>
+        <th style="width: 200px;">Recurso Escaleta & Archivo</th>
+        <th style="width: 210px;">🟣 Propuestas (Filas Vacías)</th>
+        <th style="width: 110px;">Validación</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <tr id="table_row_02">
+          <td style="font-weight: 700; text-align: center;">02</td>
+          <td>
+            <div class="time-badge">8.24s - 13.08s</div>
+            <div class="frame-badge">f206 - f327 (121 f | 4.84s)</div>
+          </td>
+          <td>
+            <span class="tag-cat baja">Baja</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_02" onclick="selectSubSource('02', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_02" value="escaleta" checked onchange="selectSubSource('02', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_02">
+            "¿Alguna vez te pasó de tener hambre y pensar <span class="diff-red">qué</span> tenías que comer para saciarla <span class="diff-red">?</span>"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_02" onclick="selectSubSource('02', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_02" value="real" onchange="selectSubSource('02', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_02">
+            "¿Alguna vez te pasó de tener hambre y pensar <span class="diff-red">que</span> tenías que comer para saciarla <span class="diff-red">,</span>"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_02" onclick="selectSubSource('02', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_02" value="custom" onchange="selectSubSource('02', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_02" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_02" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('02', this.value)">¿Alguna vez te pasó de tener hambre y pensar qué tenías que comer para saciarla?</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 1 se reproduce desde que se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Entra exactamente cuando el profesor pronuncia la palabra 'hambre' en el frame 253 (10.12s) y se reproduce en pantalla hasta que termina de decir la palabra 'saciarla' en el frame 327 (13.08s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>hambre (f253 / 10.12s)</code><br>
+              🔴 <strong>Salida:</strong> <code>saciarla (f327 / 13.08s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">1. te pasó</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 1. te pasó_.gif (GIF 480x480, loop 1.0s)</div>
+          <div class='alert-tag'>⚠️ El archivo es '1. te pasó_.gif' (tiene un guion bajo al final del nombre).</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_02" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_03">
+          <td style="font-weight: 700; text-align: center;">03</td>
+          <td>
+            <div class="time-badge">13.48s - 18.88s</div>
+            <div class="frame-badge">f337 - f472 (135 f | 5.4s)</div>
+          </td>
+          <td>
+            <span class="tag-cat baja">Baja</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_03" onclick="selectSubSource('03', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_03" value="escaleta" checked onchange="selectSubSource('03', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_03">
+            "<span class="diff-red">¿Pero</span> en lugar de elegir cualquier alimento optaste por una pizza, una hamburguesa o tu postre favorito?"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_03" onclick="selectSubSource('03', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_03" value="real" onchange="selectSubSource('03', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_03">
+            "<span class="diff-red">pero</span> en lugar de elegir cualquier alimento <span class="diff-red">,</span> optaste por una pizza, una hamburguesa o tu postre favorito?"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_03" onclick="selectSubSource('03', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_03" value="custom" onchange="selectSubSource('03', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_03" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_03" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('03', this.value)">¿Pero en lugar de elegir cualquier alimento optaste por una pizza, una hamburguesa o tu postre favorito?</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 2 permanece desde que se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Aparece en el momento exacto en que el docente dice 'elegir' en el frame 356 (14.24s) y se sostiene durante toda la enumeración hasta rematar en la palabra 'favorito' en el frame 472 (18.88s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>elegir (f356 / 14.24s)</code><br>
+              🔴 <strong>Salida:</strong> <code>favorito (f472 / 18.88s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">2. Elegir</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 2. elegir.jpg (JPG 5816x3877 px, 2.82 MB)</div>
+          <div class='alert-tag'>⚠️ '2. elegir.jpg' es una foto fija pesada de banco de imágenes. Conflicto potencial con '17. elegir.gif'.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_03" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_04">
+          <td style="font-weight: 700; text-align: center;">04</td>
+          <td>
+            <div class="time-badge">19.66s - 26.78s</div>
+            <div class="frame-badge">f492 - f670 (178 f | 7.12s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató) [Requiere reencuadre en Premiere o slot libre]</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_04" onclick="selectSubSource('04', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_04" value="escaleta" checked onchange="selectSubSource('04', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_04">
+            "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_04" onclick="selectSubSource('04', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_04" value="real" onchange="selectSubSource('04', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_04">
+            "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_04" onclick="selectSubSource('04', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_04" value="custom" onchange="selectSubSource('04', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_04" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_04" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('04', this.value)">Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular y el recurso 3 aparecen cuando se nombra “Diferencia” y permanecen hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Tanto el titular 'Necesidad ≠ deseo' como el recurso gráfico 3 entran en simultáneo justo cuando el profesor pronuncia la palabra 'diferencia' en el frame 520 (20.80s), manteniéndose visibles hasta que cierra la idea en la palabra 'mismo' en el frame 670 (26.78s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>diferencia (f520 / 20.80s)</code><br>
+              🔴 <strong>Salida:</strong> <code>mismo (f670 / 26.78s)</code>
+            </div>
+          </td>
+          <td>
+            
+          <div class="titular-box">
+            <span class="titular-badge">🏷️ Necesidad ≠ deseo</span>
+            <div class="titular-timing">Entra en f520 (20.80s) con 'diferencia' ➔ Sale en f670 (26.78s) con 'mismo' (Duración: 150 f / 6.0s). Asociado al recurso 3.</div>
+          </div>
+        
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">3. diferencia</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 3. diferencias.gif (GIF 480x268 px, 2.14s)</div>
+          <div class='alert-tag'>⚠️ El archivo en disco se llama '3. diferencias.gif' (plural), mientras que la escaleta lo solicita como '3. diferencia' (singular).</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_04" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_05">
+          <td style="font-weight: 700; text-align: center;">05</td>
+          <td>
+            <div class="time-badge">27.54s - 35.78s</div>
+            <div class="frame-badge">f688 - f894 (206 f | 8.24s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_05" onclick="selectSubSource('05', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_05" value="escaleta" checked onchange="selectSubSource('05', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_05">
+            "En <span class="diff-red">Economía</span>, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_05" onclick="selectSubSource('05', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_05" value="real" onchange="selectSubSource('05', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_05">
+            "En <span class="diff-red">economía</span>, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_05" onclick="selectSubSource('05', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_05" value="custom" onchange="selectSubSource('05', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_05" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_05" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('05', this.value)">En Economía, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular y el recurso 4 aparece cuando se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El titular 'Necesidades' y el recurso gráfico entran en sincronía cuando el docente nombra la palabra 'necesidades' en el frame 725 (29.00s) y se sostienen a lo largo de toda la definición económica hasta que concluye en la palabra 'satisfacerla' en el frame 894 (35.78s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>necesidades (f725 / 29.00s)</code><br>
+              🔴 <strong>Salida:</strong> <code>satisfacerla (f894 / 35.78s)</code>
+            </div>
+          </td>
+          <td>
+            
+          <div class="titular-box">
+            <span class="titular-badge">🏷️ Necesidades</span>
+            <div class="titular-timing">Entra en f725 (29.00s) con 'necesidades' ➔ Sale en f894 (35.78s) con 'satisfacerla' (Duración: 169 f / 6.76s). Asociado al recurso 4.</div>
+          </div>
+        
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">4. Necesidades</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 4. necesidades.png (PNG 512x512 px)</div>
+          <div class='alert-tag'>⚠️ '4. necesidades.png' es un icono plano suelto. Debe integrarse sobre una superficie blanca opaca para garantizar ratio WCAG AAA > 15:1.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_05" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_06">
+          <td style="font-weight: 700; text-align: center;">06</td>
+          <td>
+            <div class="time-badge">36.52s - 50.28s</div>
+            <div class="frame-badge">f913 - f1257 (344 f | 13.76s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_06" onclick="selectSubSource('06', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_06" value="escaleta" checked onchange="selectSubSource('06', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_06">
+            "Algunas son primarias <span class="diff-red">,</span> como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada <span class="diff-red">; son</span> fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_06" onclick="selectSubSource('06', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_06" value="real" onchange="selectSubSource('06', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_06">
+            "Algunas son primarias como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada <span class="diff-red">. Son</span> fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_06" onclick="selectSubSource('06', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_06" value="custom" onchange="selectSubSource('06', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_06" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_06" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('06', this.value)">Algunas son primarias, como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada; son fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular y el recurso 5 aparecen cuando se lo nombra hasta el primer punto. El recurso 6 aparece cuando se lo nombra hasta el final. El recurso 7 aparece cuando se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El titular 'Necesidades primarias' dispara en la palabra 'primarias' en el frame 942 (37.68s). Inmediatamente entra el recurso 5 en la palabra 'alimentarnos' en el frame 966 (38.64s); luego entra el recurso 6 sobre la palabra 'agua' en el frame 994 (39.76s); y a continuación entra el recurso 7 sobre la palabra 'vivienda' en el frame 1033 (41.32s). Todo el conjunto acompaña la explicación de riesgo vital hasta cerrar en 'supervivencia' en el frame 1257 (50.28s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>primarias (f942 / 37.68s)</code><br>
+              🔴 <strong>Salida:</strong> <code>supervivencia (f1257 / 50.28s)</code>
+            </div>
+          </td>
+          <td>
+            
+          <div class="titular-box">
+            <span class="titular-badge">🏷️ Necesidades primarias</span>
+            <div class="titular-timing">Entra en f942 (37.68s) con 'primarias' ➔ Sale en f1257 (50.28s) con 'supervivencia' (Duración: 315 f / 12.60s). Encabeza y coexiste con los recursos 5, 6 y 7.</div>
+          </div>
+        
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">5. alimentarnos, 6. agua, 7. vivienda</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 5. alimentarnos.jpg, 6. agua.jpg (6.9 MB), 7. vivienda.jpg</div>
+          <div class='alert-tag'>⚠️ '5. alimentarnos.jpg', '6. agua.jpg' (6.9 MB) y '7. vivienda.jpg' son fotos de stock sumamente pesadas. La escaleta omitió pedir recurso para 'ropa adecuada'.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_06" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_07">
+          <td style="font-weight: 700; text-align: center;">07</td>
+          <td>
+            <div class="time-badge">50.92s - 61.38s</div>
+            <div class="frame-badge">f1273 - f1534 (261 f | 10.46s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_07" onclick="selectSubSource('07', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_07" value="escaleta" checked onchange="selectSubSource('07', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_07">
+            "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_07" onclick="selectSubSource('07', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_07" value="real" onchange="selectSubSource('07', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_07">
+            "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_07" onclick="selectSubSource('07', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_07" value="custom" onchange="selectSubSource('07', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_07" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_07" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('07', this.value)">Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular y el recurso 8 aparece cuando se lo nombra hasta el final de la fila."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El titular y el recurso entran en el instante en que el profesor dice 'secundarias' en el frame 1313 (52.52s) y continúan en pantalla acompañando la justificación de bienestar social hasta la palabra 'sociedad' en el frame 1534 (61.38s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>secundarias (f1313 / 52.52s)</code><br>
+              🔴 <strong>Salida:</strong> <code>sociedad (f1534 / 61.38s)</code>
+            </div>
+          </td>
+          <td>
+            
+          <div class="titular-box">
+            <span class="titular-badge">🏷️ Necesidades secundarias</span>
+            <div class="titular-timing">Entra en f1313 (52.52s) con 'secundarias' ➔ Sale en f1534 (61.38s) con 'sociedad' (Duración: 221 f / 8.84s). Asociado al recurso 8.</div>
+          </div>
+        
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">8. necesidades secundarias</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 8. necesidades secundarias.gif (GIF 480x480 px, 1.5s)</div>
+          <div class='alert-tag'>⚠️ '8. necesidades secundarias.gif' es un sticker breve de 1.5 segundos.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_07" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_08">
+          <td style="font-weight: 700; text-align: center;">08</td>
+          <td>
+            <div class="time-badge">62.08s - 75.96s</div>
+            <div class="frame-badge">f1552 - f1899 (347 f | 13.88s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_08" onclick="selectSubSource('08', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_08" value="escaleta" checked onchange="selectSubSource('08', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_08">
+            "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos <span class="diff-red">,</span> en determinadas situaciones pueden ser muy importantes para nuestra calidad de vida, de salud y protección."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_08" onclick="selectSubSource('08', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_08" value="real" onchange="selectSubSource('08', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_08">
+            "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos en determinadas situaciones <span class="diff-red">,</span> pueden ser muy importantes para nuestra calidad de vida, de salud y protección."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_08" onclick="selectSubSource('08', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_08" value="custom" onchange="selectSubSource('08', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_08" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_08" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('08', this.value)">La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos, en determinadas situaciones pueden ser muy importantes para nuestra calidad de vida, de salud y protección.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 9 aparece cuando se lo nombra hasta “sin ellos”. El recurso 10 aparece cuando se lo nombra hasta “sin ellos”."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El recurso 9 entra cuando el docente dice 'internet' en el frame 1596 (63.82s). Apenas después, entra el recurso 10 en la palabra 'transporte' en el frame 1614 (64.56s). Ambos recursos se retiran juntos en el momento exacto en que el profesor pronuncia la frase de corte 'sin ellos' en el frame 1716 (68.66s), dejando el resto de la frase hasta 'protección' en el frame 1899 (75.96s) limpia o con refuerzo.
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>internet (f1596 / 63.82s) / transporte (f1614 / 64.56s)</code><br>
+              🔴 <strong>Salida:</strong> <code>sin ellos (f1716 / 68.66s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">9. Internet, 10. transporte</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 9. internet.jpg (2.3 MB), 10. transporte.jpg (6.6 MB)</div>
+          <div class='alert-tag'>⚠️ La escaleta omitió pedir recurso para 'La educación' (mencionada al inicio). '10. transporte.jpg' pesa 6.6 MB y mide 9017x6011 px.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_08" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_09">
+          <td style="font-weight: 700; text-align: center;">09</td>
+          <td>
+            <div class="time-badge">76.52s - 78.74s</div>
+            <div class="frame-badge">f1913 - f1968 (55 f | 2.22s)</div>
+          </td>
+          <td>
+            <span class="tag-cat baja">Baja</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_09" onclick="selectSubSource('09', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_09" value="escaleta" checked onchange="selectSubSource('09', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_09">
+            "Pero entonces,¿qué es un deseo?"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_09" onclick="selectSubSource('09', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_09" value="real" onchange="selectSubSource('09', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_09">
+            "Pero entonces,¿qué es un deseo?"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_09" onclick="selectSubSource('09', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_09" value="custom" onchange="selectSubSource('09', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_09" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_09" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('09', this.value)">Pero entonces, ¿qué es un deseo?</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 11 aparece cuando se lo nombra hasta el final de la fila."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Entra cuando el docente dice con tono de pregunta 'entonces' en el frame 1924 (76.96s) y permanece durante toda la pregunta disparadora hasta rematar en la palabra 'deseo' en el frame 1968 (78.74s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>entonces (f1924 / 76.96s)</code><br>
+              🔴 <strong>Salida:</strong> <code>deseo (f1968 / 78.74s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">11. Entonces</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 11. entonces.gif (GIF 480x480 px, 1.2s)</div>
+          <div class='alert-tag'>⚠️ '11. entonces.gif' es un sticker breve de solo 1.2 segundos.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_09" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_10">
+          <td style="font-weight: 700; text-align: center;">10</td>
+          <td>
+            <div class="time-badge">79.56s - 84.00s</div>
+            <div class="frame-badge">f1989 - f2100 (111 f | 4.44s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_10" onclick="selectSubSource('10', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_10" value="escaleta" checked onchange="selectSubSource('10', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_10">
+            "Un deseo es la manera particular en que queremos satisfacer una necesidad."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_10" onclick="selectSubSource('10', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_10" value="real" onchange="selectSubSource('10', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_10">
+            "Un deseo es la manera particular en que queremos satisfacer una necesidad."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_10" onclick="selectSubSource('10', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_10" value="custom" onchange="selectSubSource('10', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_10" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_10" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('10', this.value)">Un deseo es la manera particular en que queremos satisfacer una necesidad.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El titular y el recurso 12 aparece cuando se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El titular 'Deseo' y el video entran en el instante en que el profesor enuncia la palabra 'deseo' en el frame 1996 (79.86s) y se reproducen hasta que la frase culmina en la palabra 'necesidad' en el frame 2100 (84.00s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>deseo (f1996 / 79.86s)</code><br>
+              🔴 <strong>Salida:</strong> <code>necesidad (f2100 / 84.00s)</code>
+            </div>
+          </td>
+          <td>
+            
+          <div class="titular-box">
+            <span class="titular-badge">🏷️ Deseo</span>
+            <div class="titular-timing">Entra en f1996 (79.86s) con 'deseo' ➔ Sale en f2100 (84.00s) con 'necesidad' (Duración: 104 f / 4.16s). Asociado al video 12.</div>
+          </div>
+        
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">12. deseo</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 12. deseo [SIN EXTENSIÓN en disco: Video MP4 1920x1080, 7.4s]</div>
+          <div class='alert-tag'>⚠️ ¡ALERTA CRÍTICA!: El archivo '12. deseo' NO TIENE EXTENSIÓN en la carpeta. Es un video MP4. Debe ser renombrado a '12. deseo.mp4'.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_10" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_11">
+          <td style="font-weight: 700; text-align: center;">11</td>
+          <td>
+            <div class="time-badge">84.40s - 98.78s</div>
+            <div class="frame-badge">f2110 - f2470 (360 f | 14.38s)</div>
+          </td>
+          <td>
+            <span class="tag-cat alta">Alta</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Fuera de cuadro (Voz en off confirmada en video f2110 a f2480)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente FUERA DE CUADRO | Recurso a PANTALLA COMPLETA (Voz en off)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_11" onclick="selectSubSource('11', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_11" value="escaleta" checked onchange="selectSubSource('11', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_11">
+            "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_11" onclick="selectSubSource('11', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_11" value="real" onchange="selectSubSource('11', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_11">
+            "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_11" onclick="selectSubSource('11', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_11" value="custom" onchange="selectSubSource('11', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_11" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_11" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('11', this.value)">Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Voz en off. El recurso 13 aparece cuando se lo nombra y desaparece con el siguiente recurso. El recurso 14 aparece cuando se lo nombra y desaparece con el siguiente recurso. El recurso 15 aparece cuando se lo nombra y permanece hasta el final de la fila."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Secuencia en Voz en off a pantalla completa: El clip 13 entra cuando el audio dice 'hambre' en el frame 2120 (84.82s) y cambia justo cuando el profesor dice 'vestirnos' en el frame 2239 (89.56s) donde entra el recurso 14; luego este cambia sobre la palabra 'comunicarnos' en el frame 2366 (94.62s) dando paso al recurso 15, el cual se extiende hasta el remate de la frase en la palabra 'celular' en el frame 2470 (98.78s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>hambre (f2120 / 84.82s)</code><br>
+              🔴 <strong>Salida:</strong> <code>celular (f2470 / 98.78s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#FEE2E2; color:#991B1B; padding:2px 4px; border-radius:4px; font-weight:700;">13. Tenemos hambre, 14. Necesitamos vestirnos (Envato), 15. Precisamos (Envato)</code>
+          <div class="missing-resource-card">
+            <div class="missing-badge">🚨 2 RECURSOS FALTANTES EN CARPETA</div>
+            <div class="missing-text">En disco solo se encontró <code>13. Tenemos hambre.mp4</code>. Los otros 2 clips solicitados en la escaleta no fueron entregados:</div>
+            
+            <!-- Reemplazo 14 -->
+            <div class="relink-group" style="margin-bottom: 8px;">
+              <label class="relink-label">🔗 14. Necesitamos vestirnos (Envato):</label>
+              <div class="relink-controls">
+                <input type="text" class="relink-input" id="relink_11_14" placeholder="Archivo para 'vestirnos'..." oninput="handleRelinkInput('11_14', this.value)">
+                <label class="btn-browse-file">
+                  📁 Examinar
+                  <input type="file" style="display:none;" onchange="handleFileBrowse(this, '11_14')">
+                </label>
+              </div>
+              <div class="relink-status pending" id="status_relink_11_14">⚠️ Sin archivo asignado</div>
+            </div>
+
+            <!-- Reemplazo 15 -->
+            <div class="relink-group">
+              <label class="relink-label">🔗 15. Precisamos (Envato):</label>
+              <div class="relink-controls">
+                <input type="text" class="relink-input" id="relink_11_15" placeholder="Archivo para 'comunicarnos'..." oninput="handleRelinkInput('11_15', this.value)">
+                <label class="btn-browse-file">
+                  📁 Examinar
+                  <input type="file" style="display:none;" onchange="handleFileBrowse(this, '11_15')">
+                </label>
+              </div>
+              <div class="relink-status pending" id="status_relink_11_15">⚠️ Sin archivo asignado</div>
+            </div>
+          </div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_11" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_12">
+          <td style="font-weight: 700; text-align: center;">12</td>
+          <td>
+            <div class="time-badge">99.56s - 108.60s</div>
+            <div class="frame-badge">f2489 - f2715 (226 f | 9.04s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_12" onclick="selectSubSource('12', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_12" value="escaleta" checked onchange="selectSubSource('12', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_12">
+            "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos <span class="diff-red">,</span> como el tiempo o los ingresos son limitados."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_12" onclick="selectSubSource('12', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_12" value="real" onchange="selectSubSource('12', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_12">
+            "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos como el tiempo o los ingresos son limitados."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_12" onclick="selectSubSource('12', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_12" value="custom" onchange="selectSubSource('12', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_12" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_12" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('12', this.value)">Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos, como el tiempo o los ingresos son limitados.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 16 aparece cuando se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Entra en el momento en que el docente dice 'pueden ser' (o 'ilimitados') en el frame 2507 (100.28s) y se mantiene ilustrando el contraste de escasez económica hasta la palabra 'limitados' en el frame 2715 (108.60s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>pueden ser / ilimitados (f2507 / 100.28s)</code><br>
+              🔴 <strong>Salida:</strong> <code>limitados (f2715 / 108.60s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">16. pueden ser</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 16. puede ser.gif (GIF 480x480 px, 5.3s)</div>
+          <div class='alert-tag'>⚠️ '16. puede ser.gif' es un sticker animado de 480x480 px.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_12" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_13">
+          <td style="font-weight: 700; text-align: center;">13</td>
+          <td>
+            <div class="time-badge">109.06s - 113.18s</div>
+            <div class="frame-badge">f2726 - f2830 (104 f | 4.12s)</div>
+          </td>
+          <td>
+            <span class="tag-cat baja">Baja</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_13" onclick="selectSubSource('13', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_13" value="escaleta" checked onchange="selectSubSource('13', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_13">
+            "Y acá surge un desafío cotidiano <span class="diff-red">:</span> saber elegir."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_13" onclick="selectSubSource('13', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_13" value="real" onchange="selectSubSource('13', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_13">
+            "Y acá surge un desafío cotidiano <span class="diff-red">,</span> saber elegir."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_13" onclick="selectSubSource('13', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_13" value="custom" onchange="selectSubSource('13', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_13" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_13" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('13', this.value)">Y acá surge un desafío cotidiano: saber elegir.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 17 aparece desde la palabra “surge”."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              La escaleta pide expresamente que el recurso entre desde la palabra 'surge', lo cual ocurre en el frame 2736 (109.46s), manteniéndose en pantalla hasta que el docente concluye la idea en 'elegir' en el frame 2830 (113.18s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>surge (f2736 / 109.46s)</code><br>
+              🔴 <strong>Salida:</strong> <code>elegir (f2830 / 113.18s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">17. Elegir</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 17. elegir.gif (GIF 360x346 px, 2.13s)</div>
+          <div class='alert-tag'>⚠️ '17. elegir.gif' comparte nombre semántico con '2. elegir.jpg'.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_13" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_14">
+          <td style="font-weight: 700; text-align: center;">14</td>
+          <td>
+            <div class="time-badge">113.74s - 122.00s</div>
+            <div class="frame-badge">f2844 - f3050 (206 f | 8.26s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_14" onclick="selectSubSource('14', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_14" value="escaleta" checked onchange="selectSubSource('14', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_14">
+            "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_14" onclick="selectSubSource('14', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_14" value="real" onchange="selectSubSource('14', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_14">
+            "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_14" onclick="selectSubSource('14', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_14" value="custom" onchange="selectSubSource('14', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_14" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_14" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('14', this.value)">Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 18 aparece cuando se lo nombra hasta “comprar”."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Entra exactamente cuando el docente pronuncia la palabra 'dinero' en el frame 2905 (116.20s) y se retira en cuanto termina de decir la palabra 'comprar' en el frame 2974 (118.96s), dejando el cierre de la frase libre hasta 'tiempo' en el frame 3050 (122.00s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>dinero (f2905 / 116.20s)</code><br>
+              🔴 <strong>Salida:</strong> <code>comprar (f2974 / 118.96s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">18. dinero</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 18. dinero.jpg (JPG 6016x4016 px, 3.54 MB)</div>
+          <div class='alert-tag'>⚠️ '18. dinero.jpg' es una foto fija de 6016x4016 px.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_14" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_15">
+          <td style="font-weight: 700; text-align: center;">15</td>
+          <td>
+            <div class="time-badge">122.52s - 130.58s</div>
+            <div class="frame-badge">f3063 - f3265 (202 f | 8.06s)</div>
+          </td>
+          <td>
+            <span class="tag-cat alta">Alta</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Fuera de cuadro (Voz en off confirmada en video f3055 a f3270)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente FUERA DE CUADRO | Recurso a PANTALLA COMPLETA (Voz en off)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_15" onclick="selectSubSource('15', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_15" value="escaleta" checked onchange="selectSubSource('15', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_15">
+            "Por eso <span class="diff-red">,</span> distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_15" onclick="selectSubSource('15', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_15" value="real" onchange="selectSubSource('15', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_15">
+            "Por eso distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_15" onclick="selectSubSource('15', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_15" value="custom" onchange="selectSubSource('15', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_15" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_15" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('15', this.value)">Por eso, distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Voz en off. El video se reproduce durante toda la fila."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Tramo en Voz en off a pantalla completa: El video entra con la frase conectora 'por eso' en el frame 3063 (122.52s) y acompaña todo el argumento conclusivo hasta la palabra 'decisiones' en el frame 3265 (130.58s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>Por eso (f3063 / 122.52s)</code><br>
+              🔴 <strong>Salida:</strong> <code>decisiones (f3265 / 130.58s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">19. por eso</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 19. por eso.mp4 (Video 4K 3840x2160, 27.52s, 73.8 MB)</div>
+          <div class='alert-tag'>⚠️ '19. por eso.mp4' dura 27.52s pero la locución de la fila dura solo 8.06s. El editor debe seleccionar y cortar los 8s más representativos.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_15" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_16">
+          <td style="font-weight: 700; text-align: center;">16</td>
+          <td>
+            <div class="time-badge">130.58s - 142.78s</div>
+            <div class="frame-badge">f3265 - f3570 (305 f | 12.2s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_16" onclick="selectSubSource('16', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_16" value="escaleta" checked onchange="selectSubSource('16', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_16">
+            "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar <span class="diff-red">,</span> podemos preguntarnos <span class="diff-red">:</span>"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_16" onclick="selectSubSource('16', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_16" value="real" onchange="selectSubSource('16', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_16">
+            "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar podemos preguntarnos <span class="diff-red">,</span>"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_16" onclick="selectSubSource('16', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_16" value="custom" onchange="selectSubSource('16', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_16" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_16" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('16', this.value)">Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar, podemos preguntarnos:</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 20 aparece desde que se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Aparece justo cuando el profesor dice 'publicidad' en el frame 3302 (132.06s) y se extiende durante la advertencia sobre redes sociales hasta el llamado a la reflexión en 'preguntarnos' en el frame 3570 (142.78s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>publicidad (f3302 / 132.06s)</code><br>
+              🔴 <strong>Salida:</strong> <code>preguntarnos (f3570 / 142.78s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">20. publicidad</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 20. publicidad.jpg (JPG 3011x2007 px, 552 KB)</div>
+          <div class='alert-tag'>⚠️ '20. publicidad.jpg' es una foto fija de 3011x2007 px.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_16" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_17">
+          <td style="font-weight: 700; text-align: center;">17</td>
+          <td>
+            <div class="time-badge">143.46s - 146.58s</div>
+            <div class="frame-badge">f3586 - f3665 (79 f | 3.12s)</div>
+          </td>
+          <td>
+            <span class="tag-cat baja">Baja</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_17" onclick="selectSubSource('17', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_17" value="escaleta" checked onchange="selectSubSource('17', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_17">
+            "¿lo necesito realmente o simplemente lo quiero?"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_17" onclick="selectSubSource('17', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_17" value="real" onchange="selectSubSource('17', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_17">
+            "¿lo necesito realmente o simplemente lo quiero?"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_17" onclick="selectSubSource('17', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_17" value="custom" onchange="selectSubSource('17', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_17" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_17" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('17', this.value)">¿lo necesito realmente o simplemente lo quiero?</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 21 aparece desde que se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              Entra en el momento en que el docente formula la pregunta diciendo 'necesito' en el frame 3590 (143.60s) y se sostiene hasta que remata en la palabra 'quiero' en el frame 3665 (146.58s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>necesito (f3590 / 143.60s)</code><br>
+              🔴 <strong>Salida:</strong> <code>quiero (f3665 / 146.58s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">21. pensando</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 21. pensando.gif (GIF 290x480 px, 2.68s)</div>
+          <div class='alert-tag'>⚠️ '21. pensando.gif' es un gif animado vertical de 290x480 px.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_17" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_18">
+          <td style="font-weight: 700; text-align: center;">18</td>
+          <td>
+            <div class="time-badge">147.42s - 154.38s</div>
+            <div class="frame-badge">f3685 - f3860 (175 f | 6.96s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_18" onclick="selectSubSource('18', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_18" value="escaleta" checked onchange="selectSubSource('18', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_18">
+            "No se trata de dejar de comprar lo que nos gusta <span class="diff-red">.</span> Se trata de entender qué estamos eligiendo y por qué <span class="diff-red">.</span>"
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_18" onclick="selectSubSource('18', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_18" value="real" onchange="selectSubSource('18', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_18">
+            "<span class="diff-red">¿</span> No se trata de dejar de comprar lo que nos gusta <span class="diff-red">?¿</span> Se trata de entender qué estamos eligiendo y por qué <span class="diff-red">?</span>"
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_18" onclick="selectSubSource('18', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_18" value="custom" onchange="selectSubSource('18', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_18" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_18" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('18', this.value)">No se trata de dejar de comprar lo que nos gusta. Se trata de entender qué estamos eligiendo y por qué.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"Sin recursos especificados en la escaleta."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El docente inicia la reflexión en la palabra 'no' en el frame 3685 (147.42s) y concluye en 'por qué' en el frame 3853 (154.12s). Al no haber recurso pautado, se propone una tarjeta reflexiva que entra en 'entender' (f3790 / 151.62s) hasta 'por qué' (f3853 / 154.12s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>No (f3685 / 147.42s) / entender (f3790 / 151.62s)</code><br>
+              🔴 <strong>Salida:</strong> <code>por qué (f3853 / 154.12s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">[Sin recurso en escaleta]</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> Sin archivo entregado</div>
+          <div class='alert-tag'>⚠️ Vacío visual en la escaleta: el docente reflexiona 7 segundos sin apoyo gráfico.</div>
+        
+          </td>
+          <td>
+            
+          <div class="propuesta-toggle-box">
+            <label class="toggle-label">
+              <input type="checkbox" id="prop_18" checked onchange="updateProposalState('18', this.checked)">
+              <span>🟣 <strong>Propuesta Pedagógica:</strong><br>Tarjeta reflexiva pedagógica: 'Consumo Consciente: Entender qué estamos eligiendo y por qué'. Sincronizada desde 'entender' (f3790 / 151.62s) hasta 'por qué' (f3853 / 154.12s) para no dejar 7 segundos de vacío visual.</span>
+            </label>
+            <div style="font-size:10px; color:#6B21A8; margin-top:4px; font-weight:500;">(Desmarcar si se prefiere dejar el plano limpio)</div>
+          </div>
+        
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_18" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+        <tr id="table_row_19">
+          <td style="font-weight: 700; text-align: center;">19</td>
+          <td>
+            <div class="time-badge">155.16s - 170.54s</div>
+            <div class="frame-badge">f3879 - f4264 (385 f | 15.38s)</div>
+          </td>
+          <td>
+            <span class="tag-cat media">Media</span>
+          </td>
+          <td>
+            <div style="font-size: 10.5px; margin-bottom: 2px;"><strong>Corte:</strong> Centro (plató)</div>
+            <div style="font-size: 10.5px; color: #0284C7;"><strong>Norma:</strong> Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)</div>
+          </td>
+          <td style="min-width: 290px;">
+            
+      <div class="sub-selector-container">
+        <!-- Opción 1: Guion Escaleta (Default) -->
+        <div class="sub-option-row active" id="row_opt_esc_19" onclick="selectSubSource('19', 'escaleta')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_19" value="escaleta" checked onchange="selectSubSource('19', 'escaleta')">
+            <span>Guion Escaleta (Recomendado por Defecto)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_esc_19">
+            "<span class="diff-red">Porque</span> cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable."
+          </div>
+        </div>
+
+        <!-- Opción 2: Real Grabado -->
+        <div class="sub-option-row" id="row_opt_real_19" onclick="selectSubSource('19', 'real')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_19" value="real" onchange="selectSubSource('19', 'real')">
+            <span style="color:#0284C7;">Real Grabado (1er Corte)</span>
+          </label>
+          <div class="sub-text-preview" id="preview_real_19">
+            "<span class="diff-red">¿Por qué</span> cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable."
+          </div>
+        </div>
+
+        <!-- Opción 3: Corrección Manual / Personalizado -->
+        <div class="sub-option-row" id="row_opt_custom_19" onclick="selectSubSource('19', 'custom')">
+          <label class="sub-option-label" onclick="event.stopPropagation()">
+            <input type="radio" name="sub_source_19" value="custom" onchange="selectSubSource('19', 'custom')">
+            <span style="color:#7C3AED;">✍️ Corrección Manual Personalizada</span>
+          </label>
+          <div class="custom-input-box" id="box_custom_19" style="display:none;" onclick="event.stopPropagation()">
+            <textarea class="custom-input-textarea" id="custom_text_19" placeholder="Escriba la corrección para este subtítulo..." oninput="updateCustomText('19', this.value)">Porque cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable.</textarea>
+          </div>
+        </div>
+
+        <div style="font-size: 10px; color:#475569; margin-top:2px;"><strong>Obs. Escaleta:</strong> <em>"El recurso 22 aparece desde que se lo nombra hasta “deseos”. El recurso 23 aparece desde que se lo nombra hasta el final."</em></div>
+      </div>
+    
+          </td>
+          <td>
+            <div class="spoken-action-box">
+              El recurso 22 entra cuando el profesor dice 'reconocemos' en el frame 3897 (155.88s) y se retira en la palabra 'deseos' en el frame 4020 (160.78s). En ese mismo instante, entra el recurso 23 cuando pronuncia 'conciencia' en el frame 4044 (161.78s) y se mantiene hasta el cierre definitivo del episodio en la palabra 'responsable' en el frame 4264 (170.54s).
+            </div>
+            <div style="font-size: 10px; margin-top: 4px; color:#334155;">
+              🟢 <strong>Entrada:</strong> <code>reconocemos (f3897 / 155.88s) / conciencia (f4044 / 161.78s)</code><br>
+              🔴 <strong>Salida:</strong> <code>deseos (f4020 / 160.78s) / responsable (f4264 / 170.54s)</code>
+            </div>
+          </td>
+          <td>
+            <div class="empty-cell">—</div>
+          </td>
+          <td>
+            
+          <code style="font-size: 10.5px; background:#F1F5F9; padding:2px 4px; border-radius:4px; font-weight:600;">22. reconocemos, 23. Conciencia</code>
+          <div style="font-size: 10.5px; color:#334155; margin-top:3px;"><strong>Archivo:</strong> 22. reconocemos.gif (2.0s), 23. Conciencia.gif (4.5s)</div>
+          <div class='alert-tag'>⚠️ '22. reconocemos.gif' (2.0s) y '23. Conciencia.gif' (4.5s) son stickers separados que deben coordinarse sucesivamente.</div>
+        
+          </td>
+          <td>
+            <div class="empty-cell" title="Fila cubierta por titular o recurso de escaleta">—</div>
+          </td>
+          <td>
+            <textarea class="notes-input" id="notes_19" placeholder="[ ] Aprobado&#10;Observaciones..."></textarea>
+          </td>
+        </tr>
+    
+    </tbody>
+  </table>
+
+  <!-- Panel de Aprobación y Generación Final -->
+  <div class="generation-panel">
+    <div class="generation-header">
+      <h2>🚀 Finalización de Pre-Edición y Traspaso a Remotion</h2>
+      <p>Al presionar el botón, se recopilarán tus elecciones de subtítulos (Escaleta, Real o Manual), los archivos enlazados de reemplazo y las propuestas aprobadas, configurando automáticamente el proyecto Remotion y levantando el <strong>Preview Local</strong> en tu navegador.</p>
+    </div>
+    <div class="generation-actions">
+      <button class="btn-generate-main" onclick="triggerRemotionGeneration()">
+        <span>⚡ ACEPTAR Y GENERAR EN REMOTION (PREVIEW LOCAL)</span>
+      </button>
+      <button class="btn-download-json" onclick="downloadApprovedManifest()">
+        <span>💾 Descargar Manifest Aprobado (.json)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Barra Flotante Inferior -->
+  <div class="sticky-bottom-bar">
+    <div class="bar-summary">
+      <span class="bar-badge ok" id="bar-sub-status">🔤 Subtítulos: 18 Filas Configuradas</span>
+      <span class="bar-badge warn" id="bar-relink-status">🚨 2 Recursos Faltantes</span>
+      <span class="bar-badge" id="bar-prop-status">🟣 Propuesta Fila 18: Aprobada</span>
+    </div>
+    <div>
+      <button class="btn-sticky-generate" onclick="triggerRemotionGeneration()">
+        🚀 Aceptar y Generar en Remotion
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Estado -->
+  <div class="modal-backdrop" id="modal-generation">
+    <div class="modal-window">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-title">
+        <span>⚡ Procesando Traspaso a Remotion</span>
+      </div>
+      <div id="modal-steps-container">
+        <div class="modal-step" id="step-1">
+          <span class="icon">⏳</span>
+          <span class="text">Validando elecciones de subtítulos y enlaces de archivos...</span>
+        </div>
+        <div class="modal-step" id="step-2">
+          <span class="icon">⏳</span>
+          <span class="text">Conectando con Bridge Local (puerto 3210)...</span>
+        </div>
+        <div class="modal-step" id="step-3">
+          <span class="icon">⏳</span>
+          <span class="text">Compilando data.ts, captions.ts y vinculando master...</span>
+        </div>
+        <div class="modal-step" id="step-4">
+          <span class="icon">⏳</span>
+          <span class="text">Lanzando Remotion Studio en localhost:3000...</span>
+        </div>
+      </div>
+      <div id="modal-actions-container" style="margin-top: 16px;">
+        <!-- Se inserta dinámicamente el botón de apertura -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Estado global en memoria
+    const APP_STATE = {
+      episodeId: 'EEF002',
+      subject: 'Educacion economica y financiera',
+      rows: {}
+    };
+
+    // Inicializar estado con datos de base
+    const baseRows = [{"row": 2, "start_time": 8.24, "end_time": 13.08, "duration_sec": 4.84, "start_frame": 206, "end_frame": 327, "duration_frames": 121, "dialogo_escaleta": "¿Alguna vez te pasó de tener hambre y pensar qué tenías que comer para saciarla?", "dialogo_real": "¿Alguna vez te pasó de tener hambre y pensar que tenías que comer para saciarla,", "titular_esc": "", "rec_esc": "1. te pasó", "archivo_real": "1. te pasó_.gif (GIF 480x480, loop 1.0s)", "obs_escaleta": "El recurso 1 se reproduce desde que se lo nombra hasta el final.", "categoria": "Baja", "coreografia_norma": "Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Entra exactamente cuando el profesor pronuncia la palabra 'hambre' en el frame 253 (10.12s) y se reproduce en pantalla hasta que termina de decir la palabra 'saciarla' en el frame 327 (13.08s).", "palabra_inicio": "hambre (f253 / 10.12s)", "palabra_fin": "saciarla (f327 / 13.08s)", "propuesta_extra": "Sticker/Emoji animado con signos de interrogación y bocadillo de pensamiento con comida flotando suavemente.", "alertas": "El archivo es '1. te pasó_.gif' (tiene un guion bajo al final del nombre).", "dialogo_escaleta_html": "¿Alguna vez te pasó de tener hambre y pensar <span class=\"diff-red\">qué</span> tenías que comer para saciarla <span class=\"diff-red\">?</span>", "dialogo_real_html": "¿Alguna vez te pasó de tener hambre y pensar <span class=\"diff-red\">que</span> tenías que comer para saciarla <span class=\"diff-red\">,</span>", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 3, "start_time": 13.48, "end_time": 18.88, "duration_sec": 5.4, "start_frame": 337, "end_frame": 472, "duration_frames": 135, "dialogo_escaleta": "¿Pero en lugar de elegir cualquier alimento optaste por una pizza, una hamburguesa o tu postre favorito?", "dialogo_real": "pero en lugar de elegir cualquier alimento, optaste por una pizza, una hamburguesa o tu postre favorito?", "titular_esc": "", "rec_esc": "2. Elegir", "archivo_real": "2. elegir.jpg (JPG 5816x3877 px, 2.82 MB)", "obs_escaleta": "El recurso 2 permanece desde que se lo nombra hasta el final.", "categoria": "Baja", "coreografia_norma": "Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Aparece en el momento exacto en que el docente dice 'elegir' en el frame 356 (14.24s) y se sostiene durante toda la enumeración hasta rematar en la palabra 'favorito' en el frame 472 (18.88s).", "palabra_inicio": "elegir (f356 / 14.24s)", "palabra_fin": "favorito (f472 / 18.88s)", "propuesta_extra": "Pastilla flotante con micro-iconos secuenciales de Pizza (f416), Hamburguesa (f432) y Postre (f451) que se van encendiendo al ritmo del discurso.", "alertas": "'2. elegir.jpg' es una foto fija pesada de banco de imágenes. Conflicto potencial con '17. elegir.gif'.", "dialogo_escaleta_html": "<span class=\"diff-red\">¿Pero</span> en lugar de elegir cualquier alimento optaste por una pizza, una hamburguesa o tu postre favorito?", "dialogo_real_html": "<span class=\"diff-red\">pero</span> en lugar de elegir cualquier alimento <span class=\"diff-red\">,</span> optaste por una pizza, una hamburguesa o tu postre favorito?", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 4, "start_time": 19.66, "end_time": 26.78, "duration_sec": 7.12, "start_frame": 492, "end_frame": 670, "duration_frames": 178, "dialogo_escaleta": "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo.", "dialogo_real": "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo.", "titular_esc": "Necesidad ≠ deseo", "rec_esc": "3. diferencia", "archivo_real": "3. diferencias.gif (GIF 480x268 px, 2.14s)", "obs_escaleta": "El titular y el recurso 3 aparecen cuando se nombra “Diferencia” y permanecen hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató) [Requiere reencuadre en Premiere o slot libre]", "indicacion_hablada": "Tanto el titular 'Necesidad ≠ deseo' como el recurso gráfico 3 entran en simultáneo justo cuando el profesor pronuncia la palabra 'diferencia' en el frame 520 (20.80s), manteniéndose visibles hasta que cierra la idea en la palabra 'mismo' en el frame 670 (26.78s).", "palabra_inicio": "diferencia (f520 / 20.80s)", "palabra_fin": "mismo (f670 / 26.78s)", "propuesta_extra": "Tarjeta comparativa 'Necesidad ≠ Deseo' con Ceja Cuatricolor institucional, filete verde inferior y triple énfasis en la frase 'no son lo mismo' (fondo amarillo + tinta oscura + subrayado).", "alertas": "El archivo en disco se llama '3. diferencias.gif' (plural), mientras que la escaleta lo solicita como '3. diferencia' (singular).", "dialogo_escaleta_html": "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo.", "dialogo_real_html": "Ahí aparece una diferencia muy importante entre necesidad y deseo, que aclaro, no son lo mismo.", "titular_nombre": "Necesidad ≠ deseo", "titular_timing": "Entra en f520 (20.80s) con 'diferencia' ➔ Sale en f670 (26.78s) con 'mismo' (Duración: 150 f / 6.0s). Asociado al recurso 3.", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 5, "start_time": 27.54, "end_time": 35.78, "duration_sec": 8.24, "start_frame": 688, "end_frame": 894, "duration_frames": 206, "dialogo_escaleta": "En Economía, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla.", "dialogo_real": "En economía, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla.", "titular_esc": "Necesidades", "rec_esc": "4. Necesidades", "archivo_real": "4. necesidades.png (PNG 512x512 px)", "obs_escaleta": "El titular y el recurso 4 aparece cuando se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El titular 'Necesidades' y el recurso gráfico entran en sincronía cuando el docente nombra la palabra 'necesidades' en el frame 725 (29.00s) y se sostienen a lo largo de toda la definición económica hasta que concluye en la palabra 'satisfacerla' en el frame 894 (35.78s).", "palabra_inicio": "necesidades (f725 / 29.00s)", "palabra_fin": "satisfacerla (f894 / 35.78s)", "propuesta_extra": "TitularCard formal con Kicker 'CONCEPTO CLAVE', titular en Museo 900 y cuerpo explicativo a 26 px con resaltado amarillo simultáneo en 'sensación de carencia' (f758) e 'impulso de satisfacerla' (f860).", "alertas": "'4. necesidades.png' es un icono plano suelto. Debe integrarse sobre una superficie blanca opaca para garantizar ratio WCAG AAA > 15:1.", "dialogo_escaleta_html": "En <span class=\"diff-red\">Economía</span>, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla.", "dialogo_real_html": "En <span class=\"diff-red\">economía</span>, las necesidades son la sensación de carencia de un bien o servicio unida al impulso de satisfacerla.", "titular_nombre": "Necesidades", "titular_timing": "Entra en f725 (29.00s) con 'necesidades' ➔ Sale en f894 (35.78s) con 'satisfacerla' (Duración: 169 f / 6.76s). Asociado al recurso 4.", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 6, "start_time": 36.52, "end_time": 50.28, "duration_sec": 13.76, "start_frame": 913, "end_frame": 1257, "duration_frames": 344, "dialogo_escaleta": "Algunas son primarias, como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada; son fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia.", "dialogo_real": "Algunas son primarias como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada. Son fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia.", "titular_esc": "Necesidades primarias", "rec_esc": "5. alimentarnos, 6. agua, 7. vivienda", "archivo_real": "5. alimentarnos.jpg, 6. agua.jpg (6.9 MB), 7. vivienda.jpg", "obs_escaleta": "El titular y el recurso 5 aparecen cuando se lo nombra hasta el primer punto. El recurso 6 aparece cuando se lo nombra hasta el final. El recurso 7 aparece cuando se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El titular 'Necesidades primarias' dispara en la palabra 'primarias' en el frame 942 (37.68s). Inmediatamente entra el recurso 5 en la palabra 'alimentarnos' en el frame 966 (38.64s); luego entra el recurso 6 sobre la palabra 'agua' en el frame 994 (39.76s); y a continuación entra el recurso 7 sobre la palabra 'vivienda' en el frame 1033 (41.32s). Todo el conjunto acompaña la explicación de riesgo vital hasta cerrar en 'supervivencia' en el frame 1257 (50.28s).", "palabra_inicio": "primarias (f942 / 37.68s)", "palabra_fin": "supervivencia (f1257 / 50.28s)", "propuesta_extra": "Tarjeta de enumeración vertical con Ceja Cuatricolor y 4 fichas escalonadas: 1) Alimentación (f966), 2) Agua potable (f994), 3) Vivienda digna (f1033), y 4) Ropa adecuada (f1058), ya que el guion la menciona pero la escaleta olvidó pedir su recurso.", "alertas": "'5. alimentarnos.jpg', '6. agua.jpg' (6.9 MB) y '7. vivienda.jpg' son fotos de stock sumamente pesadas. La escaleta omitió pedir recurso para 'ropa adecuada'.", "dialogo_escaleta_html": "Algunas son primarias <span class=\"diff-red\">,</span> como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada <span class=\"diff-red\">; son</span> fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia.", "dialogo_real_html": "Algunas son primarias como alimentarnos, beber agua, contar con una vivienda o tener ropa adecuada <span class=\"diff-red\">. Son</span> fundamentales porque su ausencia puede afectar nuestra salud o incluso nuestra supervivencia.", "titular_nombre": "Necesidades primarias", "titular_timing": "Entra en f942 (37.68s) con 'primarias' ➔ Sale en f1257 (50.28s) con 'supervivencia' (Duración: 315 f / 12.60s). Encabeza y coexiste con los recursos 5, 6 y 7.", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 7, "start_time": 50.92, "end_time": 61.38, "duration_sec": 10.46, "start_frame": 1273, "end_frame": 1534, "duration_frames": 261, "dialogo_escaleta": "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad.", "dialogo_real": "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad.", "titular_esc": "Necesidades secundarias", "rec_esc": "8. necesidades secundarias", "archivo_real": "8. necesidades secundarias.gif (GIF 480x480 px, 1.5s)", "obs_escaleta": "El titular y el recurso 8 aparece cuando se lo nombra hasta el final de la fila.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El titular y el recurso entran en el instante en que el profesor dice 'secundarias' en el frame 1313 (52.52s) y continúan en pantalla acompañando la justificación de bienestar social hasta la palabra 'sociedad' en el frame 1534 (61.38s).", "palabra_inicio": "secundarias (f1313 / 52.52s)", "palabra_fin": "sociedad (f1534 / 61.38s)", "propuesta_extra": "TitularCard con kicker 'CLASIFICACIÓN', título en Museo 900 y bajada explicativa destacando las palabras clave 'bienestar, desarrollo y participación' con subrayado verde.", "alertas": "'8. necesidades secundarias.gif' es un sticker breve de 1.5 segundos.", "dialogo_escaleta_html": "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad.", "dialogo_real_html": "Existen también necesidades secundarias que no son indispensables para sobrevivir, pero contribuyen a nuestro bienestar, desarrollo y participación en la sociedad.", "titular_nombre": "Necesidades secundarias", "titular_timing": "Entra en f1313 (52.52s) con 'secundarias' ➔ Sale en f1534 (61.38s) con 'sociedad' (Duración: 221 f / 8.84s). Asociado al recurso 8.", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 8, "start_time": 62.08, "end_time": 75.96, "duration_sec": 13.88, "start_frame": 1552, "end_frame": 1899, "duration_frames": 347, "dialogo_escaleta": "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos, en determinadas situaciones pueden ser muy importantes para nuestra calidad de vida, de salud y protección.", "dialogo_real": "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos en determinadas situaciones, pueden ser muy importantes para nuestra calidad de vida, de salud y protección.", "titular_esc": "", "rec_esc": "9. Internet, 10. transporte", "archivo_real": "9. internet.jpg (2.3 MB), 10. transporte.jpg (6.6 MB)", "obs_escaleta": "El recurso 9 aparece cuando se lo nombra hasta “sin ellos”. El recurso 10 aparece cuando se lo nombra hasta “sin ellos”.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El recurso 9 entra cuando el docente dice 'internet' en el frame 1596 (63.82s). Apenas después, entra el recurso 10 en la palabra 'transporte' en el frame 1614 (64.56s). Ambos recursos se retiran juntos en el momento exacto en que el profesor pronuncia la frase de corte 'sin ellos' en el frame 1716 (68.66s), dejando el resto de la frase hasta 'protección' en el frame 1899 (75.96s) limpia o con refuerzo.", "palabra_inicio": "internet (f1596 / 63.82s) / transporte (f1614 / 64.56s)", "palabra_fin": "sin ellos (f1716 / 68.66s)", "propuesta_extra": "Tira de 3 pastillas de ejemplos: 'Educación' (f1555), 'Acceso a Internet' (f1596) y 'Transporte' (f1614) apareciendo de forma escalonada. Añadir pastilla resumen de 'Calidad de vida y protección' desde f1826 a f1899.", "alertas": "La escaleta omitió pedir recurso para 'La educación' (mencionada al inicio). '10. transporte.jpg' pesa 6.6 MB y mide 9017x6011 px.", "dialogo_escaleta_html": "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos <span class=\"diff-red\">,</span> en determinadas situaciones pueden ser muy importantes para nuestra calidad de vida, de salud y protección.", "dialogo_real_html": "La educación, el acceso a internet o el transporte son algunos ejemplos. Y aunque podamos vivir sin ellos en determinadas situaciones <span class=\"diff-red\">,</span> pueden ser muy importantes para nuestra calidad de vida, de salud y protección.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 9, "start_time": 76.52, "end_time": 78.74, "duration_sec": 2.22, "start_frame": 1913, "end_frame": 1968, "duration_frames": 55, "dialogo_escaleta": "Pero entonces, ¿qué es un deseo?", "dialogo_real": "Pero entonces, ¿qué es un deseo?", "titular_esc": "", "rec_esc": "11. Entonces", "archivo_real": "11. entonces.gif (GIF 480x480 px, 1.2s)", "obs_escaleta": "El recurso 11 aparece cuando se lo nombra hasta el final de la fila.", "categoria": "Baja", "coreografia_norma": "Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Entra cuando el docente dice con tono de pregunta 'entonces' en el frame 1924 (76.96s) y permanece durante toda la pregunta disparadora hasta rematar en la palabra 'deseo' en el frame 1968 (78.74s).", "palabra_inicio": "entonces (f1924 / 76.96s)", "palabra_fin": "deseo (f1968 / 78.74s)", "propuesta_extra": "Pastilla flotante de pregunta pedagógica (AlertPill) con icono de interrogación: '¿Qué es un deseo?'.", "alertas": "'11. entonces.gif' es un sticker breve de solo 1.2 segundos.", "dialogo_escaleta_html": "Pero entonces,¿qué es un deseo?", "dialogo_real_html": "Pero entonces,¿qué es un deseo?", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 10, "start_time": 79.56, "end_time": 84.0, "duration_sec": 4.44, "start_frame": 1989, "end_frame": 2100, "duration_frames": 111, "dialogo_escaleta": "Un deseo es la manera particular en que queremos satisfacer una necesidad.", "dialogo_real": "Un deseo es la manera particular en que queremos satisfacer una necesidad.", "titular_esc": "Deseo", "rec_esc": "12. deseo", "archivo_real": "12. deseo [SIN EXTENSIÓN en disco: Video MP4 1920x1080, 7.4s]", "obs_escaleta": "El titular y el recurso 12 aparece cuando se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El titular 'Deseo' y el video entran en el instante en que el profesor enuncia la palabra 'deseo' en el frame 1996 (79.86s) y se reproducen hasta que la frase culmina en la palabra 'necesidad' en el frame 2100 (84.00s).", "palabra_inicio": "deseo (f1996 / 79.86s)", "palabra_fin": "necesidad (f2100 / 84.00s)", "propuesta_extra": "TitularCard 'Deseo' con bajada pedagógica: 'Forma particular de satisfacer una necesidad' con subrayado verde y el clip '12. deseo.mp4' enmarcado en Surface blanca.", "alertas": "¡ALERTA CRÍTICA!: El archivo '12. deseo' NO TIENE EXTENSIÓN en la carpeta. Es un video MP4. Debe ser renombrado a '12. deseo.mp4'.", "dialogo_escaleta_html": "Un deseo es la manera particular en que queremos satisfacer una necesidad.", "dialogo_real_html": "Un deseo es la manera particular en que queremos satisfacer una necesidad.", "titular_nombre": "Deseo", "titular_timing": "Entra en f1996 (79.86s) con 'deseo' ➔ Sale en f2100 (84.00s) con 'necesidad' (Duración: 104 f / 4.16s). Asociado al video 12.", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 11, "start_time": 84.4, "end_time": 98.78, "duration_sec": 14.38, "start_frame": 2110, "end_frame": 2470, "duration_frames": 360, "dialogo_escaleta": "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular.", "dialogo_real": "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular.", "titular_esc": "", "rec_esc": "13. Tenemos hambre, 14. Necesitamos vestirnos (Envato), 15. Precisamos (Envato)", "archivo_real": "13. Tenemos hambre.mp4 (4K, 7.54s) | 14 y 15 FALTANTES", "obs_escaleta": "Voz en off. El recurso 13 aparece cuando se lo nombra y desaparece con el siguiente recurso. El recurso 14 aparece cuando se lo nombra y desaparece con el siguiente recurso. El recurso 15 aparece cuando se lo nombra y permanece hasta el final de la fila.", "categoria": "Alta", "coreografia_norma": "Docente FUERA DE CUADRO | Recurso a PANTALLA COMPLETA (Voz en off)", "posicion_video_actual": "Fuera de cuadro (Voz en off confirmada en video f2110 a f2480)", "indicacion_hablada": "Secuencia en Voz en off a pantalla completa: El clip 13 entra cuando el audio dice 'hambre' en el frame 2120 (84.82s) y cambia justo cuando el profesor dice 'vestirnos' en el frame 2239 (89.56s) donde entra el recurso 14; luego este cambia sobre la palabra 'comunicarnos' en el frame 2366 (94.62s) dando paso al recurso 15, el cual se extiende hasta el remate de la frase en la palabra 'celular' en el frame 2470 (98.78s).", "palabra_inicio": "hambre (f2120 / 84.82s)", "palabra_fin": "celular (f2470 / 98.78s)", "propuesta_extra": "Tríptico a pantalla completa Need vs Want: 1) Hambre -> Pizza (f2120 a f2239 con video 13), 2) Vestimenta -> Zapatillas (f2239 a f2366 con animación Remotion), 3) Comunicación -> Último celular (f2366 a f2470 con animación Remotion) para subsanar los recursos 14 y 15 que faltan.", "alertas": "¡ALERTA CRÍTICA!: '14. Necesitamos vestirnos (Envato)' y '15. Precisamos (Envato)' NO ESTÁN en la carpeta de recursos. Solo está '13. Tenemos hambre.mp4'.", "dialogo_escaleta_html": "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular.", "dialogo_real_html": "Tenemos hambre, pero deseamos comer una pizza de nuestro lugar favorito. Necesitamos vestirnos, pero queremos unas zapatillas de determinada marca. Precisamos comunicarnos, pero anhelamos tener el último modelo de celular.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 12, "start_time": 99.56, "end_time": 108.6, "duration_sec": 9.04, "start_frame": 2489, "end_frame": 2715, "duration_frames": 226, "dialogo_escaleta": "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos, como el tiempo o los ingresos son limitados.", "dialogo_real": "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos como el tiempo o los ingresos son limitados.", "titular_esc": "", "rec_esc": "16. pueden ser", "archivo_real": "16. puede ser.gif (GIF 480x480 px, 5.3s)", "obs_escaleta": "El recurso 16 aparece cuando se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Entra en el momento en que el docente dice 'pueden ser' (o 'ilimitados') en el frame 2507 (100.28s) y se mantiene ilustrando el contraste de escasez económica hasta la palabra 'limitados' en el frame 2715 (108.60s).", "palabra_inicio": "pueden ser / ilimitados (f2507 / 100.28s)", "palabra_fin": "limitados (f2715 / 108.60s)", "propuesta_extra": "Infografía animada de Balanza Económica: Platillo izquierdo 'Deseos Ilimitados (∞)' vs Platillo derecho 'Recursos Limitados (Tiempo / Dinero)' equilibrándose sobre la locución.", "alertas": "'16. puede ser.gif' es un sticker animado de 480x480 px.", "dialogo_escaleta_html": "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos <span class=\"diff-red\">,</span> como el tiempo o los ingresos son limitados.", "dialogo_real_html": "Los deseos pueden ser prácticamente ilimitados, mientras que nuestros recursos como el tiempo o los ingresos son limitados.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 13, "start_time": 109.06, "end_time": 113.18, "duration_sec": 4.12, "start_frame": 2726, "end_frame": 2830, "duration_frames": 104, "dialogo_escaleta": "Y acá surge un desafío cotidiano: saber elegir.", "dialogo_real": "Y acá surge un desafío cotidiano, saber elegir.", "titular_esc": "", "rec_esc": "17. Elegir", "archivo_real": "17. elegir.gif (GIF 360x346 px, 2.13s)", "obs_escaleta": "El recurso 17 aparece desde la palabra “surge”.", "categoria": "Baja", "coreografia_norma": "Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "La escaleta pide expresamente que el recurso entre desde la palabra 'surge', lo cual ocurre en el frame 2736 (109.46s), manteniéndose en pantalla hasta que el docente concluye la idea en 'elegir' en el frame 2830 (113.18s).", "palabra_inicio": "surge (f2736 / 109.46s)", "palabra_fin": "elegir (f2830 / 113.18s)", "propuesta_extra": "Pastilla flotante de decisión (AlertPill): 'Desafío cotidiano: Saber Elegir' con icono de encrucijada o balanza.", "alertas": "'17. elegir.gif' comparte nombre semántico con '2. elegir.jpg'.", "dialogo_escaleta_html": "Y acá surge un desafío cotidiano <span class=\"diff-red\">:</span> saber elegir.", "dialogo_real_html": "Y acá surge un desafío cotidiano <span class=\"diff-red\">,</span> saber elegir.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 14, "start_time": 113.74, "end_time": 122.0, "duration_sec": 8.26, "start_frame": 2844, "end_frame": 3050, "duration_frames": 206, "dialogo_escaleta": "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo.", "dialogo_real": "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo.", "titular_esc": "", "rec_esc": "18. dinero", "archivo_real": "18. dinero.jpg (JPG 6016x4016 px, 3.54 MB)", "obs_escaleta": "El recurso 18 aparece cuando se lo nombra hasta “comprar”.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Entra exactamente cuando el docente pronuncia la palabra 'dinero' en el frame 2905 (116.20s) y se retira en cuanto termina de decir la palabra 'comprar' en el frame 2974 (118.96s), dejando el cierre de la frase libre hasta 'tiempo' en el frame 3050 (122.00s).", "palabra_inicio": "dinero (f2905 / 116.20s)", "palabra_fin": "comprar (f2974 / 118.96s)", "propuesta_extra": "Tarjeta gráfica de presupuesto restringido con concepto 'Costo de oportunidad / Recursos finitos'.", "alertas": "'18. dinero.jpg' es una foto fija de 6016x4016 px.", "dialogo_escaleta_html": "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo.", "dialogo_real_html": "Cuando tenemos una cantidad limitada de dinero y muchas cosas que queremos comprar, no podemos tenerlo todo al mismo tiempo.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 15, "start_time": 122.52, "end_time": 130.58, "duration_sec": 8.06, "start_frame": 3063, "end_frame": 3265, "duration_frames": 202, "dialogo_escaleta": "Por eso, distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones.", "dialogo_real": "Por eso distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones.", "titular_esc": "", "rec_esc": "19. por eso", "archivo_real": "19. por eso.mp4 (Video 4K 3840x2160, 27.52s, 73.8 MB)", "obs_escaleta": "Voz en off. El video se reproduce durante toda la fila.", "categoria": "Alta", "coreografia_norma": "Docente FUERA DE CUADRO | Recurso a PANTALLA COMPLETA (Voz en off)", "posicion_video_actual": "Fuera de cuadro (Voz en off confirmada en video f3055 a f3270)", "indicacion_hablada": "Tramo en Voz en off a pantalla completa: El video entra con la frase conectora 'por eso' en el frame 3063 (122.52s) y acompaña todo el argumento conclusivo hasta la palabra 'decisiones' en el frame 3265 (130.58s).", "palabra_inicio": "Por eso (f3063 / 122.52s)", "palabra_fin": "decisiones (f3265 / 130.58s)", "propuesta_extra": "Video a pantalla completa con márgenes seguros y zócalo inferior sutil con el lema: 'Establecer prioridades y tomar mejores decisiones'.", "alertas": "'19. por eso.mp4' dura 27.52s pero la locución de la fila dura solo 8.06s. El editor debe seleccionar y cortar los 8s más representativos.", "dialogo_escaleta_html": "Por eso <span class=\"diff-red\">,</span> distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones.", "dialogo_real_html": "Por eso distinguir entre necesidades y deseos nos ayuda a establecer prioridades y tomar mejores decisiones.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 16, "start_time": 130.58, "end_time": 142.78, "duration_sec": 12.2, "start_frame": 3265, "end_frame": 3570, "duration_frames": 305, "dialogo_escaleta": "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar, podemos preguntarnos:", "dialogo_real": "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar podemos preguntarnos,", "titular_esc": "", "rec_esc": "20. publicidad", "archivo_real": "20. publicidad.jpg (JPG 3011x2007 px, 552 KB)", "obs_escaleta": "El recurso 20 aparece desde que se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Aparece justo cuando el profesor dice 'publicidad' en el frame 3302 (132.06s) y se extiende durante la advertencia sobre redes sociales hasta el llamado a la reflexión en 'preguntarnos' en el frame 3570 (142.78s).", "palabra_inicio": "publicidad (f3302 / 132.06s)", "palabra_fin": "preguntarnos (f3570 / 142.78s)", "propuesta_extra": "Tarjeta de alerta cognitiva: 'Publicidad & Redes' -> 'Transforman deseos en aparentes necesidades' con icono de advertencia ⚠️.", "alertas": "'20. publicidad.jpg' es una foto fija de 3011x2007 px.", "dialogo_escaleta_html": "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar <span class=\"diff-red\">,</span> podemos preguntarnos <span class=\"diff-red\">:</span>", "dialogo_real_html": "Además, la publicidad, las redes sociales y nuestro entorno pueden hacer que un deseo parezca una necesidad. Por eso, antes de comprar podemos preguntarnos <span class=\"diff-red\">,</span>", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 17, "start_time": 143.46, "end_time": 146.58, "duration_sec": 3.12, "start_frame": 3586, "end_frame": 3665, "duration_frames": 79, "dialogo_escaleta": "¿lo necesito realmente o simplemente lo quiero?", "dialogo_real": "¿lo necesito realmente o simplemente lo quiero?", "titular_esc": "", "rec_esc": "21. pensando", "archivo_real": "21. pensando.gif (GIF 290x480 px, 2.68s)", "obs_escaleta": "El recurso 21 aparece desde que se lo nombra hasta el final.", "categoria": "Baja", "coreografia_norma": "Docente al CENTRO | Recurso anclado flotante a la IZQUIERDA", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "Entra en el momento en que el docente formula la pregunta diciendo 'necesito' en el frame 3590 (143.60s) y se sostiene hasta que remata en la palabra 'quiero' en el frame 3665 (146.58s).", "palabra_inicio": "necesito (f3590 / 143.60s)", "palabra_fin": "quiero (f3665 / 146.58s)", "propuesta_extra": "Pastilla destacada en Museo 900: '¿Lo necesito realmente o simplemente lo quiero?' con fondo blanco y Ceja Cuatricolor.", "alertas": "'21. pensando.gif' es un gif animado vertical de 290x480 px.", "dialogo_escaleta_html": "¿lo necesito realmente o simplemente lo quiero?", "dialogo_real_html": "¿lo necesito realmente o simplemente lo quiero?", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}, {"row": 18, "start_time": 147.42, "end_time": 154.38, "duration_sec": 6.96, "start_frame": 3685, "end_frame": 3860, "duration_frames": 175, "dialogo_escaleta": "No se trata de dejar de comprar lo que nos gusta. Se trata de entender qué estamos eligiendo y por qué.", "dialogo_real": "¿No se trata de dejar de comprar lo que nos gusta? ¿Se trata de entender qué estamos eligiendo y por qué?", "titular_esc": "", "rec_esc": "[Sin recurso en escaleta]", "archivo_real": "Sin archivo entregado", "obs_escaleta": "Sin recursos especificados en la escaleta.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El docente inicia la reflexión en la palabra 'no' en el frame 3685 (147.42s) y concluye en 'por qué' en el frame 3853 (154.12s). Al no haber recurso pautado, se propone una tarjeta reflexiva que entra en 'entender' (f3790 / 151.62s) hasta 'por qué' (f3853 / 154.12s).", "palabra_inicio": "No (f3685 / 147.42s) / entender (f3790 / 151.62s)", "palabra_fin": "por qué (f3853 / 154.12s)", "propuesta_extra": "[PROPUESTA EDITORIAL ADICIONAL]: Tarjeta de reflexión pedagógica 'Consumo Consciente: Entender qué elegimos y por qué' para acompañar los 7 segundos de discurso sin gráfico.", "alertas": "Vacío visual en la escaleta: el docente reflexiona 7 segundos sin apoyo gráfico.", "dialogo_escaleta_html": "No se trata de dejar de comprar lo que nos gusta <span class=\"diff-red\">.</span> Se trata de entender qué estamos eligiendo y por qué <span class=\"diff-red\">.</span>", "dialogo_real_html": "<span class=\"diff-red\">¿</span> No se trata de dejar de comprar lo que nos gusta <span class=\"diff-red\">?¿</span> Se trata de entender qué estamos eligiendo y por qué <span class=\"diff-red\">?</span>", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": true, "propuesta_texto": "Tarjeta reflexiva pedagógica: 'Consumo Consciente: Entender qué estamos eligiendo y por qué'. Sincronizada desde 'entender' (f3790 / 151.62s) hasta 'por qué' (f3853 / 154.12s) para no dejar 7 segundos de vacío visual."}, {"row": 19, "start_time": 155.16, "end_time": 170.54, "duration_sec": 15.38, "start_frame": 3879, "end_frame": 4264, "duration_frames": 385, "dialogo_escaleta": "Porque cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable.", "dialogo_real": "¿Por qué cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable.", "titular_esc": "", "rec_esc": "22. reconocemos, 23. Conciencia", "archivo_real": "22. reconocemos.gif (2.0s), 23. Conciencia.gif (4.5s)", "obs_escaleta": "El recurso 22 aparece desde que se lo nombra hasta “deseos”. El recurso 23 aparece desde que se lo nombra hasta el final.", "categoria": "Media", "coreografia_norma": "Docente a la IZQUIERDA | Recurso anclado a la DERECHA (bajo logo)", "posicion_video_actual": "Centro (plató)", "indicacion_hablada": "El recurso 22 entra cuando el profesor dice 'reconocemos' en el frame 3897 (155.88s) y se retira en la palabra 'deseos' en el frame 4020 (160.78s). En ese mismo instante, entra el recurso 23 cuando pronuncia 'conciencia' en el frame 4044 (161.78s) y se mantiene hasta el cierre definitivo del episodio en la palabra 'responsable' en el frame 4264 (170.54s).", "palabra_inicio": "reconocemos (f3897 / 155.88s) / conciencia (f4044 / 161.78s)", "palabra_fin": "deseos (f4020 / 160.78s) / responsable (f4264 / 170.54s)", "propuesta_extra": "Tarjeta síntesis final con Ceja Cuatricolor y 3 pasos de consumo responsable: 1) Reconocer necesidades, 2) Identificar deseos, 3) Tomar conciencia de los recursos -> Consumo Inteligente y Responsable.", "alertas": "'22. reconocemos.gif' (2.0s) y '23. Conciencia.gif' (4.5s) son stickers separados que deben coordinarse sucesivamente.", "dialogo_escaleta_html": "<span class=\"diff-red\">Porque</span> cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable.", "dialogo_real_html": "<span class=\"diff-red\">¿Por qué</span> cuando reconocemos nuestras necesidades, identificamos nuestros deseos y tomamos conciencia de que nuestros recursos son limitados, podemos consumir de manera más inteligente y responsable.", "titular_nombre": "", "titular_timing": "", "tiene_propuesta": false, "propuesta_texto": ""}];
+    baseRows.forEach(r => {
+      const rowKey = String(r.row).padStart(2, '0');
+      APP_STATE.rows[rowKey] = {
+        row: rowKey,
+        subtitleSource: 'escaleta',
+        customText: r.dialogo_escaleta,
+        linkedFile: null,
+        proposalAccepted: r.tiene_propuesta ? true : false,
+        notes: ''
+      };
+    });
+
+    function selectSubSource(rowKey, source) {
+      APP_STATE.rows[rowKey].subtitleSource = source;
+      
+      // Actualizar UI
+      ['escaleta', 'real', 'custom'].forEach(s => {
+        const rowEl = document.getElementById(`row_opt_${s === 'escaleta' ? 'esc' : s}_${rowKey}`);
+        const radioEl = document.querySelector(`input[name="sub_source_${rowKey}"][value="${s}"]`);
+        if (rowEl) {
+          if (s === source) {
+            rowEl.classList.add('active');
+            if (radioEl) radioEl.checked = true;
+          } else {
+            rowEl.classList.remove('active');
+          }
+        }
+      });
+
+      const customBox = document.getElementById(`box_custom_${rowKey}`);
+      if (customBox) {
+        customBox.style.display = (source === 'custom') ? 'block' : 'none';
+        if (source === 'custom') {
+          const txt = document.getElementById(`custom_text_${rowKey}`);
+          if (txt) txt.focus();
+        }
+      }
+    }
+
+    function updateCustomText(rowKey, val) {
+      APP_STATE.rows[rowKey].customText = val;
+    }
+
+    function updateProposalState(rowKey, isChecked) {
+      APP_STATE.rows[rowKey].proposalAccepted = isChecked;
+      const barProp = document.getElementById('bar-prop-status');
+      if (barProp) {
+        barProp.textContent = isChecked ? '🟣 Propuesta Fila 18: Aprobada' : '⚪ Propuesta Fila 18: Desestimada';
+      }
+    }
+
+    function handleRelinkInput(rowKey, val) {
+      APP_STATE.rows[rowKey].linkedFile = val.trim();
+      const statusEl = document.getElementById(`status_relink_${rowKey}`);
+      if (statusEl) {
+        if (val.trim().length > 0) {
+          statusEl.textContent = `🟢 Enlazado: ${val.trim()}`;
+          statusEl.className = 'relink-status linked';
+        } else {
+          statusEl.textContent = '⚠️ Sin archivo asignado (requiere reemplazo)';
+          statusEl.className = 'relink-status pending';
+        }
+      }
+      updateRelinkCounter();
+    }
+
+    function handleFileBrowse(inputEl, rowKey) {
+      if (inputEl.files && inputEl.files[0]) {
+        const file = inputEl.files[0];
+        const inputField = document.getElementById(`relink_${rowKey}`);
+        if (inputField) inputField.value = file.name;
+        handleRelinkInput(rowKey, file.name);
+      }
+    }
+
+    function updateRelinkCounter() {
+      let pendingCount = 0;
+      if (!APP_STATE.rows['11_14'] || !APP_STATE.rows['11_14'].linkedFile) pendingCount++;
+      if (!APP_STATE.rows['11_15'] || !APP_STATE.rows['11_15'].linkedFile) pendingCount++;
+
+      const barRelink = document.getElementById('bar-relink-status');
+      if (barRelink) {
+        if (pendingCount > 0) {
+          barRelink.textContent = `🚨 ${pendingCount} Recursos Faltantes`;
+          barRelink.className = 'bar-badge warn';
+        } else {
+          barRelink.textContent = '🟢 Todos los recursos enlazados';
+          barRelink.className = 'bar-badge ok';
+        }
+      }
+    }
+
+    function buildApprovedPayload() {
+      // Copiar notas ingresadas
+      Object.keys(APP_STATE.rows).forEach(rk => {
+        const noteEl = document.getElementById(`notes_${rk}`);
+        if (noteEl) APP_STATE.rows[rk].notes = noteEl.value;
+      });
+
+      return {
+        episodeId: APP_STATE.episodeId,
+        subject: APP_STATE.subject,
+        approvedAt: new Date().toISOString(),
+        rows: Object.values(APP_STATE.rows)
+      };
+    }
+
+    function downloadApprovedManifest() {
+      const payload = buildApprovedPayload();
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'TABLA_SINCRONIZACION_APROBADA.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function triggerRemotionGeneration() {
+      const modal = document.getElementById('modal-generation');
+      const actions = document.getElementById('modal-actions-container');
+      actions.innerHTML = '';
+      modal.classList.add('active');
+
+      const setStep = (num, icon, text) => {
+        const stepEl = document.getElementById(`step-${num}`);
+        if (stepEl) {
+          stepEl.querySelector('.icon').textContent = icon;
+          if (text) stepEl.querySelector('.text').textContent = text;
+        }
+      };
+
+      setStep(1, '✅', 'Elecciones de subtítulos y recursos validadas.');
+
+      const payload = buildApprovedPayload();
+
+      // Enviar al Bridge local
+      try {
+        setStep(2, '⏳', 'Conectando con Bridge Local (puerto 3210)...');
+        const res = await fetch('http://localhost:3210/api/generate-and-preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setStep(2, '✅', 'Conexión con Bridge exitosa.');
+          setStep(3, '✅', 'Archivos data.ts, captions.ts y assets generados.');
+          setStep(4, '🚀', 'Remotion Preview iniciado en puerto 3000.');
+
+          actions.innerHTML = `
+            <a href="http://localhost:3000" target="_blank" class="modal-btn-open">
+              🎬 ABRIR REMOTION STUDIO (localhost:3000)
+            </a>
+            <p style="font-size:11px; color:#64748B; text-align:center; margin-top:8px;">Se ha abierto también en segundo plano.</p>
+          `;
+          window.open('http://localhost:3000', '_blank');
+        } else {
+          throw new Error('El servidor respondió con código ' + res.status);
+        }
+      } catch (err) {
+        console.warn('Bridge no disponible, usando fallback local:', err);
+        setStep(2, '⚠️', 'Bridge local no detectado en puerto 3210.');
+        setStep(3, '💾', 'Se descargó automáticamente TABLA_SINCRONIZACION_APROBADA.json.');
+        downloadApprovedManifest();
+
+        actions.innerHTML = `
+          <div style="background:#FEF2F2; border:1px solid #FECACA; padding:12px; border-radius:8px; font-size:12px; color:#991B1B;">
+            <strong>⚠️ Para lanzar el preview manualmente:</strong><br>
+            Abre una terminal en la carpeta del episodio y ejecuta:<br>
+            <code style="background:white; padding:2px 6px; border-radius:4px; display:block; margin:6px 0; font-family:monospace;">python remotion_generator.py --launch</code>
+          </div>
+        `;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-generation').classList.remove('active');
+    }
+  </script>
+</body>
+</html>

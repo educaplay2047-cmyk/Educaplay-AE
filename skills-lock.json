@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "educaplay-motion-graphics": {
+      "source": "https://github.com/inteligencio2047-crypto/EducaplayRemotion.git",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/educaplay-motion-graphics/SKILL.md",
+      "computedHash": "87fd6b9ffc1f7843612c7c763982e4929640043f7f6fbc59380b896cc6908aae"
+    },
+    "motion-designer": {
+      "source": "ncklrs/startup-os-skills",
+      "sourceType": "github",
+      "skillPath": "skills/motion-designer/SKILL.md",
+      "computedHash": "a1d1743be9f364159644bb385b5231bbce83449ce409ac2baf87f69218edef66"
+    },
+    "educaplay-after-effects": {
+      "source": "https://github.com/isaacdinamo-debug/EducaPlay-After-Effects.git",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/educaplay-after-effects/SKILL.md",
+      "computedHash": "4118dcb13b0f3266c9c9cd3abd897a0e996951536c8594a2091fca98d4127859"
+    }
+  }
+}
