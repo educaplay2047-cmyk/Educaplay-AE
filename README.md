@@ -56,8 +56,8 @@ Para montar este sistema desde cero en una máquina nueva (Windows o macOS):
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd educaplay-after-effects
+git clone https://github.com/educaplay2047-cmyk/Educaplay-AE.git
+cd Educaplay-AE
 ```
 
 ### 2. Instalar dependencias del motor
