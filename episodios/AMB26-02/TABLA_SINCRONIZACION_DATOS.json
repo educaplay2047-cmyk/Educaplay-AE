@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "episodeId": "AMB26-02",
+    "patente": "AMB26_02",
+    "subject": "Educación Secundaria",
+    "title": "Capítulo EducaPlay",
+    "objective": "Desarrollo curricular audiovisual oficial de EducaPlay Corrientes.",
+    "presenter": "Docente EducaPlay",
+    "presenterPlaca": "Docente EducaPlay",
+    "fps": 25,
+    "masterVideo": "videos/AMB26-02.mp4",
+    "duration": 180,
+    "totalFrames": 4500,
+    "lowerThird": {
+      "inFrame": 585,
+      "outFrame": 775,
+      "inSec": 23.4,
+      "outSec": 31,
+      "text": "Docente EducaPlay",
+      "zone": [
+        79,
+        818,
+        550,
+        110
+      ],
+      "evasionRequired": true,
+      "captionElevatedBottom": "270px"
+    },
+    "watermark": {
+      "x": 1400,
+      "y": 35,
+      "w": 420,
+      "h": 140,
+      "text": "Educaplay Marca de Agua"
+    }
+  },
+  "rows": []
+}

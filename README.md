@@ -94,8 +94,11 @@ npm run doctor -- AMB26-04
 | `npm run doctor -- <CODE>` | Auditoría de máquina, fuentes tipográficas y máster. |
 | `npm run medios -- <CODE> --desde "<ruta>"` | Vincula los medios físicos al motor mediante enlaces duros. |
 | `npm run nuevo -- <CODE>` | Mide el máster, transcribe con Whisper, alinea gatillos y genera borrador. |
+| `npm run sync:matrix -- <CODE>` | Genera la Matriz de Sincronización Pre-Edición (HTML interactivo, JSON y reporte Markdown). |
+| `npm run bridge -- <CODE>` | Inicia el servidor local Bridge para comunicación bidireccional entre el HTML y After Effects. |
 | `npm run check -- <CODE>` | Valida tipos TypeScript, márgenes de seguridad, evasión de docente y contraste WCAG AAA. |
 | `npm run export:ae -- <CODE>` | Genera `episodios/<CODE>/manifest.json` y transcodifica assets a formatos seguros con canal alfa. |
+| `npm run build:ae -- <CODE>` | Automatización directa de compilación y ejecución de After Effects. |
 | `npm run ae -- <CODE>` | Abre After Effects, arma composiciones/keyframes, exporta stills y genera la hoja de contacto `contacto.jpg`. |
 | `npm run publicar -- <CODE>` | Chequeo completo estricto y, solo si pasa sin ⚠ ni ✗, realiza commit y push a GitHub. |
 

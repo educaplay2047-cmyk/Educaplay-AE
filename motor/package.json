@@ -18,6 +18,9 @@
     "check:layout": "node --experimental-strip-types scripts/check-layout.mjs",
     "check:contrast": "node --experimental-strip-types scripts/check-contrast.mjs",
     "export:ae": "node --experimental-strip-types scripts/export-ae.mjs",
+    "sync:matrix": "node scripts/sync-matrix.mjs",
+    "bridge": "node ../tools/local_bridge_server.mjs",
+    "build:ae": "node ../tools/build_ae_project.mjs",
     "ae": "node ../ae/run.mjs",
     "publicar": "node scripts/publicar.mjs"
   },

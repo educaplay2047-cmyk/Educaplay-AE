@@ -106,7 +106,7 @@ class BridgeRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             resp = {"status": "ok", "service": "educaplay-ae-bridge", "episode": EPISODE_CODE, "port": PORT}
             self.wfile.write(json.dumps(resp).encode('utf-8'))
-        elif self.path in ('/status', '/api/status'):
+        elif self.path in ('/status', '/api/status', '/api/build-status'):
             check_project_status()
             self.send_response(200)
             self._send_cors()
@@ -118,7 +118,7 @@ class BridgeRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def do_POST(self):
-        if self.path in ('/api/generate-and-preview', '/generate-and-preview'):
+        if self.path in ('/api/generate-and-preview', '/generate-and-preview', '/api/build-ae'):
             content_length = int(self.headers.get('Content-Length', 0))
             body = self.rfile.read(content_length)
 

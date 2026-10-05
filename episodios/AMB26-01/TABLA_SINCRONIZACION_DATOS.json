@@ -1,0 +1,991 @@
+{
+  "meta": {
+    "episodeId": "AMB26-01",
+    "patente": "AMB26_01",
+    "subject": "Educación Ambiental Integral",
+    "title": "¿Podemos estar preparados?",
+    "objective": "Brindar herramientas prácticas para anticiparse a una inundación y actuar de forma segura durante la emergencia hídrica.",
+    "presenter": "Prof. Paola Suárez",
+    "presenterPlaca": "Prof. Paola Suárez",
+    "fps": 25,
+    "masterVideo": "RENDER/AMB26-001-PRIMERCORTE-Recortado.mp4",
+    "duration": 173.96,
+    "totalFrames": 4349,
+    "lowerThird": {
+      "inFrame": 585,
+      "outFrame": 775,
+      "inSec": 23.4,
+      "outSec": 31,
+      "text": "Prof. Paola Suárez",
+      "zone": [
+        79,
+        818,
+        550,
+        110
+      ],
+      "evasionRequired": true,
+      "captionElevatedBottom": "270px"
+    },
+    "watermark": {
+      "x": 1400,
+      "y": 35,
+      "w": 420,
+      "h": 140,
+      "text": "Educaplay EDUCACIÓN AMBIENTAL INTEGRAL"
+    }
+  },
+  "rows": [
+    {
+      "row": 1,
+      "start_time": 10,
+      "end_time": 22,
+      "start_frame": 250,
+      "end_frame": 550,
+      "duration_sec": 12,
+      "duration_frames": 300,
+      "dialogo_escaleta": "— Apertura visual de clima adverso: nubes de tormenta, lluvia y vientos intensos —",
+      "dialogo_real": "— Sin locución de la docente. Pista de efectos sonoros de lluvia torrencial, viento y truenos sobre el plató —",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": "cielo-con-nubes-de-lluvia.jpg / gotas-golpeando-una-ventana.mp4",
+        "coexistencia": "Sin titular en escaleta. Recursos de apoyo visual en slot superior libre sin pisar marcas."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 1: Cielo con nubes de lluvia",
+          "archivo": "Cielo con nubes de lluvia.jpg",
+          "ruta": "RECURSOS/Cielo con nubes de lluvia.jpg",
+          "formato": "JPEG Imagen",
+          "peso": "241.2 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 250,
+          "end_frame": 310,
+          "slot": "L_TOP",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        },
+        {
+          "nombre_escaleta": "video 2: gotas golpeando una ventana",
+          "archivo": "gotas golpeando una ventana.mp4",
+          "ruta": "RECURSOS/gotas golpeando una ventana.mp4",
+          "formato": "MP4 Video",
+          "peso": "17.48 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 310,
+          "end_frame": 370,
+          "slot": "L_TOP",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        },
+        {
+          "nombre_escaleta": "video 3: una calle con agua",
+          "archivo": "una calle con agua.mov",
+          "ruta": "RECURSOS/una calle con agua.mov",
+          "formato": "MOV Video",
+          "peso": "405.1 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 370,
+          "end_frame": 430,
+          "slot": "L_TOP",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        },
+        {
+          "nombre_escaleta": "video 4: ramas moviéndose con viento",
+          "archivo": "ramas moviéndose con viento..mov",
+          "ruta": "RECURSOS/ramas moviéndose con viento..mov",
+          "formato": "MOV Video",
+          "peso": "686.7 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 430,
+          "end_frame": 490,
+          "slot": "L_TOP",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        },
+        {
+          "nombre_escaleta": "video 5: Persona mirando por una ventana mientras llueve",
+          "archivo": "Persona mirando por una ventana mientras llueve.mov",
+          "ruta": "RECURSOS/Persona mirando por una ventana mientras llueve.mov",
+          "formato": "MOV Video",
+          "peso": "205.0 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 490,
+          "end_frame": 550,
+          "slot": "L_TOP",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Fila cubierta con secuencia rápida de 5 recursos ambientales",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "None / Plató vacío",
+        "nivel_atencion": "Baja / Refuerzo",
+        "norma_requerida": "None",
+        "coincide": true,
+        "observacion": "F0 a F566 sin docente en cuadro. Bumper institucional y plano de establecimiento ambiental."
+      },
+      "coreografia_norma": "Plató sin docente | Medios ocupan franja horizontal superior libre",
+      "zonas_seguras": "Title Safe 220px horizontal, 120px vertical.",
+      "indicacion_tecnica": "Transición rítmica cada 60 frames (2.4s) con corte directo sincronizado al sonido de truenos.",
+      "observaciones_editorial": "Secuencia climática que contextualiza la emergencia hídrica antes de la entrada en cámara."
+    },
+    {
+      "row": 2,
+      "start_time": 19.84,
+      "end_time": 26.56,
+      "start_frame": 496,
+      "end_frame": 664,
+      "duration_sec": 6.72,
+      "duration_frames": 168,
+      "dialogo_escaleta": "Voz en off (a modo de reflexión): ¿Cómo podría estar preparada para una posible situación de emergencia hídrica?",
+      "dialogo_real": "¿Qué hago si se inunda la casa? Si tuvieras que salir rápido de tu casa durante una inundación,",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Discrepancia crítica de guion: La docente abre en cámara con la pregunta directa '¿Qué hago si se inunda la casa?' suprimiendo la voz en off formal pautada en escaleta.",
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 496,
+          "endFrame": 664,
+          "startTime": 19.84,
+          "endTime": 26.56,
+          "text": "¿Qué hago si se inunda la casa? Si tuvieras que salir rápido de tu casa durante una inundación,",
+          "formattedText": "¿Qué hago si se inunda la casa?\nSi tuvieras que salir rápido de tu casa durante una inundación,"
+        }
+      ],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": "Placa quemada 'Prof. Paola Suárez'",
+        "coexistencia": "Sin titular en escaleta. La docente entra en F566 centrada."
+      },
+      "recursos_auditados": [],
+      "propuesta_vacia": {
+        "permitida": true,
+        "motivo": "Apertura limpia centrada en la docente y presentación con placa de nombre",
+        "texto": "— Sin recursos pautados en máster —"
+      },
+      "encuadre": {
+        "real": "Centro (F566–F830)",
+        "nivel_atencion": "Alta / Presentadora",
+        "norma_requerida": "Centro",
+        "coincide": true,
+        "observacion": "Docente centrada (x 152–1280). Placa quemada en F585–F775: subtítulos elevados obligatoriamente a 270px."
+      },
+      "coreografia_norma": "Docente al CENTRO | Sin gráficos para dar espacio a la placa de presentación",
+      "zonas_seguras": "Placa 'Prof. Paola Suárez' reservada en [79, 818, 550, 110]. Evasión total de subtítulos.",
+      "indicacion_tecnica": "Subtítulo elevado en toda su duración para no pisar la ceja cuatricolor de la placa.",
+      "observaciones_editorial": "Primer plano de la docente conectando con el espectador."
+    },
+    {
+      "row": 3,
+      "start_time": 26.72,
+      "end_time": 31.36,
+      "start_frame": 668,
+      "end_frame": 784,
+      "duration_sec": 4.64,
+      "duration_frames": 116,
+      "dialogo_escaleta": "Si tuvieras que salir rápido de tu casa durante una inundación, ¿qué llevarías?",
+      "dialogo_real": "¿qué llevarías? Probablemente en lo primero que pensamos es en el teléfono,",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 668,
+          "endFrame": 784,
+          "startTime": 26.72,
+          "endTime": 31.36,
+          "text": "¿qué llevarías? Probablemente en lo primero que pensamos es en el teléfono,",
+          "formattedText": "¿qué llevarías? Probablemente en lo primero\nque pensamos es en el teléfono,"
+        }
+      ],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": null,
+        "coexistencia": "Sin titular en escaleta. Foco total en el interrogante del espectador."
+      },
+      "recursos_auditados": [],
+      "propuesta_vacia": {
+        "permitida": true,
+        "motivo": "Pregunta retórica en plano de la docente sin saturación de elementos gráficos",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Centro",
+        "nivel_atencion": "Media",
+        "norma_requerida": "Centro",
+        "coincide": true,
+        "observacion": "Docente centrada manteniendo contacto visual directo con la cámara."
+      },
+      "coreografia_norma": "Docente al CENTRO | Encuadre limpio",
+      "zonas_seguras": "Safe margin estándar.",
+      "indicacion_tecnica": "Corte de subtítulo sincronizado con la inflexión vocal.",
+      "observaciones_editorial": "Interpelación directa a los alumnos de secundaria."
+    },
+    {
+      "row": 4,
+      "start_time": 31.36,
+      "end_time": 35.6,
+      "start_frame": 784,
+      "end_frame": 890,
+      "duration_sec": 4.24,
+      "duration_frames": 106,
+      "dialogo_escaleta": "Probablemente en lo primero que pensamos es en el teléfono, pero ¿qué más podría ser útil?",
+      "dialogo_real": "pero ¿qué más podría ser útil?",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 784,
+          "endFrame": 890,
+          "startTime": 31.36,
+          "endTime": 35.6,
+          "text": "pero ¿qué más podría ser útil?",
+          "formattedText": "pero ¿qué más podría ser útil?"
+        }
+      ],
+      "titular_detalle": {
+        "texto": "¿Qué más podría ser útil?",
+        "start_frame": 784,
+        "end_frame": 860,
+        "kicker": null,
+        "recurso_asociado": "teléfono.png",
+        "coexistencia": "Titular literal exacto sin kicker inventado. El teléfono entra primero como sticker y luego da paso a la pregunta."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 3: teléfono",
+          "archivo": "teléfono.png",
+          "ruta": "RECURSOS/teléfono.png",
+          "formato": "PNG Imagen (Canal Alfa)",
+          "peso": "31.2 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 784,
+          "end_frame": 860,
+          "slot": "L_TOP_LEFT",
+          "carga": "baja",
+          "transparent": true,
+          "rank": "refuerzo"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Fila con titular pautado y sticker de teléfono",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Transición / Izquierda",
+        "nivel_atencion": "Media",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "F830–860 movimiento de cámara; en F860 la docente queda reencuadrada a la izquierda (banda derecha libre ~1000px)."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Titular y sticker en slot lateral",
+      "zonas_seguras": "Title Safe 220px horizontal.",
+      "indicacion_tecnica": "Kicker a tamaño 22 px si se declara antetítulo; recurso transparente sin pastilla blanca de fondo con dropShadow.",
+      "observaciones_editorial": "El modismo y el sticker representan el primer reflejo juvenil: rescatar el celular."
+    },
+    {
+      "row": 5,
+      "start_time": 35.6,
+      "end_time": 48.8,
+      "start_frame": 890,
+      "end_frame": 1220,
+      "duration_sec": 13.2,
+      "duration_frames": 330,
+      "dialogo_escaleta": "Teniendo en cuenta que durante períodos de lluvias extraordinarias, como puede suceder con el fenómeno de El Niño, muchas veces no tenemos tiempo de pensar en qué deberíamos llevar con nosotros.",
+      "dialogo_real": "Teniendo en cuenta que durante períodos de lluvias extraordinarias, como puede suceder con el fenómeno del Niño, muchas veces no tenemos tiempo de pensar en qué deberíamos llevar con nosotros ante una inundación repentina,",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper transcribe 'del Niño' en minúscula; se normaliza en CAPTION_FIX a 'de El Niño' con mayúsculas según norma RAE y coordinación pedagógica.",
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 890,
+          "endFrame": 1006,
+          "startTime": 35.6,
+          "endTime": 40.24,
+          "text": "Teniendo en cuenta que durante períodos de lluvias extraordinarias, como puede suceder",
+          "formattedText": "Teniendo en cuenta que durante períodos\nde lluvias extraordinarias, como puede suceder"
+        },
+        {
+          "startFrame": 1006,
+          "endFrame": 1176,
+          "startTime": 40.24,
+          "endTime": 47.04,
+          "text": "con el fenómeno de El Niño, muchas veces no tenemos tiempo de pensar en qué deberíamos llevar con",
+          "formattedText": "con el fenómeno de El Niño, muchas veces no tenemos\ntiempo de pensar en qué deberíamos llevar con"
+        },
+        {
+          "startFrame": 1176,
+          "endFrame": 1220,
+          "startTime": 47.04,
+          "endTime": 48.8,
+          "text": "nosotros ante una inundación repentina,",
+          "formattedText": "nosotros ante una inundación repentina,"
+        }
+      ],
+      "titular_detalle": {
+        "texto": "Inundaciones en Corrientes: casas bajo el agua y récord de evacuados",
+        "start_frame": 920,
+        "end_frame": 1220,
+        "kicker": "CLARÍN",
+        "recurso_asociado": "cielo_tormenta_gemini.jpg / video youtube1.mp4",
+        "coexistencia": "Titular literal tomado del recorte de diario pautado en escaleta. Entra al decir 'extraordinarias'."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "video 7: video youtube (Inundaciones en Corrientes)",
+          "archivo": "cielo_tormenta_gemini.jpg",
+          "ruta": "RECURSOS/cielo_tormenta_gemini.jpg",
+          "formato": "JPEG Imagen (Evidencia documental)",
+          "peso": "813.9 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 940,
+          "end_frame": 1220,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Fila didáctica protagónica con evidencia documental",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Izquierda (F860–F1226)",
+        "nivel_atencion": "Alta / Didáctica",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "Docente reencuadrada a la izquierda (x 200–848). Banda derecha libre de ~1000px aprovechada para la noticia."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Recurso de Carga Media a la DERECHA sin tocar la mosca",
+      "zonas_seguras": "Slot derecho ubicado debajo de Y:190 para evitar la marca de agua quemada en [1400, 35, 420, 140].",
+      "indicacion_tecnica": "Evasión de mosca garantizada. El titular respeta el texto literal del periódico.",
+      "observaciones_editorial": "Caso real de inundación en Corrientes que demuestra el impacto directo en la provincia."
+    },
+    {
+      "row": 6,
+      "start_time": 48.8,
+      "end_time": 68.8,
+      "start_frame": 1220,
+      "end_frame": 1720,
+      "duration_sec": 20,
+      "duration_frames": 500,
+      "dialogo_escaleta": "Te invito a que armemos una mochila de emergencia para hacer frente a una posible inundación que afecte tu hogar; ante la sorpresiva suba del agua lo primero que debemos hacer es ponernos a salvo y eso muchas veces representa abandonar el lugar en el que estamos, lo más rápido posible.",
+      "dialogo_real": "te invito a que armemos una mochila de emergencia para hacer frente a una posible inundación que afecte tu casa. Ante la sorpresiva suba del agua, lo primero que debemos hacer es ponernos a salvo, y eso muchas veces representa abandonar el lugar en el que estamos lo más rápido posible.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Docente grabó 'tu casa' en lugar de 'tu hogar'. Se conserva la locución real en subtítulos.",
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 1220,
+          "endFrame": 1342,
+          "startTime": 48.8,
+          "endTime": 53.68,
+          "text": "te invito a que armemos una mochila de emergencia",
+          "formattedText": "te invito a que armemos\nuna mochila de emergencia"
+        },
+        {
+          "startFrame": 1342,
+          "endFrame": 1446,
+          "startTime": 53.68,
+          "endTime": 57.84,
+          "text": "para hacer frente a una posible inundación que afecte tu casa.",
+          "formattedText": "para hacer frente a una posible inundación\nque afecte tu casa."
+        },
+        {
+          "startFrame": 1446,
+          "endFrame": 1609,
+          "startTime": 57.84,
+          "endTime": 64.36,
+          "text": "Ante la sorpresiva suba del agua, lo primero que debemos hacer es ponernos a salvo,",
+          "formattedText": "Ante la sorpresiva suba del agua, lo primero\nque debemos hacer es ponernos a salvo,"
+        },
+        {
+          "startFrame": 1610,
+          "endFrame": 1720,
+          "startTime": 64.4,
+          "endTime": 68.8,
+          "text": "y eso muchas veces representa abandonar el lugar en el que estamos lo más rápido posible.",
+          "formattedText": "y eso muchas veces representa abandonar\nel lugar en el que estamos lo más rápido posible."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "Mochila de emergencia",
+        "start_frame": 1290,
+        "end_frame": 1720,
+        "kicker": null,
+        "recurso_asociado": "mochila.gif",
+        "coexistencia": "Titular literal de escaleta. Entra al decir 'mochila' y acompaña toda la explicación del concepto."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 4: mochila",
+          "archivo": "mochila.gif",
+          "ruta": "RECURSOS/mochila.gif",
+          "formato": "GIF Animado (Canal Alfa)",
+          "peso": "130.7 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1302,
+          "end_frame": 1720,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": true,
+          "rank": "refuerzo"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Concepto central del episodio",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Centro (F1255–F1741)",
+        "nivel_atencion": "Alta",
+        "norma_requerida": "Centro",
+        "coincide": true,
+        "observacion": "Docente centrada (x 608–1256). Gráfico en slot exterior derecho para no invadir su silueta."
+      },
+      "coreografia_norma": "Docente al CENTRO | Mochila transparente flotante a la DERECHA",
+      "zonas_seguras": "Title Safe estándar.",
+      "indicacion_tecnica": "Al ser transparente, no lleva tarjeta blanca ni pastilla. Render como sticker flotante con dropShadow sutil.",
+      "observaciones_editorial": "El concepto de mochila de emergencia es el eje práctico y pedagógico de la entrega."
+    },
+    {
+      "row": 7,
+      "start_time": 71.16,
+      "end_time": 95.76,
+      "start_frame": 1779,
+      "end_frame": 2394,
+      "duration_sec": 24.6,
+      "duration_frames": 615,
+      "dialogo_escaleta": "Por eso es una gran idea tener armada una mochila de emergencia. Además de tu teléfono y una linterna con baterías nuevas, sería recomendable tener agua, algunos alimentos no perecederos y que no necesitan cocción como barras de cereal, galletitas o frutos secos, y elementos básicos de un botiquín como alcohol, gasas y apósitos adhesivos.",
+      "dialogo_real": "Por eso es una gran idea tener armada una mochila de emergencia. Además de tu teléfono y una linterna con baterías nuevas, sería recomendable tener agua, alimentos no perecederos y que no necesiten cocción como barras de cereal, galletitas o frutos secos, y elementos básicos de un botiquín como alcohol, gasas y apósitos adhesivos.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 1779,
+          "endFrame": 1899,
+          "startTime": 71.16,
+          "endTime": 75.96,
+          "text": "Por eso es una gran idea tener armada una mochila de emergencia.",
+          "formattedText": "Por eso es una gran idea tener armada\nuna mochila de emergencia."
+        },
+        {
+          "startFrame": 1902,
+          "endFrame": 2068,
+          "startTime": 76.08,
+          "endTime": 82.72,
+          "text": "Además de tu teléfono y una linterna con baterías nuevas, sería recomendable tener agua, alimentos",
+          "formattedText": "Además de tu teléfono y una linterna con baterías nuevas,\nsería recomendable tener agua, alimentos"
+        },
+        {
+          "startFrame": 2068,
+          "endFrame": 2242,
+          "startTime": 82.72,
+          "endTime": 89.68,
+          "text": "no perecederos y que no necesiten cocción como barras de cereal, galletitas o frutos secos,",
+          "formattedText": "no perecederos y que no necesiten cocción\ncomo barras de cereal, galletitas o frutos secos,"
+        },
+        {
+          "startFrame": 2242,
+          "endFrame": 2394,
+          "startTime": 89.68,
+          "endTime": 95.76,
+          "text": "y elementos básicos de un botiquín como alcohol, gasas y apósitos adhesivos.",
+          "formattedText": "y elementos básicos de un botiquín\ncomo alcohol, gasas y apósitos adhesivos."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "Teléfono · Linterna · Agua · Alimentos · Botiquín",
+        "start_frame": 1880,
+        "end_frame": 2480,
+        "kicker": "Mochila de emergencia",
+        "recurso_asociado": "linterna.png / Agua y alimentos no perecederos.jpg / Botiquín",
+        "coexistencia": "Lista interactiva según escaleta original. Titulares escalonados a medida que la docente los menciona."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 5: linterna",
+          "archivo": "linterna.png",
+          "ruta": "RECURSOS/linterna.png",
+          "formato": "PNG Imagen (Canal Alfa)",
+          "peso": "17.2 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1945,
+          "end_frame": 2050,
+          "slot": "L_TOP_LEFT",
+          "carga": "baja",
+          "transparent": true,
+          "rank": "refuerzo"
+        },
+        {
+          "nombre_escaleta": "imagen 6: Agua y alimentos",
+          "archivo": "Agua y alimentos no perecederos.jpg",
+          "ruta": "RECURSOS/Agua y alimentos no perecederos.jpg",
+          "formato": "JPEG Imagen",
+          "peso": "1.52 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2054,
+          "end_frame": 2280,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico"
+        },
+        {
+          "nombre_escaleta": "Botiquín",
+          "archivo": "Botiquín (re-elaborado con Gemini).jpg",
+          "ruta": "RECURSOS/Botiquín (re-elaborado con Gemini).jpg",
+          "formato": "JPEG Imagen",
+          "peso": "3.05 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2299,
+          "end_frame": 2480,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Bloque didáctico de enumeración clave",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Izquierda (F1776–F2820)",
+        "nivel_atencion": "Alta / Didáctica",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "Docente a la izquierda (x 176–824). Amplia banda derecha libre de ~1000px para el despliegue del checklist."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Checklist y medios a la DERECHA sin pisar mosca",
+      "zonas_seguras": "Title Safe 220px horizontal.",
+      "indicacion_tecnica": "Linterna transparente como sticker sin pastilla; alimentos y botiquín en tarjetas cerradas canónicas.",
+      "observaciones_editorial": "Primer gran bloque práctico de supervivencia y respuesta inmediata."
+    },
+    {
+      "row": 8,
+      "start_time": 96,
+      "end_time": 101.68,
+      "start_frame": 2400,
+      "end_frame": 2542,
+      "duration_sec": 5.68,
+      "duration_frames": 142,
+      "dialogo_escaleta": "La documentación importante, como tu DNI, podrías guardarla en bolsas herméticas.",
+      "dialogo_real": "La documentación importante como tu DNI podrías guardarla en bolsas herméticas.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 2400,
+          "endFrame": 2542,
+          "startTime": 96,
+          "endTime": 101.68,
+          "text": "La documentación importante como tu DNI podrías guardarla en bolsas herméticas.",
+          "formattedText": "La documentación importante como tu DNI\npodrías guardarla en bolsas herméticas."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": "bolsa-hermetica-creado-con-gemini.jpg",
+        "coexistencia": "Sin titular en escaleta. Tarjeta gráfica entra en F2480 cuando se menciona DNI."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 7: bolsa hermética",
+          "archivo": "Bolsa hermética (Creado con Gemini)).jpg",
+          "ruta": "RECURSOS/Bolsa hermética (Creado con Gemini)).jpg",
+          "formato": "JPEG Imagen",
+          "peso": "1.83 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2480,
+          "end_frame": 2542,
+          "slot": "L_TOP_LEFT",
+          "carga": "baja",
+          "transparent": false,
+          "rank": "refuerzo"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Recurso de refuerzo para documentación",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Izquierda",
+        "nivel_atencion": "Media",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "Docente a la izquierda; recurso ubicado en slot lateral de resguardo."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Tarjeta de bolsa hermética en slot de apoyo",
+      "zonas_seguras": "Title Safe estándar.",
+      "indicacion_tecnica": "Entrada sincronizada sobre la palabra clave 'DNI'.",
+      "observaciones_editorial": "Consejo crucial para evitar la pérdida irreversible de identidad durante la evacuación."
+    },
+    {
+      "row": 9,
+      "start_time": 101.92,
+      "end_time": 112.96,
+      "start_frame": 2548,
+      "end_frame": 2824,
+      "duration_sec": 11.04,
+      "duration_frames": 276,
+      "dialogo_escaleta": "También es necesario tener una muda de ropa y algún abrigo. Para la higiene: jabón, cepillo y pasta dental, toallitas húmedas y papel higiénico por ejemplo.",
+      "dialogo_real": "También es necesario tener una muda de ropa y algún abrigo. Para la higiene, jabón, cepillos y pasta dental, toallitas húmedas y papel higiénico, por ejemplo.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 2548,
+          "endFrame": 2654,
+          "startTime": 101.92,
+          "endTime": 106.16,
+          "text": "También es necesario tener una muda de ropa y algún abrigo.",
+          "formattedText": "También es necesario tener una muda de ropa\ny algún abrigo."
+        },
+        {
+          "startFrame": 2654,
+          "endFrame": 2823,
+          "startTime": 106.16,
+          "endTime": 112.92,
+          "text": "Para la higiene, jabón, cepillos y pasta dental, toallitas húmedas y papel higiénico, por ejemplo.",
+          "formattedText": "Para la higiene, jabón, cepillos y pasta dental,\ntoallitas húmedas y papel higiénico, por ejemplo."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "• Ropa seca  • Elementos de higiene personal",
+        "start_frame": 2548,
+        "end_frame": 2820,
+        "kicker": "Mochila de emergencia",
+        "recurso_asociado": "ropa-seca-y-elementos-de-higiene.jpg",
+        "coexistencia": "Titulares literales con viñetas según escaleta oficial."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 8: Ropa seca y elementos de higiene personal",
+          "archivo": "Ropa seca y elementos de higiene personal de higiene personal (Creado con Gemini).jpg",
+          "ruta": "RECURSOS/Ropa seca y elementos de higiene personal de higiene personal (Creado con Gemini).jpg",
+          "formato": "JPEG Imagen",
+          "peso": "2.06 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2560,
+          "end_frame": 2820,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Fila didáctica con viñetas pautadas y foto de higiene",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Izquierda",
+        "nivel_atencion": "Alta",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "Docente en el flanco izquierdo. Gráfico a la derecha con viñetas tipográficas oficiales."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Tarjeta a la DERECHA despejando la mosca",
+      "zonas_seguras": "Respeto a [1400, 35, 420, 140].",
+      "indicacion_tecnica": "Kickers en 22 px; viñetas alineadas a la izquierda.",
+      "observaciones_editorial": "Salud y prevención de infecciones en centros de evacuados."
+    },
+    {
+      "row": 10,
+      "start_time": 112.96,
+      "end_time": 126.4,
+      "start_frame": 2824,
+      "end_frame": 3160,
+      "duration_sec": 13.44,
+      "duration_frames": 336,
+      "dialogo_escaleta": "Que exista un fenómeno climático no implica que la emergencia sea inevitable, el riesgo también depende de nuestra vulnerabilidad y de cuánto nos preparemos.",
+      "dialogo_real": "Que exista un fenómeno climático extraordinario no implica que la emergencia sea inevitable. El riesgo también depende de nuestra vulnerabilidad y de cuánto nos preparamos.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Docente añade 'extraordinario' y formula 'cuánto nos preparamos' en presente.",
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 2824,
+          "endFrame": 2994,
+          "startTime": 112.96,
+          "endTime": 119.76,
+          "text": "por ejemplo. Que exista un fenómeno climático extraordinario no implica que la emergencia sea",
+          "formattedText": "Que exista un fenómeno climático extraordinario\nno implica que la emergencia sea"
+        },
+        {
+          "startFrame": 2994,
+          "endFrame": 3160,
+          "startTime": 119.76,
+          "endTime": 126.4,
+          "text": "inevitable. El riesgo también depende de nuestra vulnerabilidad y de cuánto nos preparamos.",
+          "formattedText": "inevitable. El riesgo también depende de nuestra\nvulnerabilidad y de cuánto nos preparamos."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": null,
+        "coexistencia": "Sin titular en escaleta. Foco total en el concepto de Vulnerabilidad y Riesgo."
+      },
+      "recursos_auditados": [],
+      "propuesta_vacia": {
+        "permitida": true,
+        "motivo": "Momento reflexivo clave donde la docente ocupa el centro sin distracciones gráficas",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Centro (F2851–F3236)",
+        "nivel_atencion": "Alta / Conceptual",
+        "norma_requerida": "Centro",
+        "coincide": true,
+        "observacion": "Docente centrada en el plató (x 608–1240). Plano limpio sin titulares inventados."
+      },
+      "coreografia_norma": "Docente al CENTRO | Cero invención gráfica",
+      "zonas_seguras": "Safe margin regular.",
+      "indicacion_tecnica": "Subtítulo canónico centrado en ≤2 líneas.",
+      "observaciones_editorial": "Concepto científico vertebral de la Educación Ambiental Integral: el riesgo es una construcción social."
+    },
+    {
+      "row": 11,
+      "start_time": 126.64,
+      "end_time": 152.08,
+      "start_frame": 3166,
+      "end_frame": 3802,
+      "duration_sec": 25.44,
+      "duration_frames": 636,
+      "dialogo_escaleta": "Armar una mochila de emergencia no es lo único que podemos hacer. Limpiar desagües y canaletas o retirar y asegurar objetos que puedan ser arrastrados por la corriente también ayuda a que un fenómeno climático no se convierta en una emergencia inevitable. Definir previamente dónde reunirse con la familia si deben salir de casa, también es una gran idea.",
+      "dialogo_real": "Armar una mochila de emergencia no es lo único que podemos hacer. Limpiar desagües y canaletas, o retirar y asegurar objetos que puedan ser arrastrados por la corriente, también ayuda a que un fenómeno climático no se convierta en una emergencia inevitable. Definir previamente dónde reunirse con la familia si deben salir de casa también es una gran idea.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 3166,
+          "endFrame": 3280,
+          "startTime": 126.64,
+          "endTime": 131.2,
+          "text": "Armar una mochila de emergencia no es lo único que podemos hacer.",
+          "formattedText": "Armar una mochila de emergencia\nno es lo único que podemos hacer."
+        },
+        {
+          "startFrame": 3286,
+          "endFrame": 3448,
+          "startTime": 131.44,
+          "endTime": 137.92,
+          "text": "Limpiar desagües y canaletas, o retirar y asegurar objetos que puedan ser arrastrados",
+          "formattedText": "Limpiar desagües y canaletas, o retirar y asegurar\nobjetos que puedan ser arrastrados"
+        },
+        {
+          "startFrame": 3448,
+          "endFrame": 3619,
+          "startTime": 137.92,
+          "endTime": 144.76,
+          "text": "por la corriente, también ayuda a que un fenómeno climático no se convierta en una emergencia",
+          "formattedText": "por la corriente, también ayuda a que un fenómeno climático\nno se convierta en una emergencia"
+        },
+        {
+          "startFrame": 3619,
+          "endFrame": 3802,
+          "startTime": 144.76,
+          "endTime": 152.08,
+          "text": "inevitable. Definir previamente dónde reunirse con la familia si deben salir de casa también es una gran idea.",
+          "formattedText": "inevitable. Definir previamente dónde reunirse con la familia\nsi deben salir de casa también es una gran idea."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "Limpiar desagües y canaletas · Retirar objetos sueltos · Definir puntos de encuentro",
+        "start_frame": 3280,
+        "end_frame": 3820,
+        "kicker": "Medidas preventivas",
+        "recurso_asociado": "Limpiar desagües y canaletas (Creado con Gemini).jpg",
+        "coexistencia": "Titulares literales de escaleta en lista secuencial. Entran a medida que se mencionan."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "imagen 9: Limpiar desagües y canaletas",
+          "archivo": "Limpiar desagües y canaletas (Creado con Gemini).jpg",
+          "ruta": "RECURSOS/Limpiar desagües y canaletas (Creado con Gemini).jpg",
+          "formato": "JPEG Imagen",
+          "peso": "3.57 MB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 3290,
+          "end_frame": 3820,
+          "slot": "L_MID_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Bloque didáctico de acciones comunitarias",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Izquierda (F3282–F3850)",
+        "nivel_atencion": "Alta / Didáctica",
+        "norma_requerida": "Izquierda",
+        "coincide": true,
+        "observacion": "Docente a la izquierda (x 208–856). Banda derecha libre de ~1000px."
+      },
+      "coreografia_norma": "Docente a la IZQUIERDA | Tarjeta de acciones a la DERECHA sin tocar la mosca",
+      "zonas_seguras": "Title Safe estándar. Evasión de marca de agua en Y:35–175.",
+      "indicacion_tecnica": "Kickers en 22 px; tarjeta cerrada canónica con radio de curvatura de 16 px.",
+      "observaciones_editorial": "Acciones colectivas de prevención barrial y plan de contingencia familiar."
+    },
+    {
+      "row": 12,
+      "start_time": 152.08,
+      "end_time": 154,
+      "start_frame": 3802,
+      "end_frame": 3850,
+      "duration_sec": 1.92,
+      "duration_frames": 48,
+      "dialogo_escaleta": "Y si el agua comienza a ingresar a tu vivienda: Cortá el gas y la electricidad, solo si podés hacerlo sin entrar en contacto con agua. Subí objetos importantes y sustancias peligrosas a lugares altos. Y si las autoridades indican evacuar, no esperes a que el agua alcance niveles peligrosos.",
+      "dialogo_real": "— Fragmento no locutado en la toma final del máster recortado —",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "DISCREPANCIA CRÍTICA: Este bloque de la escaleta (Cruz Roja / gas / electricidad / evacuación) no fue incluido en la locución grabada en el corte definitivo. Queda registrado formalmente para control de calidad.",
+      "subtitulos_coordinados": [],
+      "titular_detalle": {
+        "texto": "— No grabado en máster —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": "video youtube1.mp4 / video youtube2.mp4",
+        "coexistencia": "Omitido en After Effects para evitar discrepancia con la locución grabada."
+      },
+      "recursos_auditados": [],
+      "propuesta_vacia": {
+        "permitida": true,
+        "motivo": "Bloque no grabado por la docente en el corte final",
+        "texto": "— Omitido por decisión de montaje en máster —"
+      },
+      "encuadre": {
+        "real": "Transición (F3850)",
+        "nivel_atencion": "Nula",
+        "norma_requerida": "None",
+        "coincide": true,
+        "observacion": "Corte rápido directo al cierre del capítulo."
+      },
+      "coreografia_norma": "Sin gráficos para no crear desajuste con el audio",
+      "zonas_seguras": "N/A",
+      "indicacion_tecnica": "No se monta en el proyecto .aep para preservar sincronía total con la locución real.",
+      "observaciones_editorial": "Registrado en la matriz para constancia de coordinación."
+    },
+    {
+      "row": 13,
+      "start_time": 152.08,
+      "end_time": 166.04,
+      "start_frame": 3802,
+      "end_frame": 4151,
+      "duration_sec": 13.96,
+      "duration_frames": 349,
+      "dialogo_escaleta": "Al fenómeno de El Niño no podemos evitarlo, pero sí podemos conocer los riesgos a los que nos enfrentamos, identificar nuestras vulnerabilidades y prepararnos.",
+      "dialogo_real": "Al fenómeno del niño no podemos evitarlo, pero sí podemos conocer los riesgos a los que nos enfrentamos, identificar nuestras vulnerabilidades y prepararnos.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper transcribe 'del niño' en minúscula; corregido en CAPTION_FIX a 'de El Niño'. Cero titular inventado pautado.",
+      "subtitulos_coordinados": [
+        {
+          "startFrame": 3802,
+          "endFrame": 3972,
+          "startTime": 152.08,
+          "endTime": 158.88,
+          "text": "Al fenómeno de El Niño no podemos evitarlo, pero sí podemos conocer",
+          "formattedText": "Al fenómeno de El Niño no podemos evitarlo,\npero sí podemos conocer"
+        },
+        {
+          "startFrame": 3972,
+          "endFrame": 4136,
+          "startTime": 158.88,
+          "endTime": 165.44,
+          "text": "los riesgos a los que nos enfrentamos, identificar nuestras vulnerabilidades y prepararnos.",
+          "formattedText": "los riesgos a los que nos enfrentamos,\nidentificar nuestras vulnerabilidades y prepararnos."
+        }
+      ],
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 0,
+        "kicker": null,
+        "recurso_asociado": "atención.gif",
+        "coexistencia": "Sin titular en escaleta. Respeto absoluto: NO se inventa titular para el cierre."
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "sticker (atención)",
+          "archivo": "atención.gif",
+          "ruta": "RECURSOS/atención.gif",
+          "formato": "GIF Animado (Canal Alfa)",
+          "peso": "100.9 KB",
+          "estado": "OK_EN_DISCO",
+          "alerta": null,
+          "start_frame": 3900,
+          "end_frame": 4140,
+          "slot": "L_TOP_LEFT",
+          "carga": "baja",
+          "transparent": true,
+          "rank": "refuerzo"
+        }
+      ],
+      "propuesta_vacia": {
+        "permitida": false,
+        "motivo": "Sticker de atención para llamado a la acción final",
+        "texto": "—"
+      },
+      "encuadre": {
+        "real": "Centro (F3851–F4151)",
+        "nivel_atencion": "Media",
+        "norma_requerida": "Centro",
+        "coincide": true,
+        "observacion": "Docente centrada despidiendo la clase. Sticker transparente ubicado en slot izquierdo de carga baja."
+      },
+      "coreografia_norma": "Docente al CENTRO | Sticker transparente a la IZQUIERDA (Carga Baja)",
+      "zonas_seguras": "Title Safe estándar.",
+      "indicacion_tecnica": "Al tener canal alfa, NO lleva pastilla ni tarjeta de fondo. Render flotante con dropShadow sutil.",
+      "observaciones_editorial": "Cierre inspirador de prevención ciudadana."
+    }
+  ]
+}

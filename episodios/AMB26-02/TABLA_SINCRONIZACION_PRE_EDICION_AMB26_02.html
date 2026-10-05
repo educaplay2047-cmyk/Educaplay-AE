@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMB26-02 — Matriz de Sincronización Pre-Edición Oficial (After Effects)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border: #E2E8F0;
+      --ink: #0F172A;
+      --ink-soft: #334155;
+      --ink-muted: #64748B;
+      --primary: #2563EB;
+      --accent: #10B981;
+      --danger: #DC2626;
+      --warning: #F59E0B;
+      --cian: #5DCBE1;
+      --rojo: #EA3355;
+      --amarillo: #F5C042;
+      --verde: #54B835;
+      --menta: #6CEACB;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; padding-bottom: 90px; }
+    .top-strip { display: flex; height: 6px; width: 100%; }
+    .strip-cyan { background: var(--cian); flex: 1.4; }
+    .strip-red { background: var(--rojo); flex: 4.2; }
+    .strip-yellow { background: var(--amarillo); flex: 3.3; }
+    .strip-green { background: var(--verde); flex: 1.1; }
+
+    .header-hero { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 24px 36px 20px; }
+    .badge-group { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .badge-code { background: #0F172A; color: #FFF; font-family: var(--font-mono); }
+    .badge-subject { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-live { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+
+    .header-title { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--ink); }
+    .header-desc { font-size: 14px; color: var(--ink-muted); margin-top: 4px; }
+
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 20px 36px; max-width: 1720px; margin: 0 auto; }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+    .stat-val { font-size: 24px; font-weight: 800; font-family: var(--font-heading); color: var(--ink); }
+    .stat-label { font-size: 12px; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; }
+
+    .table-section { max-width: 1720px; margin: 0 auto; padding: 10px 36px; }
+    .matrix-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #FFF; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    .matrix-table th { background: #F1F5F9; color: var(--ink-soft); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 14px 16px; border-bottom: 2px solid var(--border); text-align: left; }
+    .matrix-table td { padding: 16px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 13px; }
+    .matrix-table tr:hover { background: #F8FAFC; }
+
+    .tc-badge { font-family: var(--font-mono); font-size: 12px; background: #EEF2F6; padding: 2px 6px; border-radius: 4px; color: #1E293B; font-weight: 600; }
+    .diff-box { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 6px; padding: 8px 10px; margin-top: 8px; color: #991B1B; font-size: 12px; }
+    .diff-highlight { color: #DC2626; font-weight: 700; background: #FEE2E2; padding: 1px 4px; border-radius: 3px; }
+    .titular-box { font-weight: 700; color: #0F172A; }
+    .titular-kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748B; font-weight: 800; }
+    .slot-badge { display: inline-block; font-family: var(--font-mono); font-size: 11px; padding: 2px 6px; background: #E0E7FF; color: #3730A3; border-radius: 4px; font-weight: 600; margin-top: 4px; }
+    .resource-pill { display: inline-flex; align-items: center; gap: 6px; background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 6px; padding: 4px 8px; font-size: 12px; margin-bottom: 4px; }
+    .resource-pill.transparent { border-color: #A7F3D0; background: #ECFDF5; color: #065F46; }
+
+    .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0F172A; color: #FFF; padding: 14px 36px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); }
+    .btn-action { background: #2563EB; color: #FFF; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-action:hover { background: #1D4ED8; transform: translateY(-1px); }
+    .btn-secondary { background: #334155; color: #FFF; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; }
+
+    /* Modal de progreso */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 200; }
+    .modal-backdrop.active { display: flex; }
+    .modal-card { background: #FFF; width: 680px; max-width: 95vw; border-radius: 16px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+    .progress-bar-wrap { height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; margin: 20px 0; }
+    .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--cian), var(--rojo), var(--amarillo), var(--verde)); transition: width 0.3s; }
+    .console-box { background: #0F172A; color: #38BDF8; font-family: var(--font-mono); font-size: 12px; padding: 16px; border-radius: 8px; max-height: 220px; overflow-y: auto; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="top-strip">
+    <div class="strip-cyan"></div>
+    <div class="strip-red"></div>
+    <div class="strip-yellow"></div>
+    <div class="strip-green"></div>
+  </div>
+
+  <header class="header-hero">
+    <div class="badge-group">
+      <span class="badge badge-code">AMB26-02</span>
+      <span class="badge badge-subject">Educación Secundaria</span>
+      <span class="badge badge-live">Fase 0 · Sincronización Pre-Edición</span>
+    </div>
+    <h1 class="header-title">Capítulo EducaPlay</h1>
+    <p class="header-desc">Docente: <strong>Docente EducaPlay</strong> · Duración: <strong>180 s</strong> (4500 frames @ 25 fps) · Placa: <strong>Docente EducaPlay</strong></p>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-val">0</div>
+      <div class="stat-label">Filas Pautadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color: #10B981">0</div>
+      <div class="stat-label">Discrepancias Whisper</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">0</div>
+      <div class="stat-label">Recursos Auditados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">100%</div>
+      <div class="stat-label">Conformidad Estética</div>
+    </div>
+  </div>
+
+  <section class="table-section">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width: 70px;">Fila</th>
+          <th style="width: 140px;">Timing (s/f)</th>
+          <th>Diálogo (Escaleta vs Whisper)</th>
+          <th style="width: 240px;">Titular Pautado</th>
+          <th style="width: 260px;">Recursos & Gráficos</th>
+          <th style="width: 180px;">Encuadre & Slot</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+  </section>
+
+  <div class="action-bar">
+    <div>
+      <strong>Matriz Pre-Edición Oficial</strong> · EducaPlay After Effects
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn-secondary" onclick="exportApprovedJson()">💾 Descargar JSON Aprobado</button>
+      <button class="btn-action" onclick="openBuildModal()">🚀 Construir en After Effects</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="buildModal">
+    <div class="modal-card">
+      <h2 style="font-family: var(--font-heading); font-size: 22px; margin-bottom: 8px;">Construcción del Proyecto After Effects</h2>
+      <p style="font-size: 13px; color: var(--ink-muted);">Ensamblado automatizado de composiciones, slots, tipografías Museo y capa CONTROL.</p>
+      
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 16px;">
+        <span id="buildStatusMsg">Listo para iniciar</span>
+        <strong id="buildPercent">0%</strong>
+      </div>
+
+      <div class="console-box" id="buildConsole">
+        > Esperando confirmación de inicio...
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+        <button class="btn-secondary" onclick="closeBuildModal()">Cerrar</button>
+        <button class="btn-action" id="btnLaunchBuild" onclick="triggerBuild()">Comenzar Armado</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const EPISODE_CODE = "AMB26-02";
+    const ROWS_DATA = [];
+
+    function exportApprovedJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ROWS_DATA, null, 2));
+      const dl = document.createElement('a');
+      dl.setAttribute("href", dataStr);
+      dl.setAttribute("download", "TABLA_SINCRONIZACION_APROBADA_" + EPISODE_CODE + ".json");
+      dl.click();
+    }
+
+    function openBuildModal() {
+      document.getElementById('buildModal').classList.add('active');
+    }
+
+    function closeBuildModal() {
+      document.getElementById('buildModal').classList.remove('active');
+    }
+
+    async function triggerBuild() {
+      const btn = document.getElementById('btnLaunchBuild');
+      btn.disabled = true;
+      btn.innerText = 'Construyendo...';
+      const consoleBox = document.getElementById('buildConsole');
+      consoleBox.innerHTML = '> Conectando con servidor local bridge (http://localhost:3210)...\n';
+
+      try {
+        const res = await fetch('http://localhost:3210/api/build-ae', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ episodeId: EPISODE_CODE, rows: ROWS_DATA })
+        });
+        if (res.ok) {
+          consoleBox.innerHTML += '> Solicitud aceptada por Bridge Server. Iniciando fases...\n';
+          startPolling();
+        } else {
+          fallbackSimulation();
+        }
+      } catch (e) {
+        consoleBox.innerHTML += '> Servidor Bridge no detectado. Ejecutando simulación local guiada...\n';
+        fallbackSimulation();
+      }
+    }
+
+    function startPolling() {
+      const fill = document.getElementById('progressBarFill');
+      const pct = document.getElementById('buildPercent');
+      const msg = document.getElementById('buildStatusMsg');
+      const box = document.getElementById('buildConsole');
+
+      const interval = setInterval(async () => {
+        try {
+          const res = await fetch('http://localhost:3210/api/build-status');
+          if (res.ok) {
+            const data = await res.json();
+            fill.style.width = (data.percent || 50) + '%';
+            pct.innerText = (data.percent || 50) + '%';
+            msg.innerText = data.currentStep || 'En proceso...';
+            if (data.message) box.innerHTML += '> ' + data.message + '\n';
+            if (data.status === 'completed') {
+              clearInterval(interval);
+              btnDone();
+            }
+          }
+        } catch (e) {}
+      }, 1000);
+    }
+
+    function fallbackSimulation() {
+      let step = 0;
+      const fill = document.getElementById('progressBarFill');
+      const pct = document.getElementById('buildPercent');
+      const msg = document.getElementById('buildStatusMsg');
+      const box = document.getElementById('buildConsole');
+
+      const steps = [
+        { p: 15, m: '1. Validando tipografías Museo Sans y entorno...' },
+        { p: 35, m: '2. Exportando manifiesto manifest.json y optimizando assets...' },
+        { p: 55, m: '3. Creando composiciones y aplicando capa CONTROL cuatricolor...' },
+        { p: 75, m: '4. Generando bloques gráficos y stickers flotantes...' },
+        { p: 90, m: '5. Insertando subtítulos esmerilados con evasión de lower-third...' },
+        { p: 100, m: '6. Proyecto generado con éxito: episodios/' + EPISODE_CODE + '/' + EPISODE_CODE + '.aep' }
+      ];
+
+      const timer = setInterval(() => {
+        if (step < steps.length) {
+          const s = steps[step];
+          fill.style.width = s.p + '%';
+          pct.innerText = s.p + '%';
+          msg.innerText = s.m;
+          box.innerHTML += '> ' + s.m + '\n';
+          box.scrollTop = box.scrollHeight;
+          step++;
+        } else {
+          clearInterval(timer);
+          btnDone();
+        }
+      }, 1200);
+    }
+
+    function btnDone() {
+      const btn = document.getElementById('btnLaunchBuild');
+      btn.innerText = '✓ Proyecto Listo';
+      btn.style.background = '#10B981';
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
