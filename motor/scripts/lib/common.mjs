@@ -21,6 +21,7 @@ const extraBins = [
   'C:\\Program Files\\Topaz Labs LLC\\Topaz Video AI',
   'C:\\Program Files\\Git\\cmd',
   'C:\\Program Files\\Git\\bin',
+  'C:\\Program Files\\GitHub CLI',
 ];
 const toolsBin = path.resolve(ROOT, '..', 'tools', 'bin');
 for (const p of [...extraBins, toolsBin]) {
