@@ -39,8 +39,7 @@ Mide el encuadre de la docente, transcribe con Whisper, lee la escaleta `.docx` 
 2. Anotá lo que la escaleta pide y el máster no trae.
 3. **El nombre de la docente se lee de la placa quemada en el máster**: extraé un frame con
    `ffmpeg` y **confirmalo con el usuario**. Nunca lo tomes de la escaleta.
-4. Leé `captions.ts`. Los errores de Whisper se corrigen con `CAPTION_FIX` en `data.ts`, nunca
-   editando `captions.ts`.
+4. **Subtítulos copia fiel de escaleta y entrega de la matriz editable:** Generá y entregá la tabla interactiva `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`. Por defecto, los subtítulos son una copia fiel de lo expuesto en la escaleta correspondiente, sincronizada con el diálogo; cada fila cuenta con la casilla marcable `☑ Copia fiel de escaleta (Predeterminado)`. Solo si el usuario desmarca la casilla se adoptan variaciones de Whisper o texto libre. En `data.ts`, los subtítulos deben respetar este texto fiel.
 5. Copiá `plantillas/data.molde.ts` (o el `data.draft.ts` generado) a
    `src/episodes/<CODE>/data.ts` y completalo. Tomá como modelo
    `src/episodes/AMB26-04/data.ts`. Decidí `intervention` (0–4): el molde no compila hasta que

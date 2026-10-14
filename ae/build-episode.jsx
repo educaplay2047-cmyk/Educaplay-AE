@@ -726,7 +726,7 @@ function buildEpisode() {
     }
     var innerW = box.width - x0 - P - 50;
     var y = top + (hasStep ? 4 : 0);
-    if (!hasStep) {
+    if (!hasStep && b.kicker) {
       var k = text(comp, b.kicker.toUpperCase(), x0, y, {name: 'KICKER', font: FONTS.body, size: 22, color: hex(WEB.menta), tracking: 120});
       revealChars(k.layer, sec(4), sec(12), false);
       y += k.h + 12;
@@ -1272,7 +1272,7 @@ function buildEpisode() {
   // ─────────────────────────────────────────────────────────────── guardar
   var out = File(ROOTDIR.fsName + '/' + MAIN + '.aep');
   proj.save(out);
-  main.openInViewer();
+  try { main.openInViewer(); } catch (e) {}
   app.endUndoGroup();
 
   log('✓ guardado en ' + out.fsName);

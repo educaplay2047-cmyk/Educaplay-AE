@@ -1,7 +1,7 @@
 ---
 name: educaplay-after-effects
 description: |
-  Capítulos de EducaPlay Secundaria (Corrientes) en Adobe After Effects: medir el máster con el motor (encuadre de la docente, Whisper, palabras-gatillo), escribir el data.ts del episodio, exportar el manifiesto, armar el .aep editable con la estética de la plataforma EducaPlay, verificar con stills y publicar en GitHub. Usar para cualquier código de episodio (AMB26-XX, LEO0XX…), para tocar ae/build-episode.jsx, o para diagnosticar por qué un gráfico pisa a la docente, un subtítulo pasa de dos líneas o el armado en AE deja advertencias.
+  Capítulos de EducaPlay Secundaria (Corrientes) en Adobe After Effects: medir el máster con el motor (encuadre de la docente, Whisper, palabras-gatillo), escribir el data.ts del episodio, exportar el manifiesto y armar el .aep editable con la estética de la plataforma EducaPlay. REGLAS INFRANQUEABLES: (1) Siempre se debe generar y entregar primero la tabla de sincronización interactiva y editable (HTML) con botón para copiar correcciones al chat, para que el usuario pueda corregir guión, titulares y recursos antes de avanzar hacia After Effects. (2) Por defecto, y a menos que se indique lo contrario en la matriz mediante su casilla marcable, los subtítulos son una copia fiel de la escaleta correspondiente sincronizada con el diálogo, siguiendo al pie de la letra lo expuesto en la escaleta.
 ---
 
 # EducaPlay en After Effects
@@ -29,19 +29,33 @@ vuelca esas cajas al manifiesto y el `.jsx` sólo pone en escena.
 
 ## Protocolo Obligatorio: Matriz de Sincronización Pre-Armado en After Effects
 
-Antes de volcar datos a `data.ts` y construir el proyecto `.aep` en After Effects, es **estrictamente obligatorio** confeccionar y validar la **Matriz de Sincronización Pre-Armado** (`TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`, `.md` y sus manifiestos JSON asociados).
+### ⚠️ BARRERA OBLIGATORIA (GATEWAY INFRANQUEABLE): ENTREGA PREVIA DE LA TABLA EDITABLE
+**SIEMPRE, sin ninguna excepción, se debe generar y ENTREGAR la Tabla de Sincronización Pre-Edición EDITABLE (`TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`) al usuario para que pueda corregir y marcar cambios ANTES de avanzar hacia la construcción del `.aep` en After Effects.**
+
+Queda terminantemente prohibido ejecutar o avanzar hacia el armado del `.aep` en After Effects sin haber entregado primero la tabla interactiva editable en el navegador y permitir al usuario revisar, ajustar y guardar sus correcciones en los tres ejes fundamentales:
+1. **Guión / Subtítulos (Copia fiel de escaleta por defecto):** Por defecto, los subtítulos DEBEN ser una copia fiel de la escaleta correspondiente, sincronizada con el diálogo de la docente pero siguiendo al pie de la letra lo expuesto en la escaleta. Cada fila de la matriz incluye obligatoriamente una **casilla marcable interactiva: `☑ Copia fiel de escaleta (Predeterminado)`** que viene activa por defecto. Solo si el usuario desmarca explícitamente dicha casilla para un tramo determinado, se habilitan las opciones alternativas (Whisper real del máster con discrepancias en rojo o modo **Personalizado con textarea libre editable** en tiempo real con contador de caracteres y estimación de líneas ≤ 2).
+2. **Titulares en Pantalla:** Campo editable de Título, campo editable de Kicker / Categoría y checkbox para habilitar o suprimir el titular por tramo.
+3. **Recursos & Gráficos:** Campo de texto para renombrar o relinkear archivos de recursos, selector de estilo de render (*Tarjeta blanca oficial*, *Sticker flotante transparente con sombra suave*, *Pantalla completa Full Bleed* u *Ocultar*) y caja de notas de pre-edición para el motion designer.
+4. **Reproductor de video integrado:** Con botón **▶ Ver** en cada fila para saltar y auditar la sincronía exacta en el video máster.
+5. **Persistencia local y Bridge:** Conexión activa con el Bridge Server (puerto 3210) con botón para guardar directamente en `TABLA_SINCRONIZACION_APROBADA.json`, en almacenamiento local y descarga de respaldo.
+6. **Botón Obligatorio 'Copiar Correcciones al Portapapeles':** La tabla DEBE incluir de forma mandatoria un botón destacado en la barra de acciones inferior (**📋 Copiar Correcciones**) que recopile automáticamente todas las modificaciones marcadas en guión, titulares, recursos y notas de pre-edición en un formato sintético y ordenado, copiándolo directamente al portapapeles con un clic para que el usuario pueda pegarlo y enviarlo en el chat del asistente AI.
+
+**Sólo una vez que el usuario haya revisado la tabla, marcado sus cambios y guardado la matriz aprobada (o enviado las correcciones por chat), se trasladan las correcciones a `data.ts` y se avanza hacia la ejecución del constructor `.aep` en After Effects.**
 
 ### Entregables Obligatorios del Ciclo de Sincronización
 Por cada episodio a producir en After Effects, se generan y mantienen en la carpeta del capítulo:
-1. `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`: Interfaz interactiva con reproductor sincronizado frame-accurate, cotejo visual de transcripción vs guion, selección de subtítulos, visualización de slots/encuadres y configuración de entradas, salidas y posiciones de recursos y motion graphics.
+1. `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`: Interfaz interactiva y editable con reproductor sincronizado frame-accurate, edición libre de guión, titulares y recursos, visualización de slots/encuadres y botón de guardado a disco.
 2. `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].md`: Documento Markdown formal para auditoría, control de calidad y revisión de coordinación pedagógica.
 3. `TABLA_SINCRONIZACION_DATOS.json`: Matriz estructurada de datos crudos (marcas temporales en segundos y frames, textos, slots, recursos auditados).
-4. `TABLA_SINCRONIZACION_APROBADA.json`: Registro persistente de aprobación con el estado de correcciones solicitadas y validadas.
+4. `TABLA_SINCRONIZACION_APROBADA.json`: Registro persistente de aprobación con el estado de correcciones solicitadas y validadas por el usuario.
 
 ### Reglas de Oro de la Matriz de Sincronización
-1. **Cotejo Estricto de Transcripción (Whisper vs Escaleta)**:
-   - Toda discrepancia entre lo que dice el guion original de la escaleta y la locución real grabada por la docente (transcripción Whisper/ASR) debe resaltarse de forma explícita en rojo vivo (`#DC2626`).
-   - Se debe documentar cada error de fonética, modismos regionales (ej. "¡Chaque el agua!" vs "Ya que el agua") o términos técnicos para su resolución en `CAPTION_FIX`.
+1. **Subtítulos: Copia Fiel de la Escaleta por Defecto y Casilla Marcable de Excepción**:
+   - **Por defecto y al pie de la letra**: Los subtítulos proyectados en After Effects son una copia fiel y literal de lo expuesto en la escaleta oficial correspondiente (vocabulario pedagógico, gramática, ortografía y puntuación institucional).
+   - **Sincronía temporal con la locución**: El audio grabado y la transcripción de Whisper operan como reloj de sincronización frame-accurate (para los tiempos de entrada y salida `in/out`), pero el texto exhibido respeta la escaleta al pie de la letra.
+   - **Casilla marcable obligatoria en la matriz**: La tabla interactiva de sincronización pre-edición (`TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`) incluye en cada fila una casilla marcable `☑ Copia fiel de escaleta (Predeterminado)` activada por defecto, además de un interruptor maestro global.
+   - **Excepción explícita**: Solo cuando el usuario o coordinador desmarca intencionalmente dicha casilla en una fila, la matriz permite adoptar la locución alternativa de Whisper o redactar un texto libre en el textarea personalizado.
+   - **Cotejo de discrepancias**: Toda diferencia entre la escaleta y la locución real grabada se resalta en rojo vivo (`#DC2626`) como advertencia informativa para el revisor, sin alterar el texto de la escaleta por defecto.
 2. **Titulares Literales y Cero Invención**:
    - **Prohibido inventar kickers o categorías conceptuales** que no figuren en la columna de titulares de la escaleta.
    - **Respeto a filas sin titular**: Si una fila no tiene titular en la escaleta, debe indicarse `— Sin titular pautado —` y en After Effects no se monta ninguna tarjeta de titular.
@@ -147,6 +161,11 @@ Las precomps la leen por expresión. Un cambio de marca se hace ahí, no capa po
 
 ## Subtítulos (`docs/SUBTITULOS.md` §1.4)
 
+- **Copia fiel de la escaleta al pie de la letra por defecto:** Los subtítulos reflejan exactamente
+  lo pautado en la escaleta oficial correspondiente, sincronizándose temporalmente con la voz de la
+  docente al cuadro exacto. No se sustituyen términos pedagógicos ni giros sintácticos por variaciones
+  o fallas fonéticas de Whisper, a menos que el revisor desmarque expresamente la casilla
+  `☑ Copia fiel de escaleta` en la matriz de sincronización pre-edición.
 - **Sin resaltado por palabra.** Una capa de texto por subtítulo: se edita con doble clic y el
   timing se ajusta con los bordes de la capa.
 - **Pastilla canónica:**

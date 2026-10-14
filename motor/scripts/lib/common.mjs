@@ -16,9 +16,14 @@ const execFileP = promisify(execFile);
 
 export const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../..');
 
-const topazBin = 'C:\\Program Files\\Topaz Labs LLC\\Topaz Video AI';
+const extraBins = [
+  'C:\\Program Files\\Topaz Labs LLC\\Topaz Video',
+  'C:\\Program Files\\Topaz Labs LLC\\Topaz Video AI',
+  'C:\\Program Files\\Git\\cmd',
+  'C:\\Program Files\\Git\\bin',
+];
 const toolsBin = path.resolve(ROOT, '..', 'tools', 'bin');
-for (const p of [topazBin, toolsBin]) {
+for (const p of [...extraBins, toolsBin]) {
   if (fs.existsSync(p) && !process.env.PATH?.includes(p)) {
     process.env.PATH = p + path.delimiter + (process.env.PATH ?? '');
   }
@@ -30,11 +35,14 @@ for (const p of [topazBin, toolsBin]) {
  * Override con EDUCAPLAY_EPISODES.
  */
 const defaultEpisodesRoot = path.resolve(ROOT, '..', 'SECUNDARIA', 'Educación Ambiental integral');
+const repoEpRoot = path.resolve(ROOT, '..', 'episodios');
 export const EPISODES_ROOT =
   process.env.EDUCAPLAY_EPISODES ??
-  (fs.existsSync(defaultEpisodesRoot)
-    ? defaultEpisodesRoot
-    : path.join(os.homedir(), 'Documents', 'EducaPlay', 'Secundaria', 'Ambiente'));
+  (fs.existsSync(repoEpRoot)
+    ? repoEpRoot
+    : fs.existsSync(defaultEpisodesRoot)
+      ? defaultEpisodesRoot
+      : path.join(os.homedir(), 'Documents', 'EducaPlay', 'Secundaria', 'Ambiente'));
 
 export const episodeDir = (code) => path.join(ROOT, 'src', 'episodes', code);
 

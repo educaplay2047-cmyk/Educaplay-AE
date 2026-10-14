@@ -1,0 +1,890 @@
+{
+ "code": "AMB26-04",
+ "generatedBy": "motor/scripts/export-ae.mjs",
+ "episode": {
+  "id": "AMB26-04",
+  "title": "¿Esperar o evacuar?",
+  "series": "Educación Ambiental Integral",
+  "objective": "Fomentar una cultura de prevención y cuidado, incorporando conocimientos y prácticas para reducir riesgos ante una inundación.",
+  "master": "videos/AMB26-04.mp4",
+  "voiceGain": 1,
+  "intervention": 4
+ },
+ "fps": 23.976023976023978,
+ "width": 1920,
+ "height": 1080,
+ "duration": 3136,
+ "master": "assets/AMB26-04.mp4",
+ "reserved": [
+  {
+   "key": "watermark",
+   "rect": [
+    1400,
+    56,
+    470,
+    160
+   ],
+   "from": 0,
+   "to": 3136
+  },
+  {
+   "key": "watermark",
+   "rect": [
+    1400,
+    35,
+    420,
+    140
+   ],
+   "from": 0,
+   "to": 3136
+  },
+  {
+   "key": "placa-nombre",
+   "rect": [
+    79,
+    818,
+    550,
+    110
+   ],
+   "from": 537,
+   "to": 661
+  }
+ ],
+ "theme": {
+  "palette": {
+   "stage": "#22BCA2",
+   "stageAlt": "#1EB499",
+   "stageDeep": "#159C82",
+   "stageLine": "#14A48A",
+   "paper": "#FFFFFF",
+   "paperWarm": "#F7FFFC",
+   "ink": "#0C2B24",
+   "inkSoft": "#2F5B4F",
+   "inkMuted": "#5A7D72",
+   "accent": "#10BA1B",
+   "accentDeep": "#06590D",
+   "cyan": "#24CCF0",
+   "cyanDeep": "#0E7F9B",
+   "yellow": "#F0CC24",
+   "yellowWash": "rgba(240, 204, 36, 0.55)",
+   "magenta": "#E40054",
+   "magentaDeep": "#A8003E"
+  },
+  "captions": {
+   "scrimAlpha": 0.55,
+   "fontSize": 34,
+   "maxWidth": 1360,
+   "pill": {
+    "radius": 20,
+    "padX": 34,
+    "padY": 14,
+    "blur": 10,
+    "lineHeight": 1.32,
+    "maxLines": 2
+   }
+  },
+  "rainbow": [
+   "#E41653",
+   "#FAB817",
+   "#35BAD5",
+   "#3CAA34"
+  ],
+  "fonts": {
+   "heading": "MuseoSans-900",
+   "headingLight": "MuseoSans-300",
+   "body": "MuseoSans-700",
+   "bodyBold": "MuseoSans-900",
+   "bodyLight": "MuseoSans-300"
+  }
+ },
+ "blocks": [
+  {
+   "kind": "titular",
+   "key": "titular-prevencion-peligro",
+   "rank": "didactico",
+   "from": 510,
+   "to": 577,
+   "title": "La prevención comienza cuando sabemos reconocer el peligro",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 510,
+     "x": 1304,
+     "y": 216,
+     "width": 560,
+     "height": 200
+    },
+    {
+     "f": 526,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "sticker-identificar-riesgo",
+   "rank": "refuerzo",
+   "from": 577,
+   "to": 730,
+   "src": "assets/2.png",
+   "transparent": true,
+   "carga": "baja",
+   "side": "left",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 577,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 300
+    }
+   ]
+  },
+  {
+   "kind": "video",
+   "key": "video-lluvias-torrenciales",
+   "rank": "refuerzo",
+   "from": 730,
+   "to": 929,
+   "src": "assets/3.mov",
+   "carga": "media",
+   "side": "right",
+   "align": "center",
+   "boxes": [
+    {
+     "f": 730,
+     "x": 1424,
+     "y": 317,
+     "width": 440,
+     "height": 420
+    }
+   ]
+  },
+  {
+   "kind": "video",
+   "key": "video-desagues-funcionando",
+   "rank": "refuerzo",
+   "from": 929,
+   "to": 1098,
+   "src": "assets/4.mp4",
+   "carga": "media",
+   "side": "right",
+   "align": "center",
+   "boxes": [
+    {
+     "f": 929,
+     "x": 1432,
+     "y": 317,
+     "width": 432,
+     "height": 420
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-cortar-luz",
+   "rank": "didactico",
+   "from": 1098,
+   "to": 1246,
+   "title": "Cortar la luz",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 1098,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-tablero-calzado",
+   "rank": "refuerzo",
+   "from": 1098,
+   "to": 1246,
+   "src": "assets/5.jfif",
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 1098,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-subir-objetos",
+   "rank": "didactico",
+   "from": 1246,
+   "to": 1435,
+   "title": "Subir objetos de valor",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 1246,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-electrodomesticos-altos",
+   "rank": "refuerzo",
+   "from": 1246,
+   "to": 1435,
+   "src": "assets/6.jfif",
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 1246,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-peligro",
+   "rank": "didactico",
+   "from": 1435,
+   "to": 1649,
+   "title": "Peligro",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 1435,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "sticker-peligro-tomacorrientes",
+   "rank": "didactico",
+   "from": 1435,
+   "to": 1649,
+   "src": "assets/7.png",
+   "transparent": true,
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 1435,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-zonas-riberenas",
+   "rank": "didactico",
+   "from": 1649,
+   "to": 1846,
+   "title": "Evacuación de zonas ribereñas",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 1649,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-crecida-rio",
+   "rank": "refuerzo",
+   "from": 1649,
+   "to": 1846,
+   "src": "assets/8.jpg",
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 1649,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-evacua-rapido",
+   "rank": "didactico",
+   "from": 1846,
+   "to": 2291,
+   "title": "Evacuá rápido, con calma y sin usar vehículos",
+   "side": "opposite",
+   "align": "top",
+   "boxes": [
+    {
+     "f": 1846,
+     "x": 56,
+     "y": 56,
+     "width": 560,
+     "height": 200
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-mascotas-correa",
+   "rank": "refuerzo",
+   "from": 2008,
+   "to": 2224,
+   "src": "assets/9.jfif",
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 2008,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-centro-evacuacion",
+   "rank": "refuerzo",
+   "from": 2224,
+   "to": 2291,
+   "src": "assets/10.png",
+   "carga": "media",
+   "side": "opposite",
+   "align": "bottom",
+   "boxes": [
+    {
+     "f": 2224,
+     "x": 56,
+     "y": 458,
+     "width": 560,
+     "height": 380
+    }
+   ]
+  },
+  {
+   "kind": "photo",
+   "key": "foto-calles-anegadas",
+   "rank": "didactico",
+   "from": 2291,
+   "to": 2509,
+   "src": "assets/11.png",
+   "carga": "media",
+   "side": "right",
+   "align": "center",
+   "boxes": [
+    {
+     "f": 2291,
+     "x": 1472,
+     "y": 317,
+     "width": 392,
+     "height": 420
+    }
+   ]
+  },
+  {
+   "kind": "titular",
+   "key": "titular-telefonos-emergencia",
+   "rank": "didactico",
+   "from": 2509,
+   "to": 2710,
+   "kicker": "TELÉFONOS IMPORTANTES",
+   "title": "103 Defensa Civil · 100 Bomberos",
+   "side": "opposite",
+   "align": "center",
+   "boxes": [
+    {
+     "f": 2509,
+     "x": 56,
+     "y": 327,
+     "width": 560,
+     "height": 240
+    }
+   ]
+  }
+ ],
+ "captions": [
+  {
+   "from": 0,
+   "to": 182,
+   "text": "Como correntinos sabemos que por nuestra",
+   "box": {
+    "f": 0,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 0,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 182,
+   "to": 345,
+   "text": "geografía y clima estamos expuestos a las inundaciones y",
+   "box": {
+    "f": 182,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 182,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 345,
+   "to": 510,
+   "text": "cuando el agua empieza a entrar a la casa surge la duda sobre si conviene esperar a que baje o",
+   "box": {
+    "f": 345,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 345,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 510,
+   "to": 673,
+   "text": "evacuar. Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar",
+   "box": {
+    "f": 510,
+    "x": 280,
+    "y": 632,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 510,
+     "x": 280,
+     "y": 632,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 673,
+   "to": 835,
+   "text": "a tiempo y sin pánico. Por lluvias torrenciales el agua suele subir rápido.",
+   "box": {
+    "f": 673,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 673,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 835,
+   "to": 1009,
+   "text": "Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente",
+   "box": {
+    "f": 835,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 835,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1009,
+   "to": 1169,
+   "text": "podés quedarte en ella. Pero de todas maneras cortá la luz desde el tablero principal",
+   "box": {
+    "f": 1009,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1009,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1169,
+   "to": 1331,
+   "text": "siempre con calzado de goma y manos secas y subí los electrodomésticos y objetos de valor",
+   "box": {
+    "f": 1169,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1169,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1331,
+   "to": 1489,
+   "text": "a lugares altos. Sin embargo, si el nivel sigue subiendo y el agua se acerca a los",
+   "box": {
+    "f": 1331,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1331,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1489,
+   "to": 1588,
+   "text": "tomacorrientes, el peligro es real y tenés que abandonar la casa.",
+   "box": {
+    "f": 1489,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1489,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1588,
+   "to": 1752,
+   "text": "Lo mismo si vivís cerca de un río o arroyo donde las crecidas son prolongadas y requieren",
+   "box": {
+    "f": 1588,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1588,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1752,
+   "to": 1841,
+   "text": "evacuar con anticipación hacia un lugar seguro.",
+   "box": {
+    "f": 1752,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1752,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 1841,
+   "to": 2008,
+   "text": "Si Defensa Civil ordena evacuar, no te demores en hacerlo.",
+   "box": {
+    "f": 1841,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 1841,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2008,
+   "to": 2146,
+   "text": "Priorizá a niños, adultos mayores o personas con movilidad reducida y no olvides a tus mascotas.",
+   "box": {
+    "f": 2008,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2008,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2146,
+   "to": 2290,
+   "text": "Llevalas con correa o transportadora.",
+   "box": {
+    "f": 2146,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2146,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2290,
+   "to": 2458,
+   "text": "Salí caminando hacia el centro de evacuación indicado. Jamás intentes cruzar calles anegadas en auto,",
+   "box": {
+    "f": 2290,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2290,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2458,
+   "to": 2614,
+   "text": "moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunicate inmediatamente",
+   "box": {
+    "f": 2458,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2458,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2614,
+   "to": 2710,
+   "text": "con Defensa Civil al 103 o con el 100 de Bomberos.",
+   "box": {
+    "f": 2614,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2614,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2710,
+   "to": 2851,
+   "text": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+   "box": {
+    "f": 2710,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2710,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  },
+  {
+   "from": 2852,
+   "to": 2947,
+   "text": "¡Compartí esta información para cuidarnos entre todos!",
+   "box": {
+    "f": 2852,
+    "x": 280,
+    "y": 838,
+    "width": 1360,
+    "height": 178
+   },
+   "boxes": [
+    {
+     "f": 2852,
+     "x": 280,
+     "y": 838,
+     "width": 1360,
+     "height": 178
+    }
+   ]
+  }
+ ],
+ "fontsRequired": [
+  "Museo-300",
+  "Museo-700",
+  "MuseoSansRounded-300",
+  "MuseoSansRounded-500",
+  "MuseoSansRounded-700",
+  "MuseoSansRounded-900",
+  "MuseoSansRounded-1000"
+ ],
+ "masterInfo": {
+  "bytes": 92456185,
+  "width": 1920,
+  "height": 1080,
+  "fps": 23.976,
+  "frames": 3136
+ },
+ "moves": [
+  {
+   "key": "x0",
+   "from": 2945,
+   "to": 3069
+  }
+ ]
+}

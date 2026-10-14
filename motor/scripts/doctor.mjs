@@ -34,7 +34,7 @@ const fail = (area, msg) => results.push({s: '✗', area, msg});
 
 const has = (cmd, args = ['-version']) => {
   const r = spawnSync(cmd, args, {encoding: 'utf8', shell: WIN});
-  return r.status === 0 ? (r.stdout || r.stderr).split('\n')[0].trim() : null;
+  return r.status === 0 ? (r.stdout || r.stderr).trim().split('\n')[0].trim() : null;
 };
 
 // ── fuentes: nombre PostScript leído de la tabla `name` de cada archivo ──────
@@ -175,7 +175,7 @@ const main = () => {
   if (fs.existsSync(model)) ok('modelo Whisper', path.relative(REPO, model));
   else warn('modelo Whisper', 'no está en motor/models: sólo hace falta para npm run nuevo');
 
-  const eol = git('config', '--get', 'core.autocrlf').stdout.trim();
+  const eol = (git('config', '--get', 'core.autocrlf').stdout ?? '').trim();
   if (fs.existsSync(path.join(REPO, '.gitattributes'))) ok('fin de línea', '.gitattributes fija LF en los archivos del repo');
   else if (eol === 'true') warn('fin de línea', 'core.autocrlf=true sin .gitattributes: los archivos generados pueden aparecer como modificados');
 
@@ -183,12 +183,13 @@ const main = () => {
   if (code) {
     const epDir = path.join(ROOT, 'src', 'episodes', code);
     if (!fs.existsSync(path.join(epDir, 'data.ts'))) {
-      fail(code, `no existe motor/src/episodes/${code}/data.ts en esta rama (${git('branch', '--show-current').stdout.trim()}). ¿Está mezclado el PR del episodio?`);
+      const br = (git('branch', '--show-current').stdout ?? '').trim();
+      fail(code, `no existe motor/src/episodes/${code}/data.ts en esta rama (${br}). ¿Está mezclado el PR del episodio?`);
     } else ok(code, 'data.ts presente');
 
     // Archivos generados: tienen que ser los aprobados (los del commit).
     const gen = ['track.ts', 'track.frames.json', 'cues.ts', 'captions.ts', 'words.json', 'escaleta.json'];
-    const st = git('status', '--porcelain', '--', ...gen.map((g) => path.join('motor', 'src', 'episodes', code, g))).stdout.trim();
+    const st = (git('status', '--porcelain', '--', ...gen.map((g) => path.join('motor', 'src', 'episodes', code, g))).stdout ?? '').trim();
     if (st) {
       fail(code, 'los archivos MEDIDOS cambiaron respecto de lo aprobado (se volvió a correr nuevo/prep en esta máquina):\n' +
         st.split('\n').map((l) => '      ' + l).join('\n') +
@@ -226,7 +227,7 @@ const main = () => {
         .filter((a) => !fs.existsSync(path.join(REPO, 'episodios', code, a)));
       if (!fs.existsSync(assets) || faltan.length) warn(code, `faltan ${faltan.length} assets en episodios/${code}/ — corré npm run export:ae -- ${code}`);
       else ok(code, 'assets del manifiesto presentes');
-      const md = git('diff', '--stat', '--', `episodios/${code}/manifest.json`).stdout.trim();
+      const md = (git('diff', '--stat', '--', `episodios/${code}/manifest.json`).stdout ?? '').trim();
       if (md) warn(code, 'el manifiesto de esta máquina difiere del aprobado (git diff episodios/' + code + '/manifest.json): revisá cajas y subtítulos antes de armar');
     }
   }

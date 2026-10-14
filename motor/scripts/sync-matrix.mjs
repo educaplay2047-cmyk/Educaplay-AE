@@ -116,6 +116,8 @@ export const generateSyncMatrix = (code, customDir = null) => {
         duration_frames: endFrame - startFrame,
         dialogo_escaleta: sec.locucion || sec.dialogo || '—',
         dialogo_real: transcriptText || sec.locucion || '—',
+        copia_fiel_escaleta: true,
+        fuente_subtitulos: 'escaleta',
         diferencias_detectadas: false,
         diferencias_detalle: null,
         subtitulos_coordinados: secWords.length ? [{
@@ -126,7 +128,8 @@ export const generateSyncMatrix = (code, customDir = null) => {
           out_sec: endSec,
           in_frame: startFrame,
           out_frame: endFrame,
-          fuente_seleccionada: 'real_con_puntuacion',
+          fuente_seleccionada: 'escaleta',
+          copia_fiel_escaleta: true,
           corregido_manual: null
         }] : [],
         titular_detalle: {
@@ -137,21 +140,46 @@ export const generateSyncMatrix = (code, customDir = null) => {
           recurso_asociado: null,
           coexistencia: sec.titular ? 'Titular oficial pautado en escaleta' : 'Sin titular pautado'
         },
-        recursos_auditados: (sec.recursos || []).map(r => ({
-          nombre_escaleta: r,
-          archivo: r,
-          ruta: `RECURSOS/${r}`,
-          formato: path.extname(r).toUpperCase(),
-          peso: '—',
-          estado: 'AUDITAR_EN_DISCO',
-          alerta: null,
-          start_frame: startFrame,
-          end_frame: endFrame,
-          slot: 'L_TOP',
-          carga: 'baja',
-          transparent: /\.(png|gif)$/i.test(r),
-          rank: 'refuerzo'
-        })),
+        recursos_auditados: (sec.recursos || []).flatMap(r => {
+          const rawStr = (typeof r === 'string' ? r : (r.desc || r.raw || '')).trim();
+          const items = rawStr.split(/\s+/).filter(Boolean);
+          const recDir = path.join(targetWorkDir, 'RECURSOS');
+          const pubDir = path.join(ROOT, 'public', code);
+          return items.map(itemName => {
+            let foundFile = itemName;
+            for (const d of [pubDir, recDir]) {
+              if (fs.existsSync(d)) {
+                const matches = fs.readdirSync(d).filter(f => f === itemName || f.startsWith(itemName + '.'));
+                if (matches.length) { foundFile = matches[0]; break; }
+              }
+            }
+            const ext = path.extname(foundFile).toUpperCase();
+            const filePath = fs.existsSync(path.join(recDir, foundFile))
+              ? path.join(recDir, foundFile)
+              : (fs.existsSync(path.join(pubDir, foundFile)) ? path.join(pubDir, foundFile) : null);
+            let sizeStr = '—';
+            if (filePath && fs.existsSync(filePath)) {
+              const sz = fs.statSync(filePath).size;
+              sizeStr = sz > 1024 * 1024 ? `${(sz / (1024 * 1024)).toFixed(1)} MB` : `${(sz / 1024).toFixed(0)} KB`;
+            }
+            const isTrans = /\.(png|gif)$/i.test(foundFile);
+            return {
+              nombre_escaleta: itemName,
+              archivo: foundFile,
+              ruta: `RECURSOS/${foundFile}`,
+              formato: ext || '—',
+              peso: sizeStr,
+              estado: filePath ? 'AUDITADO_EN_DISCO' : 'AUDITAR_EN_DISCO',
+              alerta: null,
+              start_frame: startFrame,
+              end_frame: endFrame,
+              slot: 'L_TOP',
+              carga: isTrans ? 'baja' : 'media',
+              transparent: isTrans,
+              rank: 'refuerzo'
+            };
+          });
+        }),
         propuesta_vacia: {
           permitida: false,
           motivo: 'Cobertura estándar',
@@ -361,12 +389,19 @@ function renderHtmlDashboard(code, data, targetWorkDir, outputEpDir) {
   </div>
 
   <section class="table-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: #FFF; padding: 12px 18px; border: 1px solid var(--border); border-radius: 10px;">
+      <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #166534; cursor: pointer;">
+        <input type="checkbox" id="chk_global_escaleta" checked onchange="toggleAllFielEscaleta(this.checked)">
+        <span>☑ Subtítulos: Copia fiel de escaleta en todas las filas (Predeterminado por defecto)</span>
+      </label>
+      <span style="font-size: 12px; color: var(--ink-muted);">Los subtítulos siguen al pie de la letra lo expuesto en la escaleta oficial, sincronizados con la locución.</span>
+    </div>
     <table class="matrix-table">
       <thead>
         <tr>
           <th style="width: 70px;">Fila</th>
           <th style="width: 140px;">Timing (s/f)</th>
-          <th>Diálogo (Escaleta vs Whisper)</th>
+          <th>Diálogo y Subtítulo (Copia Fiel Escaleta vs Whisper)</th>
           <th style="width: 240px;">Titular Pautado</th>
           <th style="width: 260px;">Recursos & Gráficos</th>
           <th style="width: 180px;">Encuadre & Slot</th>
@@ -381,9 +416,18 @@ function renderHtmlDashboard(code, data, targetWorkDir, outputEpDir) {
             <span style="font-size: 11px; color: var(--ink-muted);">f${r.start_frame} – f${r.end_frame} (${r.duration_frames}f)</span>
           </td>
           <td>
-            <div style="margin-bottom: 6px;"><strong style="font-size: 11px; color: var(--ink-muted); text-transform: uppercase;">Escaleta:</strong><br>${r.dialogo_escaleta}</div>
-            <div><strong style="font-size: 11px; color: var(--ink-muted); text-transform: uppercase;">Whisper (Real):</strong><br>${r.dialogo_real}</div>
-            ${r.diferencias_detectadas ? `<div class="diff-box">🔴 <strong>Discrepancia:</strong> ${r.diferencias_detalle || 'Diferencia de locución detectada'}</div>` : ''}
+            <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+                <input type="checkbox" id="chk_fiel_${r.row}" checked onchange="toggleFielEscaleta(${r.row}, this.checked)">
+                <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+              </label>
+              <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+                Subtítulo fiel al guion institucional pautado, sincronizado frame-accurate con la locución.
+              </div>
+            </div>
+            <div style="margin-bottom: 6px;"><strong style="font-size: 11px; color: #047857; text-transform: uppercase;">📄 Escaleta (Oficial · Copia Fiel):</strong><br>${r.dialogo_escaleta}</div>
+            <div><strong style="font-size: 11px; color: var(--ink-muted); text-transform: uppercase;">🎙️ Whisper (Audio Real Máster):</strong><br>${r.dialogo_real}</div>
+            ${r.diferencias_detectadas ? `<div class="diff-box">🔴 <strong>Discrepancia detectada:</strong> ${r.diferencias_detalle || 'Diferencia de locución detectada'} (Preservando texto oficial de escaleta)</div>` : ''}
           </td>
           <td>
             <div class="titular-kicker">${r.titular_detalle?.kicker || '—'}</div>
@@ -411,7 +455,8 @@ function renderHtmlDashboard(code, data, targetWorkDir, outputEpDir) {
     <div>
       <strong>Matriz Pre-Edición Oficial</strong> · EducaPlay After Effects
     </div>
-    <div style="display: flex; gap: 12px;">
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button class="btn-secondary" onclick="copyCorrectionsChat()" style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #FFF; font-weight: 700;">📋 Copiar Correcciones al Chat</button>
       <button class="btn-secondary" onclick="exportApprovedJson()">💾 Descargar JSON Aprobado</button>
       <button class="btn-action" onclick="openBuildModal()">🚀 Construir en After Effects</button>
     </div>
@@ -445,6 +490,57 @@ function renderHtmlDashboard(code, data, targetWorkDir, outputEpDir) {
   <script>
     const EPISODE_CODE = "${meta.episodeId}";
     const ROWS_DATA = ${JSON.stringify(rows)};
+
+    function toggleFielEscaleta(rowNum, isChecked) {
+      const r = ROWS_DATA.find(x => x.row === rowNum);
+      if (r) {
+        r.copia_fiel_escaleta = isChecked;
+        r.fuente_subtitulos = isChecked ? 'escaleta' : 'real';
+        if (r.subtitulos_coordinados && r.subtitulos_coordinados[0]) {
+          r.subtitulos_coordinados[0].fuente_seleccionada = isChecked ? 'escaleta' : 'real';
+          r.subtitulos_coordinados[0].copia_fiel_escaleta = isChecked;
+        }
+      }
+    }
+
+    function toggleAllFielEscaleta(isChecked) {
+      ROWS_DATA.forEach(r => {
+        r.copia_fiel_escaleta = isChecked;
+        r.fuente_subtitulos = isChecked ? 'escaleta' : 'real';
+        if (r.subtitulos_coordinados && r.subtitulos_coordinados[0]) {
+          r.subtitulos_coordinados[0].fuente_seleccionada = isChecked ? 'escaleta' : 'real';
+          r.subtitulos_coordinados[0].copia_fiel_escaleta = isChecked;
+        }
+        const chk = document.getElementById('chk_fiel_' + r.row);
+        if (chk) chk.checked = isChecked;
+      });
+    }
+
+    async function copyCorrectionsChat() {
+      let text = '### 📝 Matriz de Sincronización Pre-Edición — ' + EPISODE_CODE + '\\n\\n';
+      text += '**Fecha:** ' + new Date().toLocaleString() + '\\n\\n';
+      ROWS_DATA.forEach(r => {
+        const isFiel = r.copia_fiel_escaleta !== false;
+        text += '#### Fila #' + r.row + ' [' + r.start_time.toFixed(1) + 's – ' + r.end_time.toFixed(1) + 's]\\n';
+        text += '- **Guión / Subtítulo:** ' + (isFiel ? '[☑ Copia fiel de escaleta] ' : '[⚠️ Excepción - Desmarcada copia fiel] ') + (isFiel ? r.dialogo_escaleta : r.dialogo_real) + '\\n';
+        if (r.titular_detalle && r.titular_detalle.texto) {
+          text += '- **Titular:** ' + r.titular_detalle.texto + '\\n';
+        }
+        text += '\\n';
+      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        alert('✓ Correcciones copiadas al portapapeles. Ya podés pegarlas en el chat de Antigravity.');
+      } else {
+        const tArea = document.createElement('textarea');
+        tArea.value = text;
+        document.body.appendChild(tArea);
+        tArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tArea);
+        alert('✓ Correcciones copiadas al portapapeles.');
+      }
+    }
 
     function exportApprovedJson() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ROWS_DATA, null, 2));

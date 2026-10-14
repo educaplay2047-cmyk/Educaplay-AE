@@ -36,18 +36,28 @@ Adobe After Effects Auto-Save/
 # NO se versionan assets/ (videos transcodificados) ni el .aep
 episodios/**/assets/
 episodios/**/*.aep
+episodios/**/CRUDOS/
+episodios/**/RECURSOS/
+episodios/**/RENDER/
+episodios/**/PR/
+episodios/**/*_AME/
+*.docx
+* (1).*
 
 # Videos locales y assets de motor/
-motor/public/videos/
-motor/public/*/*.mp4
-motor/public/*/*.mov
-motor/public/*/*.avi
+motor/public/
+motor/find_cues.mjs
 
 # Scripts y archivos de pruebas temporales
 scratch/
 tmp/
 temp/
 .temp/
+
+# Binarios del sistema y herramientas portables
+tools/bin/
+*.exe
+*.dll
 
 # Modelos y caches de IA
 models/

@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "codigo": "AMB26-04",
+    "titulo": "¿Esperar o evacuar?",
+    "patente": "AMB26_04",
+    "objetivo": "Fomentar una cultura de prevención y cuidado, incorporando conocimientos y prácticas para reducir riesgos  ante una inundación.",
+    "creditos": "Daniel Espinola Ocampo, Amparo Pérez Rueda, Paola Suárez",
+    "enCamara": "Amparo Pérez Rueda",
+    "correcciones": [
+      "1° Corte- Lourdes Correctora- 12/10/26",
+      "Video controlado con guion: sin observaciones. Se puede copiar y pegar."
+    ],
+    "fuente": "..\\episodios\\AMB26-04\\AMB26_04 ESCALETA.docx"
+  },
+  "secciones": [
+    {
+      "fila": 1,
+      "guion": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones.\nY cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "titulares": [],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "1",
+          "raw": "1",
+          "archivos": []
+        }
+      ],
+      "observaciones": "voz en off\nEl recurso 1 va desde que se dice como correntinos hasta evacuar.\nEpígrafe: Youtube - Extreme Storm Brings Record Rain To Argentina's Corrientes As Homes Flooded Out | Watch Video",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 2,
+      "guion": "",
+      "titulares": [
+        "La prevención comienza cuando sabemos reconocer el peligro"
+      ],
+      "recursos": [],
+      "observaciones": "El titular va en pantalla completa durante 2 segundos y letra destacada.",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 3,
+      "guion": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "titulares": [],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "2",
+          "raw": "2",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El recurso 2 va desde saber hasta fundamental",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 4,
+      "guion": "Por lluvias torrenciales, el agua suele subir rápido.\nSi entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.",
+      "titulares": [],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "3 4",
+          "raw": "3 4",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El recurso 3 va desde Por lluvias hasta rápido\nEl recurso 4 va desde los desagües hasta funcionando.",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 5,
+      "guion": "Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "titulares": [
+        "Cortar la luz",
+        "Subir objetos de valor"
+      ],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "5 6",
+          "raw": "5 6",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El titular Cortá la luz y el recurso 5 van desde cortá la luz hasta manos secas.\nEl titular Subir objetos de valor y el recurso 6 van desde y subí hasta altos.",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 6,
+      "guion": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.",
+      "titulares": [
+        "Peligro"
+      ],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "7",
+          "raw": "7",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El titular Peligro y el recurso 7 van desde sigue subiendo hasta abandonar la casa",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 7,
+      "guion": "Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "titulares": [
+        "Evacuación de zonas ribereñas"
+      ],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "8",
+          "raw": "8",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El titular Evacuación de zonas ribereñas y el recurso 8 van desde si vivís hasta seguro",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 8,
+      "guion": "Si Defensa Civil ordena evacuar, no te demores en hacerlo.\nPriorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora.\nSalí caminando hacia el centro de evacuación indicado.",
+      "titulares": [
+        "Evacuá rápido, con calma y sin usar vehículos"
+      ],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "9 10",
+          "raw": "9 10",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El titular Evacuá rápido, con calma y sin usar vehículos, va desde Si Defensa hasta indicado\nEl recurso 9 va desde priorizá hasta transportadora\nEl recurso 10 va desde salí hasta indicado",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 9,
+      "guion": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte.\nSi no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.",
+      "titulares": [
+        "Teléfonos importantes",
+        "103 Defensa Civil",
+        "100 Bomberos"
+      ],
+      "recursos": [
+        {
+          "n": null,
+          "desc": "11",
+          "raw": "11",
+          "archivos": []
+        }
+      ],
+      "observaciones": "El recurso 11 va desde jamás hasta fuerte\nLos titulares Teléfonos importantes 103 de Defensa Civil 100 de Bomberos van desde si no podés hasta bomberos en letra destacada y en lo posible pantalla completa.",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 10,
+      "guion": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "titulares": [],
+      "recursos": [],
+      "observaciones": "",
+      "gatillos": [],
+      "ambiguedades": []
+    },
+    {
+      "fila": 11,
+      "guion": "¡Compartí esta información para cuidarnos entre todos!",
+      "titulares": [],
+      "recursos": [],
+      "observaciones": "",
+      "gatillos": [],
+      "ambiguedades": []
+    }
+  ]
+}

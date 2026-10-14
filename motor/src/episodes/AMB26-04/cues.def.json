@@ -1,0 +1,119 @@
+[
+  {
+    "key": "evacuar",
+    "word": "evacuar"
+  },
+  {
+    "key": "saber",
+    "word": "Saber"
+  },
+  {
+    "key": "fundamental",
+    "word": "fundamental"
+  },
+  {
+    "key": "lluvias",
+    "word": "lluvias"
+  },
+  {
+    "key": "rapido",
+    "word": "rápido"
+  },
+  {
+    "key": "desagues",
+    "word": "desagües"
+  },
+  {
+    "key": "funcionando",
+    "word": "funcionando"
+  },
+  {
+    "key": "corta_luz",
+    "word": "corta"
+  },
+  {
+    "key": "manos_secas",
+    "word": "secas"
+  },
+  {
+    "key": "subi_objetos",
+    "word": "subí"
+  },
+  {
+    "key": "altos",
+    "word": "altos"
+  },
+  {
+    "key": "subiendo",
+    "word": "subiendo"
+  },
+  {
+    "key": "abandonar",
+    "word": "abandonar"
+  },
+  {
+    "key": "vivis_rio",
+    "word": "río"
+  },
+  {
+    "key": "lugar_seguro",
+    "word": "seguro"
+  },
+  {
+    "key": "defensa_ordena",
+    "word": "defensa"
+  },
+  {
+    "key": "prioriza",
+    "word": "Prioriza"
+  },
+  {
+    "key": "mascotas",
+    "word": "mascotas"
+  },
+  {
+    "key": "sali_caminando",
+    "word": "Salí"
+  },
+  {
+    "key": "jamas_cruzar",
+    "word": "Jamás"
+  },
+  {
+    "key": "fuerte",
+    "word": "fuerte"
+  },
+  {
+    "key": "no_podes",
+    "word": "movilizarte"
+  },
+  {
+    "key": "defensa_civil",
+    "word": "defensa",
+    "after": "no_podes"
+  },
+  {
+    "key": "tel_103",
+    "word": "103"
+  },
+  {
+    "key": "tel_100",
+    "word": "100"
+  },
+  {
+    "key": "bomberos",
+    "word": "bomberos"
+  },
+  {
+    "key": "evaluar",
+    "word": "Evaluar"
+  },
+  {
+    "key": "seguridad",
+    "word": "seguridad"
+  },
+  {
+    "key": "comparti",
+    "word": "Compartí"
+  }
+]

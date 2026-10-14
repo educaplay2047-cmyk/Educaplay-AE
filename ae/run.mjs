@@ -32,9 +32,15 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const AE_DIR = path.join(REPO, 'ae');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const topazBin = 'C:\\Program Files\\Topaz Labs LLC\\Topaz Video AI';
-if (fs.existsSync(topazBin) && !process.env.PATH?.includes(topazBin)) {
-  process.env.PATH = topazBin + path.delimiter + (process.env.PATH ?? '');
+const topazBins = [
+  'C:\\Program Files\\Topaz Labs LLC\\Topaz Video',
+  'C:\\Program Files\\Topaz Labs LLC\\Topaz Video AI'
+];
+const toolsBin = path.join(REPO, 'tools', 'bin');
+for (const p of [...topazBins, toolsBin]) {
+  if (fs.existsSync(p) && !process.env.PATH?.includes(p)) {
+    process.env.PATH = p + path.delimiter + (process.env.PATH ?? '');
+  }
 }
 
 const isAERunning = () => {

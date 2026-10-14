@@ -178,6 +178,27 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === 'POST') {
+    if (url === '/api/save' || url === '/api/save-matrix' || url === '/save') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        let matrixData = {};
+        try {
+          if (body) matrixData = JSON.parse(body);
+          fs.mkdirSync(workDir, { recursive: true });
+          fs.writeFileSync(approvedPath, JSON.stringify(matrixData, null, 2), 'utf8');
+          console.log(`[${new Date().toLocaleTimeString()}] ✓ Guardada tabla aprobada en ${approvedPath}`);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({ status: 'ok', message: 'Tabla aprobada guardada en disco.', path: approvedPath }));
+        } catch (e) {
+          console.warn('Error al guardar matriz:', e.message);
+          res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
+          res.end(JSON.stringify({ status: 'error', message: e.message }));
+        }
+      });
+      return;
+    }
+
     if (url === '/api/build-ae' || url === '/api/generate-and-preview' || url === '/generate-and-preview') {
       let body = '';
       req.on('data', chunk => { body += chunk; });

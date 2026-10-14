@@ -9,8 +9,9 @@ Esta regla es de cumplimiento estricto y no negociable para **todos los episodio
 
 ---
 
-## 1. Sincronización Temporal Estricta (Audio vs. Escaleta)
-- **A tiempo exacto con la voz**: Los subtítulos en pantalla deben coincidir **al cuadro exacto (frame-accurate)** con lo que el profesor está pronunciando en la locución y lo pautado en la escaleta.
+## 1. Sincronización Temporal Estricta y Copia Fiel de Escaleta
+- **Copia fiel de la escaleta al pie de la letra por defecto**: Por defecto, y a menos que se indique lo contrario en la matriz de sincronización pre-edición desmarcando la casilla marcable `☑ Copia fiel de escaleta`, los subtítulos deben ser una copia fiel de lo expuesto en la escaleta correspondiente, preservando la redacción curricular oficial.
+- **A tiempo exacto con la voz**: Los subtítulos en pantalla deben sincronizarse **al cuadro exacto (frame-accurate)** con los fonemas y tiempos de entrada y salida de la locución del docente.
 - **Sin desfasajes**: Queda terminantemente prohibido adelantar o retrasar subtítulos respecto del audio. Cada frase o cláusula sintáctica debe entrar en el primer fonema y salir al concluir la palabra final.
 - **División inteligente (Máximo 2 líneas)**: Ningún bloque de subtítulos puede superar las 2 líneas en pantalla. Si una oración es extensa, se divide en cláusulas gramaticales completas, sincronizando cada segmento con su intervalo exacto de voz.
 - **Sin puntos suspensivos**: Prohibido usar puntos suspensivos (`...`) en los subtítulos. Se utilizan comas, puntos o pausas limpias.

@@ -56,13 +56,14 @@ Por cada episodio a producir, el equipo debe generar en la carpeta del capítulo
 
 #### 1.2.2. Requisitos Mandatorios del Tablero de Sincronización
 1. **Cruce Temporal Exacto**: Mapear cada fila de la escaleta contra el audio real del primer corte (`PRIMER CORTE.mp4`), documentando el segundo exacto (`start_time - end_time`) y los números de frame reales a 25 fps (`start_frame - end_frame`).
-2. **Transcripción Fiel, Diferencias de Diálogo (🔴 Resaltado Rojo) y Selector de Subtítulos de 3 Vías**:
-   - Transcribir el discurso real pronunciado por el docente (vía Whisper a nivel palabra).
-   - **Resaltar obligatoriamente en rojo vivo (`#DC2626`)** toda diferencia entre lo escrito en la escaleta y lo dicho en cámara.
-   - Selector interactivo de fuente de subtítulos en cada fila del HTML:
-     * **[ ● ] Guion Escaleta (Recomendado por defecto)**: Marcado por defecto, garantiza coherencia gramatical.
-     * **[ ○ ] Real Grabado (1er Corte)**: Opción para adoptar la transcripción exacta del audio grabado.
-     * **[ ○ ] ✍️ Corrección Manual Personalizada**: Despliega un `<textarea>` editable donde se redacta la versión definitiva.
+2. **Copia Fiel de Escaleta por Defecto, Casilla Marcable y Selector de Subtítulos**:
+   - **Copia fiel al pie de la letra**: Por defecto, los subtítulos deben ser una copia fiel y literal de lo pautado en la escaleta oficial correspondiente, sincronizada al cuadro exacto con el diálogo.
+   - **Casilla marcable obligatoria en cada fila**: Cada tramo incluye una casilla interactiva `[☑] Copia fiel de escaleta (Predeterminado)` activa por defecto.
+   - **Diferencias de diálogo (🔴 Resaltado Rojo)**: Resaltar en rojo vivo (`#DC2626`) toda diferencia entre lo escrito en la escaleta y lo dicho en cámara como advertencia visual.
+   - **Selector de fuente de subtítulos**:
+     * **[ ● ] Guion Escaleta (Predeterminado por defecto)**: Garantiza coherencia gramatical y apego estricto a la escaleta.
+     * **[ ○ ] Real Grabado (Whisper)**: Opción disponible al desmarcar la copia fiel si se desea adoptar la locución literal.
+     * **[ ○ ] ✍️ Corrección Manual Personalizada**: Despliega un `<textarea>` editable donde se redacta una versión libre si se desmarca la copia fiel.
 3. **Columna Específica de Titulares de la Escaleta Original**: Registrar el texto literal de cada titular pautado en la escaleta, con su código de tiempo y frame exacto de entrada y salida, identificando el recurso gráfico asociado para evitar colisiones.
 4. **Columna de Propuestas Exclusiva para Filas Vacías (con Casilla Marcable)**:
    - **Regla anti-saturación**: La columna de propuestas **SOLO puede contener sugerencias en las filas donde NO existan recursos ni titulares en la escaleta original** (vacíos visuales del guion). Si la fila ya cuenta con titular o recurso, la columna debe permanecer limpia (`—`).

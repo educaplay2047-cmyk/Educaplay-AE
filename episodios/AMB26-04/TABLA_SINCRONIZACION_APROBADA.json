@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "episodeId": "AMB26-04",
+    "patente": "AMB26_04",
+    "subject": "Educación Ambiental Integral",
+    "title": "¿Esperar o evacuar?",
+    "objective": "Fomentar una cultura de prevención y cuidado, incorporando conocimientos y prácticas para reducir riesgos ante una inundación.",
+    "presenter": "Prof. Amparo Pérez Rueda",
+    "presenterPlaca": "Prof. Amparo Pérez Rueda",
+    "fps": 23.976023976023978,
+    "masterVideo": "videos/AMB26-04.mp4",
+    "duration": 130.8,
+    "totalFrames": 3136,
+    "lowerThird": {
+      "inFrame": 537,
+      "outFrame": 661,
+      "inSec": 22.4,
+      "outSec": 27.6,
+      "text": "Prof. Amparo Pérez Rueda",
+      "zone": [
+        79,
+        818,
+        550,
+        110
+      ],
+      "evasionRequired": true,
+      "captionElevatedBottom": "270px"
+    },
+    "watermark": {
+      "x": 1400,
+      "y": 35,
+      "w": 420,
+      "h": 140,
+      "text": "Educaplay ED. AMBIENTAL"
+    }
+  },
+  "approvedAt": "2026-10-13T16:02:59.423Z",
+  "rows": [
+    {
+      "row": 10,
+      "start_frame": 2710,
+      "end_frame": 2852,
+      "start_time": 113.03,
+      "end_time": 118.95,
+      "dialogo_escaleta": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "dialogo_real": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "subSource": "escaleta",
+      "customText": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "titularEnabled": false,
+      "titularKicker": "SÍNTESIS",
+      "titularTitle": "Evaluar la situación y responder a tiempo garantiza tu seguridad",
+      "recursos": [],
+      "notes": "No mostrar TITULARES, no tiene nada este bloque"
+    },
+    {
+      "row": 11,
+      "start_frame": 2852,
+      "end_frame": 2945,
+      "start_time": 118.95,
+      "end_time": 122.92,
+      "dialogo_escaleta": "¡Compartí esta información para cuidarnos entre todos!",
+      "dialogo_real": "Compartí esta información para cuidarnos entre todos.",
+      "subSource": "escaleta",
+      "customText": "¡Compartí esta información para cuidarnos entre todos!",
+      "titularEnabled": false,
+      "titularKicker": "COMUNIDAD",
+      "titularTitle": "¡Compartí esta información para cuidarnos entre todos!",
+      "recursos": [],
+      "notes": "No mostrar TITULARES, no tiene nada este bloque"
+    },
+    {
+      "row": 1,
+      "start_frame": 0,
+      "end_frame": 510,
+      "start_time": 0,
+      "end_time": 21.27,
+      "dialogo_escaleta": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones.\nY cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "dialogo_real": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones y cuando el agua empieza a entrar a la casa surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "subSource": "escaleta",
+      "customText": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones. Y cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "titularEnabled": false,
+      "titularKicker": "",
+      "titularTitle": "",
+      "recursos": [
+        {
+          "originalArchivo": "1.mp4",
+          "archivo": "1.mp4",
+          "style": "bleed"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "row": 2,
+      "start_frame": 510,
+      "end_frame": 577,
+      "start_time": 21.27,
+      "end_time": 24.07,
+      "dialogo_escaleta": "— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —",
+      "dialogo_real": "[Pausa rítmica entre 'evacuar' y 'Saber identificar']",
+      "subSource": "escaleta",
+      "customText": "— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —",
+      "titularEnabled": true,
+      "titularKicker": "PREVENCIÓN",
+      "titularTitle": "La prevención comienza cuando sabemos reconocer el peligro",
+      "recursos": [],
+      "notes": "Eliminar Categoria PREVENCIÓN"
+    },
+    {
+      "row": 3,
+      "start_frame": 528,
+      "end_frame": 730,
+      "start_time": 22.02,
+      "end_time": 30.45,
+      "dialogo_escaleta": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "dialogo_real": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "subSource": "escaleta",
+      "customText": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "titularEnabled": false,
+      "titularKicker": "",
+      "titularTitle": "",
+      "recursos": [
+        {
+          "originalArchivo": "2.png",
+          "archivo": "2.png",
+          "style": "sticker"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "row": 4,
+      "start_frame": 730,
+      "end_frame": 1098,
+      "start_time": 30.45,
+      "end_time": 45.8,
+      "dialogo_escaleta": "Por lluvias torrenciales, el agua suele subir rápido.\nSi entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.",
+      "dialogo_real": "Por lluvias torrenciales el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente podés quedarte en ella.",
+      "subSource": "escaleta",
+      "customText": "Por lluvias torrenciales, el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.",
+      "titularEnabled": false,
+      "titularKicker": "",
+      "titularTitle": "",
+      "recursos": [
+        {
+          "originalArchivo": "3.mov",
+          "archivo": "3.mov",
+          "style": "card"
+        },
+        {
+          "originalArchivo": "4.mp4",
+          "archivo": "4.mp4",
+          "style": "card"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "row": 5,
+      "start_frame": 1098,
+      "end_frame": 1435,
+      "start_time": 45.8,
+      "end_time": 59.85,
+      "dialogo_escaleta": "Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "dialogo_real": "Pero de todas maneras corta la luz desde el tablero principal siempre con calzado de goma y manos secas y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "subSource": "escaleta",
+      "customText": "Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "titularEnabled": true,
+      "titularKicker": "MEDIDAS PREVENTIVAS",
+      "titularTitle": "Cortar la luz · Subir objetos de valor",
+      "recursos": [
+        {
+          "originalArchivo": "5.jfif",
+          "archivo": "5.jfif",
+          "style": "card"
+        },
+        {
+          "originalArchivo": "6.jfif",
+          "archivo": "6.jfif",
+          "style": "card"
+        }
+      ],
+      "notes": "Eliminar Categoria MEDIDAS PREVENTIVAS"
+    },
+    {
+      "row": 6,
+      "start_frame": 1435,
+      "end_frame": 1649,
+      "start_time": 59.85,
+      "end_time": 68.78,
+      "dialogo_escaleta": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.",
+      "dialogo_real": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro es real y tenés que abandonar la casa.",
+      "subSource": "escaleta",
+      "customText": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.",
+      "titularEnabled": true,
+      "titularKicker": "CRITERIO DE EVACUACIÓN",
+      "titularTitle": "Peligro",
+      "recursos": [
+        {
+          "originalArchivo": "7.png",
+          "archivo": "7.png",
+          "style": "sticker"
+        }
+      ],
+      "notes": "Eliminar categoria CRITERIO DE EVACUACIÓN"
+    },
+    {
+      "row": 7,
+      "start_frame": 1649,
+      "end_frame": 1846,
+      "start_time": 68.78,
+      "end_time": 76.99,
+      "dialogo_escaleta": "Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "dialogo_real": "Lo mismo si vivís cerca de un río o arroyo donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "subSource": "escaleta",
+      "customText": "Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "titularEnabled": true,
+      "titularKicker": "CRECIDAS PROLONGADAS",
+      "titularTitle": "Evacuación de zonas ribereñas",
+      "recursos": [
+        {
+          "originalArchivo": "8.jpg",
+          "archivo": "8.jpg",
+          "style": "card"
+        }
+      ],
+      "notes": "Eliminar categoria CRECIDAS PROLONGADAS"
+    },
+    {
+      "row": 8,
+      "start_frame": 1846,
+      "end_frame": 2291,
+      "start_time": 76.99,
+      "end_time": 95.55,
+      "dialogo_escaleta": "Si Defensa Civil ordena evacuar, no te demores en hacerlo.\nPriorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora.\nSalí caminando hacia el centro de evacuación indicado.",
+      "dialogo_real": "Si defensa civil ordena evacuar, no te demores en hacerlo. Prioriza a niños, adultos mayores o personas con movilidad reducida y no olvides a tus mascotas. Llévalas con correa o transportadores. Salí caminando hacia el centro de evacuación indicado.",
+      "subSource": "escaleta",
+      "customText": "Si Defensa Civil ordena evacuar, no te demores en hacerlo. Priorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora. Salí caminando hacia el centro de evacuación indicado.",
+      "titularEnabled": true,
+      "titularKicker": "ORDEN DE EVACUACIÓN",
+      "titularTitle": "Evacuá rápido, con calma y sin usar vehículos",
+      "recursos": [
+        {
+          "originalArchivo": "9.jfif",
+          "archivo": "9.jfif",
+          "style": "card"
+        },
+        {
+          "originalArchivo": "10.png",
+          "archivo": "10.png",
+          "style": "card"
+        }
+      ],
+      "notes": "Eliminar categoria  ORDEN DE EVACUACIÓN"
+    },
+    {
+      "row": 9,
+      "start_frame": 2291,
+      "end_frame": 2710,
+      "start_time": 95.55,
+      "end_time": 113.03,
+      "dialogo_escaleta": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte.\nSi no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.",
+      "dialogo_real": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunícate inmediatamente con defensa civil al 103 o con el 100 de bomberos.",
+      "subSource": "escaleta",
+      "customText": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.",
+      "titularEnabled": true,
+      "titularKicker": "TELÉFONOS IMPORTANTES",
+      "titularTitle": "103 Defensa Civil · 100 Bomberos",
+      "recursos": [
+        {
+          "originalArchivo": "11.png",
+          "archivo": "11.png",
+          "style": "card"
+        }
+      ],
+      "notes": ""
+    }
+  ]
+}

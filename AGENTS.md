@@ -39,6 +39,7 @@ npm run publicar -- <CODE>                    # todo lo anterior y, sólo si pas
 - **La docente decide el encuadre.** Las cajas de los gráficos las resuelve el motor según dónde
   está parada. Nunca escribas coordenadas a mano en `data.ts` ni en el `.jsx`: si falta algo, falta
   un parámetro del slot.
+- **Entrega obligatoria de la tabla de sincronización editable.** Antes de avanzar hacia la construcción o modificación del `.aep` en After Effects, es estrictamente obligatorio generar y entregar la tabla de sincronización interactiva y editable (`TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html`) con botón obligatorio para copiar las correcciones al portapapeles y enviarlas por el chat, para que el usuario pueda revisar y marcar cambios en guión, titulares y recursos.
 - **Los nombres de las personas no salen nunca de la escaleta.** Se leen de la placa quemada en el
   máster y se confirman con Isaac.
 - **No se editan archivos generados** (`track.ts`, `cues.ts`, `captions.ts`, `words.json`,
@@ -46,8 +47,7 @@ npm run publicar -- <CODE>                    # todo lo anterior y, sólo si pas
   `cues.def.json` + `npm run cues`).
 - **Nada se publica sin chequeo.** `npm run publicar` corre los verificadores y el armado en AE, y
   no toca git si algo falla. No hagas commit o push a mano para esquivarlo.
-- **Subtítulos:** sin resaltado por palabra, pastilla canónica, máximo dos líneas. Ver
-  `docs/SUBTITULOS.md`.
+- **Subtítulos:** copia fiel de la escaleta correspondiente por defecto, siguiendo al pie de la letra lo pautado y sincronizados temporalmente con el diálogo, salvo que se desmarque la casilla marcable de excepción en la matriz de sincronización. Sin resaltado por palabra, pastilla canónica, máximo dos líneas. Ver `docs/SUBTITULOS.md`.
 - **Medios fuera del repo.** Másters, recursos, fuentes, `.aep` y el modelo de Whisper viven en
   disco local. Las entregas de episodios están en `EDUCAPLAY_EPISODES` (por defecto
   `~/Documents/EducaPlay/Secundaria /Ambiente`, **con un espacio antes de la barra**: entrecomillá

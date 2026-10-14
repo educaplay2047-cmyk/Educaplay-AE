@@ -1,0 +1,553 @@
+{
+  "meta": {
+    "episodeId": "AMB26-04",
+    "patente": "AMB26_04",
+    "subject": "Educación Ambiental Integral",
+    "title": "¿Esperar o evacuar?",
+    "objective": "Fomentar una cultura de prevención y cuidado, incorporando conocimientos y prácticas para reducir riesgos ante una inundación.",
+    "presenter": "Prof. Amparo Pérez Rueda",
+    "presenterPlaca": "Prof. Amparo Pérez Rueda",
+    "fps": 23.976023976023978,
+    "masterVideo": "videos/AMB26-04.mp4",
+    "duration": 130.8,
+    "totalFrames": 3136,
+    "lowerThird": {
+      "inFrame": 537,
+      "outFrame": 661,
+      "inSec": 22.4,
+      "outSec": 27.6,
+      "text": "Prof. Amparo Pérez Rueda",
+      "zone": [
+        79,
+        818,
+        550,
+        110
+      ],
+      "evasionRequired": true,
+      "captionElevatedBottom": "270px"
+    },
+    "watermark": {
+      "x": 1400,
+      "y": 35,
+      "w": 420,
+      "h": 140,
+      "text": "Educaplay ED. AMBIENTAL"
+    }
+  },
+  "rows": [
+    {
+      "row": 1,
+      "start_time": 0,
+      "end_time": 21.27,
+      "start_frame": 0,
+      "end_frame": 510,
+      "duration_sec": 21.27,
+      "duration_frames": 510,
+      "dialogo_escaleta": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones.\nY cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "dialogo_real": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones y cuando el agua empieza a entrar a la casa surge la duda sobre si conviene esperar a que baje o evacuar.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 0,
+        "end_frame": 510,
+        "kicker": null,
+        "recurso_asociado": "1.mp4",
+        "coexistencia": "Sin titular pautado — Cobertura documental a cuadro completo"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "1",
+          "archivo": "1.mp4",
+          "ruta": "RECURSOS/1.mp4",
+          "formato": "MP4",
+          "peso": "30.2 MB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 0,
+          "end_frame": 510,
+          "slot": "FULL_BLEED",
+          "carga": "alta",
+          "transparent": false,
+          "rank": "didactico",
+          "epigrafe": "Youtube - Extreme Storm Brings Record Rain To Argentina's Corrientes As Homes Flooded Out | Watch Video"
+        }
+      ],
+      "encuadre": {
+        "real": "None / Plató sin docente (Voz en off)",
+        "nivel_atencion": "Alta / Evidencia Documental",
+        "norma_requerida": "None",
+        "coincide": true,
+        "zona_libre": "Pantalla completa (0–526)",
+        "slot_asignado": "FULL_BLEED"
+      }
+    },
+    {
+      "row": 2,
+      "start_time": 21.27,
+      "end_time": 24.07,
+      "start_frame": 510,
+      "end_frame": 577,
+      "duration_sec": 2.8,
+      "duration_frames": 67,
+      "dialogo_escaleta": "— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —",
+      "dialogo_real": "[Pausa rítmica entre 'evacuar' y 'Saber identificar']",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "La prevención comienza cuando sabemos reconocer el peligro",
+        "start_frame": 510,
+        "end_frame": 577,
+        "kicker": "PREVENCIÓN",
+        "recurso_asociado": null,
+        "coexistencia": "Titular oficial pautado en escaleta — Entrada destacada en slot superior para no pisar placa quemada"
+      },
+      "recursos_auditados": [],
+      "encuadre": {
+        "real": "Center / Entrada de docente f526 y placa f537",
+        "nivel_atencion": "Alta / Apertura conceptual",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slot superior libre [y: 190–420]",
+        "slot_asignado": "L_TOP"
+      }
+    },
+    {
+      "row": 3,
+      "start_time": 22.02,
+      "end_time": 30.45,
+      "start_frame": 528,
+      "end_frame": 730,
+      "duration_sec": 8.43,
+      "duration_frames": 202,
+      "dialogo_escaleta": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "dialogo_real": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 528,
+        "end_frame": 730,
+        "kicker": null,
+        "recurso_asociado": "2.png",
+        "coexistencia": "Sin titular pautado"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "2",
+          "archivo": "2.png",
+          "ruta": "RECURSOS/2.png",
+          "formato": "PNG (RGBA)",
+          "peso": "42 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 577,
+          "end_frame": 730,
+          "slot": "L_TOP_LEFT",
+          "carga": "baja",
+          "transparent": true,
+          "rank": "refuerzo",
+          "epigrafe": null
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada [x: 712–1360]",
+        "nivel_atencion": "Baja / Refuerzo",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Banda izquierda [x: 56–616, y: 190–490]",
+        "slot_asignado": "L_TOP_LEFT"
+      }
+    },
+    {
+      "row": 4,
+      "start_time": 30.45,
+      "end_time": 45.8,
+      "start_frame": 730,
+      "end_frame": 1098,
+      "duration_sec": 15.35,
+      "duration_frames": 368,
+      "dialogo_escaleta": "Por lluvias torrenciales, el agua suele subir rápido.\nSi entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.",
+      "dialogo_real": "Por lluvias torrenciales el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente podés quedarte en ella.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "— Sin titular pautado —",
+        "start_frame": 730,
+        "end_frame": 1098,
+        "kicker": null,
+        "recurso_asociado": "3.mov / 4.mp4",
+        "coexistencia": "Sin titular pautado"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "3",
+          "archivo": "3.mov",
+          "ruta": "RECURSOS/3.mov",
+          "formato": "MOV (ProRes 422)",
+          "peso": "100.7 MB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 730,
+          "end_frame": 929,
+          "slot": "L_SIDE_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Lluvias torrenciales"
+        },
+        {
+          "nombre_escaleta": "4",
+          "archivo": "4.mp4",
+          "ruta": "RECURSOS/4.mp4",
+          "formato": "MP4 (H.264)",
+          "peso": "18.6 MB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 929,
+          "end_frame": 1098,
+          "slot": "L_SIDE_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Desagües en funcionamiento"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Media / Didáctico",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Banda derecha libre por debajo de la mosca [y: 190–610]",
+        "slot_asignado": "L_SIDE_RIGHT"
+      }
+    },
+    {
+      "row": 5,
+      "start_time": 45.8,
+      "end_time": 59.85,
+      "start_frame": 1098,
+      "end_frame": 1435,
+      "duration_sec": 14.05,
+      "duration_frames": 337,
+      "dialogo_escaleta": "Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "dialogo_real": "Pero de todas maneras corta la luz desde el tablero principal siempre con calzado de goma y manos secas y subí los electrodomésticos y objetos de valor a lugares altos.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper transcribió 'corta la luz' sin tilde; corregido a 'cortá la luz' (voseo imperativo)",
+      "titular_detalle": {
+        "texto": "Cortar la luz · Subir objetos de valor",
+        "start_frame": 1098,
+        "end_frame": 1435,
+        "kicker": "MEDIDAS PREVENTIVAS",
+        "recurso_asociado": "5.jfif / 6.jfif",
+        "coexistencia": "Titular oficial pautado en escaleta — Secuencia bipartita"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "5",
+          "archivo": "5.jfif",
+          "ruta": "RECURSOS/5.jfif",
+          "formato": "JFIF (JPEG)",
+          "peso": "6 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1098,
+          "end_frame": 1246,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Calzado de goma y manos secas"
+        },
+        {
+          "nombre_escaleta": "6",
+          "archivo": "6.jfif",
+          "ruta": "RECURSOS/6.jfif",
+          "formato": "JFIF (JPEG)",
+          "peso": "835 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1246,
+          "end_frame": 1435,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Bienes en altura"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Media / Protocolo preventivo",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slots disjuntos L_TOP [y: 190–390] y L_BOTTOM [y: 410–790]",
+        "slot_asignado": "L_TOP + L_BOTTOM"
+      }
+    },
+    {
+      "row": 6,
+      "start_time": 59.85,
+      "end_time": 68.78,
+      "start_frame": 1435,
+      "end_frame": 1649,
+      "duration_sec": 8.93,
+      "duration_frames": 214,
+      "dialogo_escaleta": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.",
+      "dialogo_real": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro es real y tenés que abandonar la casa.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "Peligro",
+        "start_frame": 1435,
+        "end_frame": 1649,
+        "kicker": "CRITERIO DE EVACUACIÓN",
+        "recurso_asociado": "7.png",
+        "coexistencia": "Titular oficial pautado en escaleta"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "7",
+          "archivo": "7.png",
+          "ruta": "RECURSOS/7.png",
+          "formato": "PNG (RGBA)",
+          "peso": "15 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1435,
+          "end_frame": 1649,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": true,
+          "rank": "didactico",
+          "epigrafe": "Tomacorrientes alcanzados por el agua"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Alta / Riesgo de electrocución",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slot superior para titular y slot inferior para sticker flotante",
+        "slot_asignado": "L_TOP + L_BOTTOM"
+      }
+    },
+    {
+      "row": 7,
+      "start_time": 68.78,
+      "end_time": 76.99,
+      "start_frame": 1649,
+      "end_frame": 1846,
+      "duration_sec": 8.21,
+      "duration_frames": 197,
+      "dialogo_escaleta": "Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "dialogo_real": "Lo mismo si vivís cerca de un río o arroyo donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "Evacuación de zonas ribereñas",
+        "start_frame": 1649,
+        "end_frame": 1846,
+        "kicker": "CRECIDAS PROLONGADAS",
+        "recurso_asociado": "8.jpg",
+        "coexistencia": "Titular oficial pautado en escaleta"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "8",
+          "archivo": "8.jpg",
+          "ruta": "RECURSOS/8.jpg",
+          "formato": "JPEG",
+          "peso": "214 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 1649,
+          "end_frame": 1846,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Evacuación preventiva obligatoria"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Media / Geografía ribereña",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slot lateral disjunto",
+        "slot_asignado": "L_TOP + L_BOTTOM"
+      }
+    },
+    {
+      "row": 8,
+      "start_time": 76.99,
+      "end_time": 95.55,
+      "start_frame": 1846,
+      "end_frame": 2291,
+      "duration_sec": 18.56,
+      "duration_frames": 445,
+      "dialogo_escaleta": "Si Defensa Civil ordena evacuar, no te demores en hacerlo.\nPriorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora.\nSalí caminando hacia el centro de evacuación indicado.",
+      "dialogo_real": "Si defensa civil ordena evacuar, no te demores en hacerlo. Prioriza a niños, adultos mayores o personas con movilidad reducida y no olvides a tus mascotas. Llévalas con correa o transportadores. Salí caminando hacia el centro de evacuación indicado.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper: 'defensa civil', 'Prioriza', 'Llévalas... transportadores' → Corregido en subtítulos con CAPTION_FIX",
+      "titular_detalle": {
+        "texto": "Evacuá rápido, con calma y sin usar vehículos",
+        "start_frame": 1846,
+        "end_frame": 2291,
+        "kicker": "ORDEN DE EVACUACIÓN",
+        "recurso_asociado": "9.jfif / 10.png",
+        "coexistencia": "Titular oficial pautado en escaleta"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "9",
+          "archivo": "9.jfif",
+          "ruta": "RECURSOS/9.jfif",
+          "formato": "JFIF (JPEG)",
+          "peso": "125 KB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2008,
+          "end_frame": 2224,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Mascotas con correa o transportadora"
+        },
+        {
+          "nombre_escaleta": "10",
+          "archivo": "10.png",
+          "ruta": "RECURSOS/10.png",
+          "formato": "PNG (RGB)",
+          "peso": "1.3 MB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2224,
+          "end_frame": 2291,
+          "slot": "L_BOTTOM",
+          "carga": "media",
+          "transparent": false,
+          "rank": "refuerzo",
+          "epigrafe": "Centro de evacuación indicado"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Alta / Seguridad humana y animal",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Titular persistente arriba y recursos rotativos abajo",
+        "slot_asignado": "L_TOP + L_BOTTOM"
+      }
+    },
+    {
+      "row": 9,
+      "start_time": 95.55,
+      "end_time": 113.03,
+      "start_frame": 2291,
+      "end_frame": 2710,
+      "duration_sec": 17.48,
+      "duration_frames": 419,
+      "dialogo_escaleta": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte.\nSi no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.",
+      "dialogo_real": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunícate inmediatamente con defensa civil al 103 o con el 100 de bomberos.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper: 'comunícate' (esdrújula) → 'comunicate' (voseo), 'defensa civil' y 'bomberos' a mayúsculas",
+      "titular_detalle": {
+        "texto": "103 Defensa Civil · 100 Bomberos",
+        "start_frame": 2509,
+        "end_frame": 2710,
+        "kicker": "TELÉFONOS IMPORTANTES",
+        "recurso_asociado": "11.png",
+        "coexistencia": "Titular oficial pautado en escaleta — Placa destacada"
+      },
+      "recursos_auditados": [
+        {
+          "nombre_escaleta": "11",
+          "archivo": "11.png",
+          "ruta": "RECURSOS/11.png",
+          "formato": "PNG (RGB)",
+          "peso": "2.5 MB",
+          "estado": "AUDITADO_EN_DISCO",
+          "alerta": null,
+          "start_frame": 2291,
+          "end_frame": 2509,
+          "slot": "L_SIDE_RIGHT",
+          "carga": "media",
+          "transparent": false,
+          "rank": "didactico",
+          "epigrafe": "Peligro: corriente en calles anegadas"
+        }
+      ],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Alta / Rescate y emergencias",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Banda lateral libre",
+        "slot_asignado": "L_SIDE_RIGHT"
+      }
+    },
+    {
+      "row": 10,
+      "start_time": 113.03,
+      "end_time": 118.95,
+      "start_frame": 2710,
+      "end_frame": 2852,
+      "duration_sec": 5.92,
+      "duration_frames": 142,
+      "dialogo_escaleta": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "dialogo_real": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+      "diferencias_detectadas": false,
+      "diferencias_detalle": null,
+      "titular_detalle": {
+        "texto": "Evaluar la situación y responder a tiempo garantiza tu seguridad",
+        "start_frame": 2710,
+        "end_frame": 2852,
+        "kicker": "SÍNTESIS",
+        "recurso_asociado": null,
+        "coexistencia": "Titular oficial de cierre conceptual"
+      },
+      "recursos_auditados": [],
+      "encuadre": {
+        "real": "Center / Docente centrada",
+        "nivel_atencion": "Media / Cierre",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slot superior",
+        "slot_asignado": "L_TOP"
+      }
+    },
+    {
+      "row": 11,
+      "start_time": 118.95,
+      "end_time": 122.92,
+      "start_frame": 2852,
+      "end_frame": 2945,
+      "duration_sec": 3.97,
+      "duration_frames": 93,
+      "dialogo_escaleta": "¡Compartí esta información para cuidarnos entre todos!",
+      "dialogo_real": "Compartí esta información para cuidarnos entre todos.",
+      "diferencias_detectadas": true,
+      "diferencias_detalle": "Whisper omite signos de exclamación; corregido con CAPTION_FIX según escaleta",
+      "titular_detalle": {
+        "texto": "¡Compartí esta información para cuidarnos entre todos!",
+        "start_frame": 2852,
+        "end_frame": 2945,
+        "kicker": "COMUNIDAD",
+        "recurso_asociado": null,
+        "coexistencia": "Llamado a la acción comunitario"
+      },
+      "recursos_auditados": [],
+      "encuadre": {
+        "real": "Center / Docente centrada (seguido de transición f2945)",
+        "nivel_atencion": "Media / Despedida",
+        "norma_requerida": "Center",
+        "coincide": true,
+        "zona_libre": "Slot central superior",
+        "slot_asignado": "L_TOP"
+      }
+    }
+  ]
+}

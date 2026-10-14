@@ -1,0 +1,2930 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMB26-04 — Matriz de Sincronización Pre-Edición Oficial (After Effects)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F6F9;
+      --card-bg: #FFFFFF;
+      --border: #DDE3EA;
+      --border-focus: #2563EB;
+      --ink: #0F172A;
+      --ink-soft: #334155;
+      --ink-muted: #64748B;
+      --primary: #2563EB;
+      --primary-light: #EFF6FF;
+      --accent: #10B981;
+      --danger: #DC2626;
+      --warning: #F59E0B;
+      --cian: #5DCBE1;
+      --rojo: #EA3355;
+      --amarillo: #F5C042;
+      --verde: #54B835;
+      --menta: #6CEACB;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      padding-bottom: 120px;
+    }
+
+    /* Ceja cromática oficial de EducaPlay */
+    .top-strip { display: flex; height: 8px; width: 100%; position: sticky; top: 0; z-index: 1000; }
+    .strip-cyan { background: var(--cian); flex: 1.4; }
+    .strip-red { background: var(--rojo); flex: 4.2; }
+    .strip-yellow { background: var(--amarillo); flex: 3.3; }
+    .strip-green { background: var(--verde); flex: 1.1; }
+
+    /* Header y Hero */
+    .header-hero {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 36px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .badge-group { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-code { background: #0F172A; color: #FFF; font-family: var(--font-mono); }
+    .badge-subject { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-live { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+    .bridge-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #F1F5F9;
+      color: #475569;
+      border: 1px solid #CBD5E1;
+      margin-left: auto;
+    }
+    .bridge-indicator.online { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+    .dot-live { width: 8px; height: 8px; border-radius: 50%; background: #94A3B8; }
+    .bridge-indicator.online .dot-live { background: #22C55E; box-shadow: 0 0 6px #22C55E; }
+
+    .header-title { font-family: var(--font-heading); font-size: 30px; font-weight: 800; color: var(--ink); }
+    .header-desc { font-size: 14px; color: var(--ink-muted); margin-top: 4px; }
+
+    /* Video player container */
+    .media-player-section {
+      max-width: 1780px;
+      margin: 18px auto 0;
+      padding: 0 36px;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 20px;
+    }
+    .video-box-card {
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .video-box-card video { width: 100%; height: auto; display: block; aspect-ratio: 16/9; background: #000; }
+    .video-toolbar {
+      background: #0F172A;
+      color: #FFF;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .instructions-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .instructions-card h3 { font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 8px; }
+    .instructions-card ul { padding-left: 20px; font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+    .instructions-card li strong { color: #0F172A; }
+
+    /* Stats bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 18px 36px 10px;
+      max-width: 1780px;
+      margin: 0 auto;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .stat-val { font-size: 22px; font-weight: 800; font-family: var(--font-heading); color: var(--ink); }
+    .stat-label { font-size: 11px; color: var(--ink-muted); font-weight: 700; text-transform: uppercase; }
+
+    /* Tabla principal */
+    .table-section { max-width: 1780px; margin: 0 auto; padding: 10px 36px; }
+    .matrix-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #FFF;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+    .matrix-table th {
+      background: #F8FAFC;
+      color: var(--ink-soft);
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--border);
+      text-align: left;
+    }
+    .matrix-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 12.5px;
+    }
+    .matrix-row:hover { background: #F8FAFC; }
+    .matrix-row.playing-active {
+      background: #EFF6FF !important;
+      outline: 2px solid #3B82F6;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.25);
+    }
+
+    /* Columna Fila */
+    .col-fila { width: 70px; text-align: center; }
+    .row-num-badge {
+      font-size: 16px;
+      font-weight: 800;
+      font-family: var(--font-heading);
+      color: #1E293B;
+    }
+    .btn-play-row {
+      margin-top: 6px;
+      background: #E0E7FF;
+      color: #3730A3;
+      border: 1px solid #C7D2FE;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-play-row:hover { background: #4338CA; color: #FFF; border-color: #4338CA; }
+
+    /* Columna Timing */
+    .col-timing { width: 140px; }
+    .tc-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: #EEF2F6;
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: #1E293B;
+      font-weight: 700;
+    }
+    .frame-sub { font-family: var(--font-mono); font-size: 11px; color: #64748B; margin-top: 2px; }
+    .dur-sub { font-size: 10.5px; color: #94A3B8; font-weight: 600; }
+    .placa-warning-badge {
+      display: inline-block;
+      margin-top: 6px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Selector de Subtítulos */
+    .col-dialogo { min-width: 400px; }
+    .sub-selector-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sub-option-row {
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 7px 10px;
+      background: #FAFAFA;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sub-option-row.active {
+      border-color: #3B82F6;
+      background: #EFF6FF;
+      box-shadow: 0 0 0 1px #3B82F6;
+    }
+    .sub-option-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E293B;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .sub-text-preview {
+      font-size: 12px;
+      line-height: 1.4;
+      color: #334155;
+      padding-left: 22px;
+    }
+    .diff-red {
+      color: #DC2626;
+      font-weight: 800;
+      background-color: #FEF2F2;
+      padding: 0 3px;
+      border-radius: 3px;
+      text-decoration: underline wavy #DC2626 1px;
+    }
+
+    .custom-input-box { margin-top: 6px; padding-left: 22px; }
+    .custom-input-textarea {
+      width: 100%;
+      min-height: 58px;
+      border: 1px solid #94A3B8;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #0F172A;
+      background: #FFFFFF;
+      resize: vertical;
+    }
+    .custom-input-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    .char-counter { font-size: 10.5px; color: var(--ink-muted); margin-top: 2px; }
+
+    /* Titular editable */
+    .col-titular { width: 300px; }
+    .titular-edit-container {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .titular-toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #0F172A;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .input-sublabel { display: block; font-size: 10.5px; color: #64748B; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+    .input-tit-kicker {
+      width: 100%;
+      padding: 5px 8px;
+      border: 1px solid #CBD5E1;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #2563EB;
+      background: #FFF;
+    }
+    .input-tit-title {
+      width: 100%;
+      min-height: 48px;
+      padding: 6px 8px;
+      border: 1px solid #CBD5E1;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0F172A;
+      background: #FFF;
+      resize: vertical;
+    }
+    .titular-slot-pill {
+      margin-top: 6px;
+      font-size: 10px;
+      color: #64748B;
+      font-family: var(--font-mono);
+      background: #E2E8F0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Recursos & Gráficos */
+    .col-recursos { width: 340px; }
+    .recursos-container { display: flex; flex-direction: column; gap: 8px; }
+    .resource-item-card {
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #FFFFFF;
+    }
+    .resource-item-card.is-transparent { border-color: #A7F3D0; background: #F0FDF4; }
+    .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .rec-type-badge { font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .badge-card { background: #E2E8F0; color: #334155; }
+    .badge-trans { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+    .rec-format { font-size: 10px; color: var(--ink-muted); font-family: var(--font-mono); }
+    .field-label { display: block; font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 2px; }
+    .rec-input-file {
+      width: 100%;
+      padding: 4px 8px;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      color: #0F172A;
+      background: #FFF;
+      margin-bottom: 4px;
+    }
+    .rec-select-style {
+      width: 100%;
+      padding: 4px 6px;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #0F172A;
+      background: #FFF;
+    }
+    .rec-caption-display { font-size: 10.5px; color: #64748B; margin-top: 4px; font-style: italic; }
+
+    .notes-field-wrap { margin-top: 4px; }
+    .notes-label { font-size: 10.5px; font-weight: 700; color: #64748B; display: block; margin-bottom: 2px; }
+    .row-notes-textarea {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid #CBD5E1;
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: #0F172A;
+      background: #FFF;
+      resize: vertical;
+    }
+
+    .no-resources-note { font-size: 11.5px; color: #94A3B8; font-style: italic; }
+
+    /* Barra inferior fija */
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #0F172A;
+      color: #FFF;
+      padding: 14px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 200;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+    }
+    .action-summary { display: flex; align-items: center; gap: 16px; font-size: 13px; }
+    .modified-badge {
+      background: #F59E0B;
+      color: #000;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 11px;
+    }
+    .action-buttons { display: flex; gap: 10px; align-items: center; }
+    .btn-action {
+      background: #2563EB;
+      color: #FFF;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .btn-action:hover { background: #1D4ED8; transform: translateY(-1px); }
+    .btn-copy-chat {
+      background: linear-gradient(135deg, #6366F1, #4F46E5);
+      color: #FFF;
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4);
+    }
+    .btn-copy-chat:hover {
+      background: linear-gradient(135deg, #4F46E5, #4338CA);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.55);
+      transform: translateY(-1px);
+    }
+    .btn-save { background: #10B981; }
+    .btn-save:hover { background: #059669; }
+    .btn-secondary {
+      background: #334155;
+      color: #FFF;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-secondary:hover { background: #475569; }
+
+    /* Toast notification */
+    .toast-box {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: #0F172A;
+      color: #FFF;
+      border-left: 4px solid #10B981;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="top-strip">
+    <div class="strip-cyan"></div>
+    <div class="strip-red"></div>
+    <div class="strip-yellow"></div>
+    <div class="strip-green"></div>
+  </div>
+
+  <div class="toast-box" id="toast">✓ Cambios guardados correctamente</div>
+
+  <header class="header-hero">
+    <div class="badge-group">
+      <span class="badge badge-code">AMB26-04</span>
+      <span class="badge badge-subject">Educación Ambiental Integral</span>
+      <span class="badge badge-live">Fase 0 · Sincronización Pre-Edición Oficial</span>
+      <div class="bridge-indicator" id="bridge-badge">
+        <span class="dot-live"></span>
+        <span id="bridge-text">Bridge: Verificando...</span>
+      </div>
+    </div>
+    <h1 class="header-title">¿Esperar o evacuar?</h1>
+    <p class="header-desc">Docente: <strong>Prof. Amparo Pérez Rueda</strong> · Duración: <strong>130.8 s</strong> (3136 frames @ 23.976 fps) · Placa quemada: <strong>Prof. Amparo Pérez Rueda</strong> [f537–f661]</p>
+  </header>
+
+  <!-- Video player & instrucciones -->
+  <section class="media-player-section">
+    <div class="video-box-card">
+      <video id="master-video" src="episodios/AMB26-04/assets/AMB26-04.mp4" controls preload="metadata"></video>
+      <div class="video-toolbar">
+        <div>TC: <span id="tc-display">00:00.00</span> | Frame: <span id="frame-display">0</span></div>
+        <div style="color: #94A3B8;">Máster HD 1920×1080 @ 23.98 fps</div>
+      </div>
+    </div>
+    <div class="instructions-card">
+      <h3>Matriz de Validación y Edición Previa</h3>
+      <ul>
+        <li><strong>Guión / Subtítulos:</strong> Por defecto, los subtítulos son una <strong>copia fiel de la escaleta pautada</strong> sincronizada al cuadro exacto con la voz de la docente. Cada fila tiene la casilla <code>☑ Copia fiel de escaleta</code> activa por defecto. Desmarcala únicamente si deseás adoptar la transcripción literal de Whisper o redactar un texto personalizado.</li>
+        <li><strong>Titulares:</strong> Editá el título o kicker directamente; podés activar o desactivar el titular por tramo.</li>
+        <li><strong>Recursos:</strong> Cambiá el nombre del archivo para relinkear o cambiá el estilo entre <em>Tarjeta redondeada</em> y <em>Sticker transparente</em>.</li>
+        <li><strong>Pre-escucha:</strong> Hacé clic en <strong>▶ Ver</strong> en cualquier fila para saltar inmediatamente a ese momento en el video.</li>
+        <li><strong>Guardado:</strong> Presioná <strong>Guardar Cambios en Disco</strong> para persistir tus elecciones en <code>TABLA_SINCRONIZACION_APROBADA.json</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Resumen de auditoría -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-val">11</div>
+      <div class="stat-label">Filas Pautadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color: #DC2626;">4</div>
+      <div class="stat-label">Discrepancias Subtítulos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">11</div>
+      <div class="stat-label">Recursos Auditados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color: #10B981;">100%</div>
+      <div class="stat-label">Conformidad Estética</div>
+    </div>
+  </div>
+
+  <!-- Tabla Editable -->
+  <section class="table-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; background: #FFF; padding: 12px 20px; border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+      <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: #166534; cursor: pointer;">
+        <input type="checkbox" id="chk_global_escaleta" checked onchange="toggleAllFielEscaleta(this.checked)">
+        <span>☑ Subtítulos: Copia fiel de escaleta en todas las filas (Predeterminado por defecto)</span>
+      </label>
+      <span style="font-size: 12px; color: var(--ink-muted);">Siguiendo al pie de la letra lo expuesto en la escaleta correspondiente, sincronizado al cuadro con el diálogo.</span>
+    </div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width: 70px;">Fila</th>
+          <th style="width: 140px;">Timing (s/f)</th>
+          <th>Guión / Subtítulo (Copia Fiel Escaleta vs Whisper)</th>
+          <th style="width: 300px;">Titulares en Pantalla</th>
+          <th style="width: 340px;">Recursos, Estilo y Observaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+    <tr class="matrix-row" id="row_01" data-start-time="0" data-end-time="21.27">
+      <td class="col-fila">
+        <div class="row-num-badge">#1</div>
+        <button class="btn-play-row" onclick="playRow(0, 21.27, '01')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">0.0s – 21.3s</div>
+        <div class="frame-sub">f0 – f510</div>
+        <div class="dur-sub">(510f · 21.3s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_01" checked onchange="toggleFielEscaletaRow('01', this.checked); markModified('01')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_01" onclick="selectSubSource('01', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_01" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones.
+Y cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_01" onclick="selectSubSource('01', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_01" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones y cuando el agua empieza a entrar a la casa surge la duda sobre si conviene esperar a que baje o evacuar.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_01" onclick="selectSubSource('01', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_01" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_01" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_01" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('01'); markModified('01')">Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones. Y cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.</textarea>
+              <div class="char-counter" id="char_cnt_01">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_01"  onchange="toggleTitular('01'); markModified('01')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_01" style="opacity: 0.4; pointer-events: none;">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_01" value="" placeholder="Ej: PREVENCIÓN" oninput="markModified('01')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_01" placeholder="Texto del titular..." oninput="markModified('01')"></textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>FULL_BLEED</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_01_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">MP4 · 30.2 MB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_01_0" value="1.mp4" placeholder="Ej: 1.mp4" oninput="markModified('01')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_01_0" onchange="markModified('01')">
+              <option value="card" >Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" selected>Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Youtube - Extreme Storm Brings Record Rain To Argentina's Corrientes As Homes Flooded Out | Watch Video</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_01" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('01')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_02" data-start-time="21.27" data-end-time="24.07">
+      <td class="col-fila">
+        <div class="row-num-badge">#2</div>
+        <button class="btn-play-row" onclick="playRow(21.27, 24.07, '02')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">21.3s – 24.1s</div>
+        <div class="frame-sub">f510 – f577</div>
+        <div class="dur-sub">(67f · 2.8s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+          <div class="placa-warning-badge" title="Coincide con la placa quemada en máster [f537–f661]">
+            ⚠️ Placa Docente Elevada
+          </div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_02" checked onchange="toggleFielEscaletaRow('02', this.checked); markModified('02')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_02" onclick="selectSubSource('02', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_02" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_02" onclick="selectSubSource('02', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_02" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">[Pausa rítmica entre 'evacuar' y 'Saber identificar']</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_02" onclick="selectSubSource('02', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_02" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_02" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_02" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('02'); markModified('02')">— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —</textarea>
+              <div class="char-counter" id="char_cnt_02">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_02" checked onchange="toggleTitular('02'); markModified('02')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_02" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_02" value="PREVENCIÓN" placeholder="Ej: PREVENCIÓN" oninput="markModified('02')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_02" placeholder="Texto del titular..." oninput="markModified('02')">La prevención comienza cuando sabemos reconocer el peligro</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          <div class="no-resources-note">— Sin recursos pautados —</div>
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_02" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('02')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_03" data-start-time="22.02" data-end-time="30.45">
+      <td class="col-fila">
+        <div class="row-num-badge">#3</div>
+        <button class="btn-play-row" onclick="playRow(22.02, 30.45, '03')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">22.0s – 30.4s</div>
+        <div class="frame-sub">f528 – f730</div>
+        <div class="dur-sub">(202f · 8.4s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+          <div class="placa-warning-badge" title="Coincide con la placa quemada en máster [f537–f661]">
+            ⚠️ Placa Docente Elevada
+          </div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_03" checked onchange="toggleFielEscaletaRow('03', this.checked); markModified('03')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_03" onclick="selectSubSource('03', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_03" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_03" onclick="selectSubSource('03', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_03" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_03" onclick="selectSubSource('03', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_03" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_03" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_03" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('03'); markModified('03')">Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.</textarea>
+              <div class="char-counter" id="char_cnt_03">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_03"  onchange="toggleTitular('03'); markModified('03')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_03" style="opacity: 0.4; pointer-events: none;">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_03" value="" placeholder="Ej: PREVENCIÓN" oninput="markModified('03')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_03" placeholder="Texto del titular..." oninput="markModified('03')"></textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP_LEFT</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-transparent" id="rec_card_03_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-trans">
+            ✨ Sticker Transparente
+          </span>
+          <span class="rec-format">PNG (RGBA) · 42 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_03_0" value="2.png" placeholder="Ej: 2.png" oninput="markModified('03')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_03_0" onchange="markModified('03')">
+              <option value="card" >Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" selected>Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_03" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('03')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_04" data-start-time="30.45" data-end-time="45.8">
+      <td class="col-fila">
+        <div class="row-num-badge">#4</div>
+        <button class="btn-play-row" onclick="playRow(30.45, 45.8, '04')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">30.4s – 45.8s</div>
+        <div class="frame-sub">f730 – f1098</div>
+        <div class="dur-sub">(368f · 15.3s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_04" checked onchange="toggleFielEscaletaRow('04', this.checked); markModified('04')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_04" onclick="selectSubSource('04', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_04" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Por lluvias torrenciales, el agua suele subir rápido.
+Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_04" onclick="selectSubSource('04', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_04" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Por lluvias torrenciales el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente podés quedarte en ella.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_04" onclick="selectSubSource('04', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_04" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_04" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_04" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('04'); markModified('04')">Por lluvias torrenciales, el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.</textarea>
+              <div class="char-counter" id="char_cnt_04">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_04"  onchange="toggleTitular('04'); markModified('04')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_04" style="opacity: 0.4; pointer-events: none;">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_04" value="" placeholder="Ej: PREVENCIÓN" oninput="markModified('04')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_04" placeholder="Texto del titular..." oninput="markModified('04')"></textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_SIDE_RIGHT</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_04_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">MOV (ProRes 422) · 100.7 MB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_04_0" value="3.mov" placeholder="Ej: 3.mov" oninput="markModified('04')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_04_0" onchange="markModified('04')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Lluvias torrenciales</div>
+        </div>
+      </div>
+    
+      <div class="resource-item-card is-card" id="rec_card_04_1">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">MP4 (H.264) · 18.6 MB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_04_1" value="4.mp4" placeholder="Ej: 4.mp4" oninput="markModified('04')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_04_1" onchange="markModified('04')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Desagües en funcionamiento</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_04" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('04')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_05" data-start-time="45.8" data-end-time="59.85">
+      <td class="col-fila">
+        <div class="row-num-badge">#5</div>
+        <button class="btn-play-row" onclick="playRow(45.8, 59.85, '05')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">45.8s – 59.9s</div>
+        <div class="frame-sub">f1098 – f1435</div>
+        <div class="dur-sub">(337f · 14.1s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#FEE2E2; color:#DC2626; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #FCA5A5;">Discrepancia</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_05" checked onchange="toggleFielEscaletaRow('05', this.checked); markModified('05')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_05" onclick="selectSubSource('05', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_05" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_05" onclick="selectSubSource('05', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_05" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Pero de todas maneras corta la luz desde el tablero principal siempre con calzado de goma y manos secas y subí los electrodomésticos y objetos de valor a lugares altos.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_05" onclick="selectSubSource('05', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_05" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_05" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_05" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('05'); markModified('05')">Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.</textarea>
+              <div class="char-counter" id="char_cnt_05">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:#DC2626; background:#FEF2F2; padding:4px 8px; border-radius:4px; border:1px solid #FECACA;"><strong>Nota de discrepancia:</strong> Whisper transcribió 'corta la luz' sin tilde; corregido a 'cortá la luz' (voseo imperativo)</div>
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_05" checked onchange="toggleTitular('05'); markModified('05')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_05" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_05" value="MEDIDAS PREVENTIVAS" placeholder="Ej: PREVENCIÓN" oninput="markModified('05')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_05" placeholder="Texto del titular..." oninput="markModified('05')">Cortar la luz · Subir objetos de valor</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP + L_BOTTOM</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_05_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">JFIF (JPEG) · 6 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_05_0" value="5.jfif" placeholder="Ej: 5.jfif" oninput="markModified('05')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_05_0" onchange="markModified('05')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Calzado de goma y manos secas</div>
+        </div>
+      </div>
+    
+      <div class="resource-item-card is-card" id="rec_card_05_1">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">JFIF (JPEG) · 835 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_05_1" value="6.jfif" placeholder="Ej: 6.jfif" oninput="markModified('05')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_05_1" onchange="markModified('05')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Bienes en altura</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_05" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('05')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_06" data-start-time="59.85" data-end-time="68.78">
+      <td class="col-fila">
+        <div class="row-num-badge">#6</div>
+        <button class="btn-play-row" onclick="playRow(59.85, 68.78, '06')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">59.9s – 68.8s</div>
+        <div class="frame-sub">f1435 – f1649</div>
+        <div class="dur-sub">(214f · 8.9s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_06" checked onchange="toggleFielEscaletaRow('06', this.checked); markModified('06')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_06" onclick="selectSubSource('06', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_06" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_06" onclick="selectSubSource('06', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_06" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro es real y tenés que abandonar la casa.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_06" onclick="selectSubSource('06', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_06" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_06" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_06" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('06'); markModified('06')">Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.</textarea>
+              <div class="char-counter" id="char_cnt_06">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_06" checked onchange="toggleTitular('06'); markModified('06')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_06" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_06" value="CRITERIO DE EVACUACIÓN" placeholder="Ej: PREVENCIÓN" oninput="markModified('06')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_06" placeholder="Texto del titular..." oninput="markModified('06')">Peligro</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP + L_BOTTOM</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-transparent" id="rec_card_06_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-trans">
+            ✨ Sticker Transparente
+          </span>
+          <span class="rec-format">PNG (RGBA) · 15 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_06_0" value="7.png" placeholder="Ej: 7.png" oninput="markModified('06')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_06_0" onchange="markModified('06')">
+              <option value="card" >Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" selected>Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Tomacorrientes alcanzados por el agua</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_06" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('06')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_07" data-start-time="68.78" data-end-time="76.99">
+      <td class="col-fila">
+        <div class="row-num-badge">#7</div>
+        <button class="btn-play-row" onclick="playRow(68.78, 76.99, '07')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">68.8s – 77.0s</div>
+        <div class="frame-sub">f1649 – f1846</div>
+        <div class="dur-sub">(197f · 8.2s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_07" checked onchange="toggleFielEscaletaRow('07', this.checked); markModified('07')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_07" onclick="selectSubSource('07', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_07" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_07" onclick="selectSubSource('07', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_07" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Lo mismo si vivís cerca de un río o arroyo donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_07" onclick="selectSubSource('07', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_07" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_07" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_07" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('07'); markModified('07')">Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.</textarea>
+              <div class="char-counter" id="char_cnt_07">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_07" checked onchange="toggleTitular('07'); markModified('07')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_07" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_07" value="CRECIDAS PROLONGADAS" placeholder="Ej: PREVENCIÓN" oninput="markModified('07')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_07" placeholder="Texto del titular..." oninput="markModified('07')">Evacuación de zonas ribereñas</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP + L_BOTTOM</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_07_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">JPEG · 214 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_07_0" value="8.jpg" placeholder="Ej: 8.jpg" oninput="markModified('07')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_07_0" onchange="markModified('07')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Evacuación preventiva obligatoria</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_07" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('07')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_08" data-start-time="76.99" data-end-time="95.55">
+      <td class="col-fila">
+        <div class="row-num-badge">#8</div>
+        <button class="btn-play-row" onclick="playRow(76.99, 95.55, '08')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">77.0s – 95.5s</div>
+        <div class="frame-sub">f1846 – f2291</div>
+        <div class="dur-sub">(445f · 18.6s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#FEE2E2; color:#DC2626; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #FCA5A5;">Discrepancia</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_08" checked onchange="toggleFielEscaletaRow('08', this.checked); markModified('08')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_08" onclick="selectSubSource('08', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_08" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Si Defensa Civil ordena evacuar, no te demores en hacerlo.
+Priorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora.
+Salí caminando hacia el centro de evacuación indicado.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_08" onclick="selectSubSource('08', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_08" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Si defensa civil ordena evacuar, no te demores en hacerlo. Prioriza a niños, adultos mayores o personas con movilidad reducida y no olvides a tus mascotas. Llévalas con correa o transportadores. Salí caminando hacia el centro de evacuación indicado.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_08" onclick="selectSubSource('08', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_08" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_08" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_08" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('08'); markModified('08')">Si Defensa Civil ordena evacuar, no te demores en hacerlo. Priorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora. Salí caminando hacia el centro de evacuación indicado.</textarea>
+              <div class="char-counter" id="char_cnt_08">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:#DC2626; background:#FEF2F2; padding:4px 8px; border-radius:4px; border:1px solid #FECACA;"><strong>Nota de discrepancia:</strong> Whisper: 'defensa civil', 'Prioriza', 'Llévalas... transportadores' → Corregido en subtítulos con CAPTION_FIX</div>
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_08" checked onchange="toggleTitular('08'); markModified('08')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_08" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_08" value="ORDEN DE EVACUACIÓN" placeholder="Ej: PREVENCIÓN" oninput="markModified('08')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_08" placeholder="Texto del titular..." oninput="markModified('08')">Evacuá rápido, con calma y sin usar vehículos</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP + L_BOTTOM</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_08_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">JFIF (JPEG) · 125 KB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_08_0" value="9.jfif" placeholder="Ej: 9.jfif" oninput="markModified('08')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_08_0" onchange="markModified('08')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Mascotas con correa o transportadora</div>
+        </div>
+      </div>
+    
+      <div class="resource-item-card is-card" id="rec_card_08_1">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">PNG (RGB) · 1.3 MB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_08_1" value="10.png" placeholder="Ej: 10.png" oninput="markModified('08')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_08_1" onchange="markModified('08')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Centro de evacuación indicado</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_08" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('08')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_09" data-start-time="95.55" data-end-time="113.03">
+      <td class="col-fila">
+        <div class="row-num-badge">#9</div>
+        <button class="btn-play-row" onclick="playRow(95.55, 113.03, '09')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">95.5s – 113.0s</div>
+        <div class="frame-sub">f2291 – f2710</div>
+        <div class="dur-sub">(419f · 17.5s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#FEE2E2; color:#DC2626; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #FCA5A5;">Discrepancia</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_09" checked onchange="toggleFielEscaletaRow('09', this.checked); markModified('09')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_09" onclick="selectSubSource('09', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_09" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte.
+Si no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_09" onclick="selectSubSource('09', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_09" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunícate inmediatamente con defensa civil al 103 o con el 100 de bomberos.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_09" onclick="selectSubSource('09', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_09" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_09" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_09" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('09'); markModified('09')">Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.</textarea>
+              <div class="char-counter" id="char_cnt_09">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:#DC2626; background:#FEF2F2; padding:4px 8px; border-radius:4px; border:1px solid #FECACA;"><strong>Nota de discrepancia:</strong> Whisper: 'comunícate' (esdrújula) → 'comunicate' (voseo), 'defensa civil' y 'bomberos' a mayúsculas</div>
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_09" checked onchange="toggleTitular('09'); markModified('09')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_09" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_09" value="TELÉFONOS IMPORTANTES" placeholder="Ej: PREVENCIÓN" oninput="markModified('09')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_09" placeholder="Texto del titular..." oninput="markModified('09')">103 Defensa Civil · 100 Bomberos</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_SIDE_RIGHT</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          
+      <div class="resource-item-card is-card" id="rec_card_09_0">
+        <div class="rec-header">
+          <span class="rec-type-badge badge-card">
+            📄 Tarjeta Blanca
+          </span>
+          <span class="rec-format">PNG (RGB) · 2.5 MB</span>
+        </div>
+        <div class="rec-body">
+          <div class="rec-filename-row">
+            <label class="field-label">Archivo de recurso:</label>
+            <input type="text" class="rec-input-file" id="rec_file_09_0" value="11.png" placeholder="Ej: 11.png" oninput="markModified('09')">
+          </div>
+          <div class="rec-type-select-row">
+            <label class="field-label">Estilo de render:</label>
+            <select class="rec-select-style" id="rec_style_09_0" onchange="markModified('09')">
+              <option value="card" selected>Tarjeta redondeada blanca (Oficial)</option>
+              <option value="sticker" >Sticker flotante con sombra suave (Sin fondo)</option>
+              <option value="bleed" >Pantalla completa (Full Bleed / B-roll)</option>
+              <option value="none">Ocultar este recurso</option>
+            </select>
+          </div>
+          <div class="rec-caption-display"><strong>Epígrafe:</strong> Peligro: corriente en calles anegadas</div>
+        </div>
+      </div>
+    
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_09" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('09')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_10" data-start-time="113.03" data-end-time="118.95">
+      <td class="col-fila">
+        <div class="row-num-badge">#10</div>
+        <button class="btn-play-row" onclick="playRow(113.03, 118.95, '10')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">113.0s – 119.0s</div>
+        <div class="frame-sub">f2710 – f2852</div>
+        <div class="dur-sub">(142f · 5.9s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#ECFDF5; color:#059669; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #A7F3D0;">100% Coincidente</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_10" checked onchange="toggleFielEscaletaRow('10', this.checked); markModified('10')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_10" onclick="selectSubSource('10', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_10" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">Evaluar la situación y responder a tiempo garantiza tu seguridad.</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_10" onclick="selectSubSource('10', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_10" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Evaluar la situación y responder a tiempo garantiza tu seguridad.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_10" onclick="selectSubSource('10', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_10" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_10" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_10" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('10'); markModified('10')">Evaluar la situación y responder a tiempo garantiza tu seguridad.</textarea>
+              <div class="char-counter" id="char_cnt_10">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_10" checked onchange="toggleTitular('10'); markModified('10')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_10" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_10" value="SÍNTESIS" placeholder="Ej: PREVENCIÓN" oninput="markModified('10')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_10" placeholder="Texto del titular..." oninput="markModified('10')">Evaluar la situación y responder a tiempo garantiza tu seguridad</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          <div class="no-resources-note">— Sin recursos pautados —</div>
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_10" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('10')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+
+    <tr class="matrix-row" id="row_11" data-start-time="118.95" data-end-time="122.92">
+      <td class="col-fila">
+        <div class="row-num-badge">#11</div>
+        <button class="btn-play-row" onclick="playRow(118.95, 122.92, '11')" title="Reproducir este tramo en el video">
+          ▶ Ver
+        </button>
+      </td>
+
+      <td class="col-timing">
+        <div class="tc-badge">119.0s – 122.9s</div>
+        <div class="frame-sub">f2852 – f2945</div>
+        <div class="dur-sub">(93f · 4.0s)</div>
+        <div class="diff-status-box" style="margin-top: 8px;"><span style="background:#FEE2E2; color:#DC2626; font-size:10px; font-weight:800; padding:2px 6px; border-radius:4px; text-transform:uppercase; border:1px solid #FCA5A5;">Discrepancia</span></div>
+        
+      </td>
+
+      <td class="col-dialogo">
+        <div class="sub-selector-container">
+          <!-- Casilla marcable obligatoria: copia fiel de escaleta por defecto -->
+          <div class="escaleta-lock-wrap" style="margin-bottom: 8px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11.5px; color: #166534; cursor: pointer;">
+              <input type="checkbox" id="chk_fiel_esc_11" checked onchange="toggleFielEscaletaRow('11', this.checked); markModified('11')">
+              <span>☑ Copia fiel de escaleta (Predeterminado)</span>
+            </label>
+            <div style="font-size: 10px; color: #15803D; margin-top: 2px; padding-left: 22px;">
+              Subtítulo fiel al guion pautado al pie de la letra, sincronizado al cuadro exacto con la voz.
+            </div>
+          </div>
+
+          <!-- Opción 1: Escaleta -->
+          <div class="sub-option-row active" id="row_opt_esc_11" onclick="selectSubSource('11', 'escaleta')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_11" value="escaleta" checked>
+              <span>📄 Escaleta (Oficial · Copia Fiel)</span>
+            </label>
+            <div class="sub-text-preview">¡Compartí esta información para cuidarnos entre todos!</div>
+          </div>
+
+          <!-- Opción 2: Whisper Real -->
+          <div class="sub-option-row" id="row_opt_real_11" onclick="selectSubSource('11', 'real')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_11" value="real">
+              <span>🎙️ Whisper (Audio Real del Máster — Excepción)</span>
+            </label>
+            <div class="sub-text-preview">Compartí esta información para cuidarnos entre todos.</div>
+          </div>
+
+          <!-- Opción 3: Personalizado -->
+          <div class="sub-option-row" id="row_opt_custom_11" onclick="selectSubSource('11', 'custom')">
+            <label class="sub-option-label">
+              <input type="radio" name="sub_source_11" value="custom">
+              <span>✏️ Personalizado (Escribir cambios de guión libremente)</span>
+            </label>
+            <div class="custom-input-box" id="box_custom_11" style="display: none;">
+              <textarea class="custom-input-textarea" id="custom_text_11" placeholder="Escribí aquí el texto exacto que debe subtitularse..." oninput="updateCustomCharCount('11'); markModified('11')">¡Compartí esta información para cuidarnos entre todos!</textarea>
+              <div class="char-counter" id="char_cnt_11">0 caracteres · ~1 línea</div>
+            </div>
+          </div>
+          <div style="margin-top:6px; font-size:11px; color:#DC2626; background:#FEF2F2; padding:4px 8px; border-radius:4px; border:1px solid #FECACA;"><strong>Nota de discrepancia:</strong> Whisper omite signos de exclamación; corregido con CAPTION_FIX según escaleta</div>
+        </div>
+      </td>
+
+      <td class="col-titular">
+        <div class="titular-edit-container">
+          <label class="titular-toggle-label">
+            <input type="checkbox" id="tit_enable_11" checked onchange="toggleTitular('11'); markModified('11')">
+            <strong>Mostrar Titular</strong>
+          </label>
+          <div class="titular-inputs" id="tit_inputs_11" style="">
+            <div class="input-group">
+              <span class="input-sublabel">Kicker / Categoría:</span>
+              <input type="text" class="input-tit-kicker" id="tit_kicker_11" value="COMUNIDAD" placeholder="Ej: PREVENCIÓN" oninput="markModified('11')">
+            </div>
+            <div class="input-group" style="margin-top: 6px;">
+              <span class="input-sublabel">Título en Pantalla:</span>
+              <textarea class="input-tit-title" id="tit_title_11" placeholder="Texto del titular..." oninput="markModified('11')">¡Compartí esta información para cuidarnos entre todos!</textarea>
+            </div>
+            <div class="titular-slot-pill">
+              Slot: <strong>L_TOP</strong>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="col-recursos">
+        <div class="recursos-container">
+          <div class="no-resources-note">— Sin recursos pautados —</div>
+          <div class="notes-field-wrap">
+            <label class="notes-label">Observaciones de pre-edición / cambios:</label>
+            <textarea class="row-notes-textarea" id="row_notes_11" placeholder="Notas para el motion designer sobre este tramo..." oninput="markModified('11')"></textarea>
+          </div>
+        </div>
+      </td>
+    </tr>
+  
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Barra de acciones fija -->
+  <footer class="action-bar">
+    <div class="action-summary">
+      <div>Episodio: <strong>AMB26-04</strong></div>
+      <div id="modified-count-wrap" style="display: none;">
+        <span class="modified-badge" id="mod-count">0 cambios</span>
+      </div>
+      <div style="color: #94A3B8; font-size: 12px;">Los cambios se guardan localmente y en el Bridge Server.</div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-action btn-copy-chat" id="btn-copy-chat" onclick="copyCorrectionsForChat()" title="Copiar todas las correcciones marcadas al portapapeles para pegarlas directamente en el chat de Antigravity">
+        📋 Copiar Correcciones al Chat
+      </button>
+      <button class="btn-secondary" onclick="exportMarkdownSummary()" title="Descargar reporte Markdown">
+        📄 Descargar Markdown
+      </button>
+      <button class="btn-action btn-save" onclick="saveApprovedMatrix()" title="Guardar cambios en disco local y servidor">
+        💾 Guardar Cambios en Disco
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    const EPISODE_META = {
+  "episodeId": "AMB26-04",
+  "patente": "AMB26_04",
+  "subject": "Educación Ambiental Integral",
+  "title": "¿Esperar o evacuar?",
+  "objective": "Fomentar una cultura de prevención y cuidado, incorporando conocimientos y prácticas para reducir riesgos ante una inundación.",
+  "presenter": "Prof. Amparo Pérez Rueda",
+  "presenterPlaca": "Prof. Amparo Pérez Rueda",
+  "fps": 23.976023976023978,
+  "masterVideo": "videos/AMB26-04.mp4",
+  "duration": 130.8,
+  "totalFrames": 3136,
+  "lowerThird": {
+    "inFrame": 537,
+    "outFrame": 661,
+    "inSec": 22.4,
+    "outSec": 27.6,
+    "text": "Prof. Amparo Pérez Rueda",
+    "zone": [
+      79,
+      818,
+      550,
+      110
+    ],
+    "evasionRequired": true,
+    "captionElevatedBottom": "270px"
+  },
+  "watermark": {
+    "x": 1400,
+    "y": 35,
+    "w": 420,
+    "h": 140,
+    "text": "Educaplay ED. AMBIENTAL"
+  }
+};
+    const RAW_ROWS = [
+  {
+    "row": 1,
+    "start_time": 0,
+    "end_time": 21.27,
+    "start_frame": 0,
+    "end_frame": 510,
+    "duration_sec": 21.27,
+    "duration_frames": 510,
+    "dialogo_escaleta": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones.\nY cuando el agua empieza a entrar a la casa, surge la duda sobre si conviene esperar a que baje o evacuar.",
+    "dialogo_real": "Como correntinos sabemos que por nuestra geografía y clima estamos expuestos a las inundaciones y cuando el agua empieza a entrar a la casa surge la duda sobre si conviene esperar a que baje o evacuar.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "— Sin titular pautado —",
+      "start_frame": 0,
+      "end_frame": 510,
+      "kicker": null,
+      "recurso_asociado": "1.mp4",
+      "coexistencia": "Sin titular pautado — Cobertura documental a cuadro completo"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "1",
+        "archivo": "1.mp4",
+        "ruta": "RECURSOS/1.mp4",
+        "formato": "MP4",
+        "peso": "30.2 MB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 0,
+        "end_frame": 510,
+        "slot": "FULL_BLEED",
+        "carga": "alta",
+        "transparent": false,
+        "rank": "didactico",
+        "epigrafe": "Youtube - Extreme Storm Brings Record Rain To Argentina's Corrientes As Homes Flooded Out | Watch Video"
+      }
+    ],
+    "encuadre": {
+      "real": "None / Plató sin docente (Voz en off)",
+      "nivel_atencion": "Alta / Evidencia Documental",
+      "norma_requerida": "None",
+      "coincide": true,
+      "zona_libre": "Pantalla completa (0–526)",
+      "slot_asignado": "FULL_BLEED"
+    }
+  },
+  {
+    "row": 2,
+    "start_time": 21.27,
+    "end_time": 24.07,
+    "start_frame": 510,
+    "end_frame": 577,
+    "duration_sec": 2.8,
+    "duration_frames": 67,
+    "dialogo_escaleta": "— Sin locución pautada (Titular a pantalla completa durante 2 segundos y letra destacada) —",
+    "dialogo_real": "[Pausa rítmica entre 'evacuar' y 'Saber identificar']",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "La prevención comienza cuando sabemos reconocer el peligro",
+      "start_frame": 510,
+      "end_frame": 577,
+      "kicker": "PREVENCIÓN",
+      "recurso_asociado": null,
+      "coexistencia": "Titular oficial pautado en escaleta — Entrada destacada en slot superior para no pisar placa quemada"
+    },
+    "recursos_auditados": [],
+    "encuadre": {
+      "real": "Center / Entrada de docente f526 y placa f537",
+      "nivel_atencion": "Alta / Apertura conceptual",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slot superior libre [y: 190–420]",
+      "slot_asignado": "L_TOP"
+    }
+  },
+  {
+    "row": 3,
+    "start_time": 22.02,
+    "end_time": 30.45,
+    "start_frame": 528,
+    "end_frame": 730,
+    "duration_sec": 8.43,
+    "duration_frames": 202,
+    "dialogo_escaleta": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+    "dialogo_real": "Saber identificar el riesgo es fundamental para tomar decisiones correctas, actuar a tiempo y sin pánico.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "— Sin titular pautado —",
+      "start_frame": 528,
+      "end_frame": 730,
+      "kicker": null,
+      "recurso_asociado": "2.png",
+      "coexistencia": "Sin titular pautado"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "2",
+        "archivo": "2.png",
+        "ruta": "RECURSOS/2.png",
+        "formato": "PNG (RGBA)",
+        "peso": "42 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 577,
+        "end_frame": 730,
+        "slot": "L_TOP_LEFT",
+        "carga": "baja",
+        "transparent": true,
+        "rank": "refuerzo",
+        "epigrafe": null
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada [x: 712–1360]",
+      "nivel_atencion": "Baja / Refuerzo",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Banda izquierda [x: 56–616, y: 190–490]",
+      "slot_asignado": "L_TOP_LEFT"
+    }
+  },
+  {
+    "row": 4,
+    "start_time": 30.45,
+    "end_time": 45.8,
+    "start_frame": 730,
+    "end_frame": 1098,
+    "duration_sec": 15.35,
+    "duration_frames": 368,
+    "dialogo_escaleta": "Por lluvias torrenciales, el agua suele subir rápido.\nSi entra a tu casa solo unos centímetros y los desagües están funcionando correctamente, podés quedarte en ella.",
+    "dialogo_real": "Por lluvias torrenciales el agua suele subir rápido. Si entra a tu casa solo unos centímetros y los desagües están funcionando correctamente podés quedarte en ella.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "— Sin titular pautado —",
+      "start_frame": 730,
+      "end_frame": 1098,
+      "kicker": null,
+      "recurso_asociado": "3.mov / 4.mp4",
+      "coexistencia": "Sin titular pautado"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "3",
+        "archivo": "3.mov",
+        "ruta": "RECURSOS/3.mov",
+        "formato": "MOV (ProRes 422)",
+        "peso": "100.7 MB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 730,
+        "end_frame": 929,
+        "slot": "L_SIDE_RIGHT",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Lluvias torrenciales"
+      },
+      {
+        "nombre_escaleta": "4",
+        "archivo": "4.mp4",
+        "ruta": "RECURSOS/4.mp4",
+        "formato": "MP4 (H.264)",
+        "peso": "18.6 MB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 929,
+        "end_frame": 1098,
+        "slot": "L_SIDE_RIGHT",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Desagües en funcionamiento"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Media / Didáctico",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Banda derecha libre por debajo de la mosca [y: 190–610]",
+      "slot_asignado": "L_SIDE_RIGHT"
+    }
+  },
+  {
+    "row": 5,
+    "start_time": 45.8,
+    "end_time": 59.85,
+    "start_frame": 1098,
+    "end_frame": 1435,
+    "duration_sec": 14.05,
+    "duration_frames": 337,
+    "dialogo_escaleta": "Pero de todas maneras, cortá la luz desde el tablero principal, siempre con calzado de goma y manos secas; y subí los electrodomésticos y objetos de valor a lugares altos.",
+    "dialogo_real": "Pero de todas maneras corta la luz desde el tablero principal siempre con calzado de goma y manos secas y subí los electrodomésticos y objetos de valor a lugares altos.",
+    "diferencias_detectadas": true,
+    "diferencias_detalle": "Whisper transcribió 'corta la luz' sin tilde; corregido a 'cortá la luz' (voseo imperativo)",
+    "titular_detalle": {
+      "texto": "Cortar la luz · Subir objetos de valor",
+      "start_frame": 1098,
+      "end_frame": 1435,
+      "kicker": "MEDIDAS PREVENTIVAS",
+      "recurso_asociado": "5.jfif / 6.jfif",
+      "coexistencia": "Titular oficial pautado en escaleta — Secuencia bipartita"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "5",
+        "archivo": "5.jfif",
+        "ruta": "RECURSOS/5.jfif",
+        "formato": "JFIF (JPEG)",
+        "peso": "6 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 1098,
+        "end_frame": 1246,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Calzado de goma y manos secas"
+      },
+      {
+        "nombre_escaleta": "6",
+        "archivo": "6.jfif",
+        "ruta": "RECURSOS/6.jfif",
+        "formato": "JFIF (JPEG)",
+        "peso": "835 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 1246,
+        "end_frame": 1435,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Bienes en altura"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Media / Protocolo preventivo",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slots disjuntos L_TOP [y: 190–390] y L_BOTTOM [y: 410–790]",
+      "slot_asignado": "L_TOP + L_BOTTOM"
+    }
+  },
+  {
+    "row": 6,
+    "start_time": 59.85,
+    "end_time": 68.78,
+    "start_frame": 1435,
+    "end_frame": 1649,
+    "duration_sec": 8.93,
+    "duration_frames": 214,
+    "dialogo_escaleta": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro  es real y tenés que abandonar la casa.",
+    "dialogo_real": "Sin embargo, si el nivel sigue subiendo y el agua se acerca a los tomacorrientes, el peligro es real y tenés que abandonar la casa.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "Peligro",
+      "start_frame": 1435,
+      "end_frame": 1649,
+      "kicker": "CRITERIO DE EVACUACIÓN",
+      "recurso_asociado": "7.png",
+      "coexistencia": "Titular oficial pautado en escaleta"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "7",
+        "archivo": "7.png",
+        "ruta": "RECURSOS/7.png",
+        "formato": "PNG (RGBA)",
+        "peso": "15 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 1435,
+        "end_frame": 1649,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": true,
+        "rank": "didactico",
+        "epigrafe": "Tomacorrientes alcanzados por el agua"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Alta / Riesgo de electrocución",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slot superior para titular y slot inferior para sticker flotante",
+      "slot_asignado": "L_TOP + L_BOTTOM"
+    }
+  },
+  {
+    "row": 7,
+    "start_time": 68.78,
+    "end_time": 76.99,
+    "start_frame": 1649,
+    "end_frame": 1846,
+    "duration_sec": 8.21,
+    "duration_frames": 197,
+    "dialogo_escaleta": "Lo mismo si vivís cerca de un río o arroyo, donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+    "dialogo_real": "Lo mismo si vivís cerca de un río o arroyo donde las crecidas son prolongadas y requieren evacuar con anticipación hacia un lugar seguro.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "Evacuación de zonas ribereñas",
+      "start_frame": 1649,
+      "end_frame": 1846,
+      "kicker": "CRECIDAS PROLONGADAS",
+      "recurso_asociado": "8.jpg",
+      "coexistencia": "Titular oficial pautado en escaleta"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "8",
+        "archivo": "8.jpg",
+        "ruta": "RECURSOS/8.jpg",
+        "formato": "JPEG",
+        "peso": "214 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 1649,
+        "end_frame": 1846,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Evacuación preventiva obligatoria"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Media / Geografía ribereña",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slot lateral disjunto",
+      "slot_asignado": "L_TOP + L_BOTTOM"
+    }
+  },
+  {
+    "row": 8,
+    "start_time": 76.99,
+    "end_time": 95.55,
+    "start_frame": 1846,
+    "end_frame": 2291,
+    "duration_sec": 18.56,
+    "duration_frames": 445,
+    "dialogo_escaleta": "Si Defensa Civil ordena evacuar, no te demores en hacerlo.\nPriorizá a niños, adultos mayores o personas con movilidad reducida, y no olvides a tus mascotas, llevalas con correa o transportadora.\nSalí caminando hacia el centro de evacuación indicado.",
+    "dialogo_real": "Si defensa civil ordena evacuar, no te demores en hacerlo. Prioriza a niños, adultos mayores o personas con movilidad reducida y no olvides a tus mascotas. Llévalas con correa o transportadores. Salí caminando hacia el centro de evacuación indicado.",
+    "diferencias_detectadas": true,
+    "diferencias_detalle": "Whisper: 'defensa civil', 'Prioriza', 'Llévalas... transportadores' → Corregido en subtítulos con CAPTION_FIX",
+    "titular_detalle": {
+      "texto": "Evacuá rápido, con calma y sin usar vehículos",
+      "start_frame": 1846,
+      "end_frame": 2291,
+      "kicker": "ORDEN DE EVACUACIÓN",
+      "recurso_asociado": "9.jfif / 10.png",
+      "coexistencia": "Titular oficial pautado en escaleta"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "9",
+        "archivo": "9.jfif",
+        "ruta": "RECURSOS/9.jfif",
+        "formato": "JFIF (JPEG)",
+        "peso": "125 KB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 2008,
+        "end_frame": 2224,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Mascotas con correa o transportadora"
+      },
+      {
+        "nombre_escaleta": "10",
+        "archivo": "10.png",
+        "ruta": "RECURSOS/10.png",
+        "formato": "PNG (RGB)",
+        "peso": "1.3 MB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 2224,
+        "end_frame": 2291,
+        "slot": "L_BOTTOM",
+        "carga": "media",
+        "transparent": false,
+        "rank": "refuerzo",
+        "epigrafe": "Centro de evacuación indicado"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Alta / Seguridad humana y animal",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Titular persistente arriba y recursos rotativos abajo",
+      "slot_asignado": "L_TOP + L_BOTTOM"
+    }
+  },
+  {
+    "row": 9,
+    "start_time": 95.55,
+    "end_time": 113.03,
+    "start_frame": 2291,
+    "end_frame": 2710,
+    "duration_sec": 17.48,
+    "duration_frames": 419,
+    "dialogo_escaleta": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte.\nSi no podés movilizarte por tus propios medios, comunicate inmediatamente con  Defensa Civil al 103 o con el 100 de Bomberos.",
+    "dialogo_real": "Jamás intentes cruzar calles anegadas en auto, moto ni a pie si la corriente es fuerte. Si no podés movilizarte por tus propios medios, comunícate inmediatamente con defensa civil al 103 o con el 100 de bomberos.",
+    "diferencias_detectadas": true,
+    "diferencias_detalle": "Whisper: 'comunícate' (esdrújula) → 'comunicate' (voseo), 'defensa civil' y 'bomberos' a mayúsculas",
+    "titular_detalle": {
+      "texto": "103 Defensa Civil · 100 Bomberos",
+      "start_frame": 2509,
+      "end_frame": 2710,
+      "kicker": "TELÉFONOS IMPORTANTES",
+      "recurso_asociado": "11.png",
+      "coexistencia": "Titular oficial pautado en escaleta — Placa destacada"
+    },
+    "recursos_auditados": [
+      {
+        "nombre_escaleta": "11",
+        "archivo": "11.png",
+        "ruta": "RECURSOS/11.png",
+        "formato": "PNG (RGB)",
+        "peso": "2.5 MB",
+        "estado": "AUDITADO_EN_DISCO",
+        "alerta": null,
+        "start_frame": 2291,
+        "end_frame": 2509,
+        "slot": "L_SIDE_RIGHT",
+        "carga": "media",
+        "transparent": false,
+        "rank": "didactico",
+        "epigrafe": "Peligro: corriente en calles anegadas"
+      }
+    ],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Alta / Rescate y emergencias",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Banda lateral libre",
+      "slot_asignado": "L_SIDE_RIGHT"
+    }
+  },
+  {
+    "row": 10,
+    "start_time": 113.03,
+    "end_time": 118.95,
+    "start_frame": 2710,
+    "end_frame": 2852,
+    "duration_sec": 5.92,
+    "duration_frames": 142,
+    "dialogo_escaleta": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+    "dialogo_real": "Evaluar la situación y responder a tiempo garantiza tu seguridad.",
+    "diferencias_detectadas": false,
+    "diferencias_detalle": null,
+    "titular_detalle": {
+      "texto": "Evaluar la situación y responder a tiempo garantiza tu seguridad",
+      "start_frame": 2710,
+      "end_frame": 2852,
+      "kicker": "SÍNTESIS",
+      "recurso_asociado": null,
+      "coexistencia": "Titular oficial de cierre conceptual"
+    },
+    "recursos_auditados": [],
+    "encuadre": {
+      "real": "Center / Docente centrada",
+      "nivel_atencion": "Media / Cierre",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slot superior",
+      "slot_asignado": "L_TOP"
+    }
+  },
+  {
+    "row": 11,
+    "start_time": 118.95,
+    "end_time": 122.92,
+    "start_frame": 2852,
+    "end_frame": 2945,
+    "duration_sec": 3.97,
+    "duration_frames": 93,
+    "dialogo_escaleta": "¡Compartí esta información para cuidarnos entre todos!",
+    "dialogo_real": "Compartí esta información para cuidarnos entre todos.",
+    "diferencias_detectadas": true,
+    "diferencias_detalle": "Whisper omite signos de exclamación; corregido con CAPTION_FIX según escaleta",
+    "titular_detalle": {
+      "texto": "¡Compartí esta información para cuidarnos entre todos!",
+      "start_frame": 2852,
+      "end_frame": 2945,
+      "kicker": "COMUNIDAD",
+      "recurso_asociado": null,
+      "coexistencia": "Llamado a la acción comunitario"
+    },
+    "recursos_auditados": [],
+    "encuadre": {
+      "real": "Center / Docente centrada (seguido de transición f2945)",
+      "nivel_atencion": "Media / Despedida",
+      "norma_requerida": "Center",
+      "coincide": true,
+      "zona_libre": "Slot central superior",
+      "slot_asignado": "L_TOP"
+    }
+  }
+];
+
+    const APP_STATE = {
+      episodeId: 'AMB26-04',
+      subject: 'Educación Ambiental Integral',
+      modifiedCount: 0,
+      rows: {}
+    };
+
+    // Inicializar estado de filas: POR DEFECTO COPIA FIEL DE ESCALETA
+    RAW_ROWS.forEach(r => {
+      const rowId = r.row < 10 ? '0' + r.row : '' + r.row;
+      const isDiff = !!r.diferencias_detectadas;
+      const hasTit = r.titular_detalle && r.titular_detalle.texto && !r.titular_detalle.texto.includes('Sin titular');
+
+      APP_STATE.rows[rowId] = {
+        row: r.row,
+        start_frame: r.start_frame,
+        end_frame: r.end_frame,
+        start_time: r.start_time,
+        end_time: r.end_time,
+        dialogo_escaleta: r.dialogo_escaleta,
+        dialogo_real: r.dialogo_real,
+        copia_fiel_escaleta: true,
+        subSource: 'escaleta',
+        customText: r.dialogo_escaleta.replace(/\n/g, ' '),
+        titularEnabled: hasTit,
+        titularKicker: (hasTit && r.titular_detalle.kicker) ? r.titular_detalle.kicker : '',
+        titularTitle: hasTit ? r.titular_detalle.texto : '',
+        recursos: (r.recursos_auditados || []).map((rec, i) => ({
+          originalArchivo: rec.archivo,
+          archivo: rec.archivo,
+          style: rec.transparent ? 'sticker' : (rec.slot === 'FULL_BLEED' ? 'bleed' : 'card')
+        })),
+        notes: ''
+      };
+    });
+
+    // Cargar cambios previos desde localStorage si existen
+    try {
+      const saved = localStorage.getItem('EDUCAPLAY_SYNC_AMB26_04');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.rows) {
+          Object.keys(parsed.rows).forEach(rk => {
+            if (APP_STATE.rows[rk]) {
+              Object.assign(APP_STATE.rows[rk], parsed.rows[rk]);
+            }
+          });
+        }
+      }
+    } catch(e) {}
+
+    // Sincronizar UI con APP_STATE
+    window.addEventListener('DOMContentLoaded', () => {
+      Object.keys(APP_STATE.rows).forEach(rk => {
+        const state = APP_STATE.rows[rk];
+        selectSubSource(rk, state.subSource, false);
+        const customTxtEl = document.getElementById('custom_text_' + rk);
+        if (customTxtEl && state.customText) {
+          customTxtEl.value = state.customText;
+          updateCustomCharCount(rk);
+        }
+
+        const titChk = document.getElementById('tit_enable_' + rk);
+        if (titChk) {
+          titChk.checked = state.titularEnabled;
+          toggleTitular(rk);
+        }
+        const titKickerEl = document.getElementById('tit_kicker_' + rk);
+        if (titKickerEl && state.titularKicker) titKickerEl.value = state.titularKicker;
+        const titTitleEl = document.getElementById('tit_title_' + rk);
+        if (titTitleEl && state.titularTitle) titTitleEl.value = state.titularTitle;
+
+        (state.recursos || []).forEach((rec, i) => {
+          const fEl = document.getElementById('rec_file_' + rk + '_' + i);
+          if (fEl && rec.archivo) fEl.value = rec.archivo;
+          const sEl = document.getElementById('rec_style_' + rk + '_' + i);
+          if (sEl && rec.style) sEl.value = rec.style;
+        });
+
+        const notesEl = document.getElementById('row_notes_' + rk);
+        if (notesEl && state.notes) notesEl.value = state.notes;
+      });
+
+      checkBridgeServer();
+      setInterval(checkBridgeServer, 5000);
+    });
+
+    // Video player timing
+    const videoEl = document.getElementById('master-video');
+    const tcDisplay = document.getElementById('tc-display');
+    const frameDisplay = document.getElementById('frame-display');
+    let playingInterval = null;
+
+    if (videoEl) {
+      videoEl.addEventListener('timeupdate', () => {
+        const t = videoEl.currentTime;
+        const mins = Math.floor(t / 60);
+        const secs = (t % 60).toFixed(2).padStart(5, '0');
+        tcDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs}`;
+        frameDisplay.textContent = Math.round(t * 23.97602);
+      });
+    }
+
+    function playRow(startTime, endTime, rowId) {
+      if (!videoEl) return;
+      videoEl.currentTime = startTime;
+      videoEl.play();
+
+      document.querySelectorAll('.matrix-row').forEach(r => r.classList.remove('playing-active'));
+      const activeRow = document.getElementById('row_' + rowId);
+      if (activeRow) activeRow.classList.add('playing-active');
+
+      if (playingInterval) clearInterval(playingInterval);
+      playingInterval = setInterval(() => {
+        if (videoEl.currentTime >= endTime) {
+          videoEl.pause();
+          clearInterval(playingInterval);
+          if (activeRow) activeRow.classList.remove('playing-active');
+        }
+      }, 50);
+    }
+
+    function toggleFielEscaletaRow(rowId, isChecked) {
+      const state = APP_STATE.rows[rowId];
+      if (!state) return;
+      state.copia_fiel_escaleta = isChecked;
+      const chk = document.getElementById('chk_fiel_esc_' + rowId);
+      if (chk) chk.checked = isChecked;
+
+      if (isChecked) {
+        selectSubSource(rowId, 'escaleta');
+      } else {
+        const raw = RAW_ROWS.find(x => (x.row < 10 ? '0' + x.row : '' + x.row) === rowId);
+        selectSubSource(rowId, (raw && raw.diferencias_detectadas) ? 'real' : 'custom');
+      }
+    }
+
+    function toggleAllFielEscaleta(isChecked) {
+      Object.keys(APP_STATE.rows).forEach(rk => {
+        toggleFielEscaletaRow(rk, isChecked);
+      });
+      showToast(isChecked ? '✓ Todas las filas en copia fiel de escaleta' : '⚠️ Copia fiel desactivada globalmente');
+    }
+
+    function selectSubSource(rowId, source, mark = true) {
+      APP_STATE.rows[rowId].subSource = source;
+      const chk = document.getElementById('chk_fiel_esc_' + rowId);
+      if (chk) {
+        chk.checked = (source === 'escaleta');
+        APP_STATE.rows[rowId].copia_fiel_escaleta = (source === 'escaleta');
+      }
+
+      const optEsc = document.getElementById('row_opt_esc_' + rowId);
+      const optReal = document.getElementById('row_opt_real_' + rowId);
+      const optCustom = document.getElementById('row_opt_custom_' + rowId);
+      const boxCustom = document.getElementById('box_custom_' + rowId);
+
+      [optEsc, optReal, optCustom].forEach(el => el && el.classList.remove('active'));
+
+      if (source === 'escaleta') {
+        if (optEsc) { optEsc.classList.add('active'); optEsc.querySelector('input').checked = true; }
+        if (boxCustom) boxCustom.style.display = 'none';
+      } else if (source === 'real') {
+        if (optReal) { optReal.classList.add('active'); optReal.querySelector('input').checked = true; }
+        if (boxCustom) boxCustom.style.display = 'none';
+      } else if (source === 'custom') {
+        if (optCustom) { optCustom.classList.add('active'); optCustom.querySelector('input').checked = true; }
+        if (boxCustom) {
+          boxCustom.style.display = 'block';
+          boxCustom.querySelector('textarea').focus();
+        }
+      }
+      if (mark) markModified(rowId);
+    }
+
+    function updateCustomCharCount(rowId) {
+      const textarea = document.getElementById('custom_text_' + rowId);
+      const counter = document.getElementById('char_cnt_' + rowId);
+      if (!textarea || !counter) return;
+      const len = textarea.value.length;
+      const lines = Math.ceil(len / 42) || 1;
+      const lineClass = lines > 2 ? 'style="color:#DC2626; font-weight:700;"' : '';
+      counter.innerHTML = `<span ${lineClass}>${len} caracteres · ~${lines} línea(s) ${lines > 2 ? '(⚠️ Excede 2 líneas recomendadas)' : ''}</span>`;
+      APP_STATE.rows[rowId].customText = textarea.value;
+    }
+
+    function toggleTitular(rowId) {
+      const chk = document.getElementById('tit_enable_' + rowId);
+      const box = document.getElementById('tit_inputs_' + rowId);
+      if (!chk || !box) return;
+      const enabled = chk.checked;
+      APP_STATE.rows[rowId].titularEnabled = enabled;
+      box.style.opacity = enabled ? '1' : '0.4';
+      box.style.pointerEvents = enabled ? 'auto' : 'none';
+    }
+
+    function markModified(rowId) {
+      APP_STATE.modifiedCount++;
+      const modWrap = document.getElementById('modified-count-wrap');
+      const modBadge = document.getElementById('mod-count');
+      if (modWrap && modBadge) {
+        modWrap.style.display = 'block';
+        modBadge.textContent = `${APP_STATE.modifiedCount} cambios marcados`;
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    }
+
+    function collectCurrentPayload() {
+      // Recoger todos los valores actuales del DOM
+      Object.keys(APP_STATE.rows).forEach(rk => {
+        const state = APP_STATE.rows[rk];
+        const titChk = document.getElementById('tit_enable_' + rk);
+        state.titularEnabled = titChk ? titChk.checked : false;
+
+        const titKicker = document.getElementById('tit_kicker_' + rk);
+        if (titKicker) state.titularKicker = titKicker.value.trim();
+
+        const titTitle = document.getElementById('tit_title_' + rk);
+        if (titTitle) state.titularTitle = titTitle.value.trim();
+
+        const customTxt = document.getElementById('custom_text_' + rk);
+        if (customTxt) state.customText = customTxt.value.trim();
+
+        const notesEl = document.getElementById('row_notes_' + rk);
+        if (notesEl) state.notes = notesEl.value.trim();
+
+        (state.recursos || []).forEach((rec, i) => {
+          const fEl = document.getElementById('rec_file_' + rk + '_' + i);
+          if (fEl) rec.archivo = fEl.value.trim();
+          const sEl = document.getElementById('rec_style_' + rk + '_' + i);
+          if (sEl) rec.style = sEl.value;
+        });
+      });
+
+      return {
+        meta: EPISODE_META,
+        approvedAt: new Date().toISOString(),
+        rows: Object.values(APP_STATE.rows)
+      };
+    }
+
+    async function checkBridgeServer() {
+      const badge = document.getElementById('bridge-badge');
+      const text = document.getElementById('bridge-text');
+      try {
+        const res = await fetch('http://localhost:3210/api/health', { method: 'GET' });
+        if (res.ok) {
+          badge.classList.add('online');
+          text.textContent = 'Bridge: Conectado (3210)';
+        } else {
+          badge.classList.remove('online');
+          text.textContent = 'Bridge: Desconectado';
+        }
+      } catch(e) {
+        badge.classList.remove('online');
+        text.textContent = 'Bridge: Desconectado';
+      }
+    }
+
+    async function saveApprovedMatrix() {
+      const payload = collectCurrentPayload();
+
+      // 1. Guardar en localStorage
+      try {
+        localStorage.setItem('EDUCAPLAY_SYNC_AMB26_04', JSON.stringify(payload));
+      } catch(e) {}
+
+      // 2. Intentar guardar en Bridge local
+      let bridgeSaved = false;
+      try {
+        const res = await fetch('http://localhost:3210/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          bridgeSaved = true;
+        }
+      } catch(e) {}
+
+      // 3. Descarga directa de respaldo
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'TABLA_SINCRONIZACION_APROBADA.json';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      if (bridgeSaved) {
+        showToast('✓ Guardado en disco en TABLA_SINCRONIZACION_APROBADA.json y Bridge 3210');
+      } else {
+        showToast('✓ Guardado en navegador y descargado TABLA_SINCRONIZACION_APROBADA.json');
+      }
+    }
+
+    function exportMarkdownSummary() {
+      const payload = collectCurrentPayload();
+      let md = '# TABLA DE SINCRONIZACIÓN PRE-EDICIÓN APROBADA · AMB26-04\n\n';
+      md += `**Episodio:** AMB26-04 "¿Esperar o evacuar?"\n`;
+      md += `**Docente:** Prof. Amparo Pérez Rueda\n`;
+      md += `**Fecha:** ${new Date().toLocaleString()}\n\n`;
+      md += '| Fila | Timing | Diálogo Seleccionado | Titular Aprobado | Recursos | Observaciones |\n';
+      md += '|---|---|---|---|---|---|\n';
+
+      payload.rows.forEach(r => {
+        let subText = r.dialogo_escaleta;
+        if (r.subSource === 'real') subText = r.dialogo_real;
+        else if (r.subSource === 'custom') subText = r.customText;
+
+        const tit = r.titularEnabled ? (r.titularKicker ? `[${r.titularKicker}] ` : '') + r.titularTitle : '—';
+        const recs = (r.recursos || []).map(rc => `${rc.archivo} (${rc.style})`).join(', ') || '—';
+        const notes = r.notes || '—';
+
+        md += `| #${r.row} | ${r.start_time.toFixed(1)}s-${r.end_time.toFixed(1)}s | ${subText.replace(/\n/g, ' ')} | ${tit} | ${recs} | ${notes} |\n`;
+      });
+
+      const blob = new Blob([md], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'TABLA_SINCRONIZACION_APROBADA_AMB26_04.md';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('✓ Resumen Markdown exportado.');
+    }
+
+    async function copyCorrectionsForChat() {
+      const payload = collectCurrentPayload();
+      const btn = document.getElementById('btn-copy-chat');
+
+      let text = '### 📝 Correcciones de Pre-Edición — AMB26-04 ("¿Esperar o evacuar?")\n\n';
+      text += `**Docente:** Prof. Amparo Pérez Rueda | **Episodio:** AMB26-04\n`;
+      text += `**Fecha:** ${new Date().toLocaleString()}\n\n`;
+
+      payload.rows.forEach(r => {
+        const rawRow = RAW_ROWS.find(x => x.row === r.row) || {};
+        const hasTitOriginal = rawRow.titular_detalle && rawRow.titular_detalle.texto && !rawRow.titular_detalle.texto.includes('Sin titular');
+
+        let subText = r.dialogo_escaleta;
+        let subOrigen = 'Escaleta';
+        if (r.subSource === 'real') {
+          subText = r.dialogo_real;
+          subOrigen = 'Whisper (Audio Real)';
+        } else if (r.subSource === 'custom') {
+          subText = r.customText;
+          subOrigen = 'Personalizado';
+        }
+
+        const hasNotes = !!(r.notes && r.notes.trim());
+
+        text += `#### Fila #${r.row} [${r.start_time.toFixed(1)}s – ${r.end_time.toFixed(1)}s | f${r.start_frame}–f${r.end_frame}]\n`;
+        const isFiel = (r.copia_fiel_escaleta !== false) && (r.subSource === 'escaleta');
+        text += `- **Guión / Subtítulo:** ${isFiel ? '[☑ Copia fiel de escaleta] ' : '[⚠️ Excepción - Desmarcada copia fiel] '}${subText.replace(/\n/g, ' ')} (${subOrigen})` + '\n';
+
+        if (r.titularEnabled) {
+          text += `- **Titular:** ${r.titularKicker ? `[${r.titularKicker}] ` : ''}"${r.titularTitle}"\n`;
+        } else {
+          text += `- **Titular:** — Sin titular —\n`;
+        }
+
+        if (r.recursos && r.recursos.length > 0) {
+          const recDesc = r.recursos.map(rc => {
+            const stName = rc.style === 'sticker' ? 'Sticker transparente flotante' : (rc.style === 'bleed' ? 'Pantalla completa' : (rc.style === 'none' ? 'Ocultar' : 'Tarjeta blanca'));
+            return `${rc.archivo} (${stName})`;
+          }).join(', ');
+          text += `- **Recursos:** ${recDesc}\n`;
+        } else {
+          text += `- **Recursos:** Sin recursos\n`;
+        }
+
+        if (hasNotes) {
+          text += `- **Observaciones:** ${r.notes.trim()}\n`;
+        }
+        text += `\n`;
+      });
+
+      // Copiar al portapapeles
+      let copied = false;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        } catch(e) {}
+      }
+
+      if (!copied) {
+        const tArea = document.createElement('textarea');
+        tArea.value = text;
+        tArea.style.position = 'fixed';
+        tArea.style.left = '-9999px';
+        document.body.appendChild(tArea);
+        tArea.focus();
+        tArea.select();
+        try {
+          document.execCommand('copy');
+          copied = true;
+        } catch(e) {}
+        document.body.removeChild(tArea);
+      }
+
+      if (btn) {
+        const oldText = btn.innerHTML;
+        btn.innerHTML = '✅ ¡Copiado al portapapeles!';
+        btn.style.background = '#10B981';
+        setTimeout(() => {
+          btn.innerHTML = oldText;
+          btn.style.background = '';
+        }, 4000);
+      }
+
+      showToast('✓ ¡Correcciones copiadas! Ya podés pegarlas en el chat de Antigravity.');
+    }
+  </script>
+</body>
+</html>
