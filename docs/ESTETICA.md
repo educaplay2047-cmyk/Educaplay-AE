@@ -39,8 +39,10 @@ títulos.
   2. el lockup "**Educa**play | Nivel Secundario";
   3. una baldosa gris con la serie y el título del capítulo.
 
-  Todo sube a una banda superior cuando entran los primeros recursos.
-- **Traslados de cámara:** barrido de bandas diagonales, como el encabezado de la web.
+- **Transición colorida cuatricolor (cortinilla dinámica institucional):**
+  Barrido diagonal enérgico compuesto por las cuatro bandas de la paleta oficial (cian `#5DCBE1`, rojo `#EA3355`, amarillo `#F5C042`, verde `#54B835`).
+  - **Adaptación horizontal (16:9 - 1920×1080):** A diferencia de las piezas verticales para redes (9:16), en los capítulos largos de EducaPlay la transición se despliega y escala horizontalmente para barrer la totalidad del encuadre Full HD (`1920×1080 px`).
+  - **Uso exclusivo en finales de fila:** Se aplica **única y exclusivamente al final de cada fila** de la matriz / escaleta (separación de bloques temáticos). Jamás se utiliza en micro-transiciones o intercambios de stickers dentro de una misma fila.
 - **Subtítulos:** pastilla canónica del estándar (ver `SUBTITULOS.md`).
 
 ## Movimiento

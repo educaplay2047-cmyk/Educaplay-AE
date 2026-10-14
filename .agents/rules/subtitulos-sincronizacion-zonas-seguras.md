@@ -31,3 +31,10 @@ Esta regla es de cumplimiento estricto y no negociable para **todos los episodio
 - **Zona de Reserva Superior Derecha**: La mosca institucional de EducaPlay (`top: 40px`, `right: 60px`) es un elemento intocable de identidad.
 - **Márgenes de seguridad**: Ningún recurso gráfico, titular, tarjeta lateral ni subtítulo puede invadir ni rozar el bounding box de la mosca.
 - **Recursos a pantalla completa**: En recursos centrales o videos en off (`large_center`), la altura máxima y el margen superior deben configurarse de modo que queden libres al menos 120px desde el borde superior derecho.
+
+---
+
+## 4. Transición Colorida Cuatricolor Oficial (16:9 - Finales de Fila)
+- **Adaptación Horizontal Broadcast (16:9)**: Los episodios largos de EducaPlay se producen en formato horizontal estándar (`1920×1080 px`). La cortinilla dinámica con las cuatro bandas institucionales (cian `#5DCBE1`, rojo `#EA3355`, amarillo `#F5C042`, verde `#54B835`) debe cruzar y barrer la totalidad del cuadro horizontal de 1920×1080 px.
+- **Restricción Exclusiva a Finales de Fila**: Se ejecuta **única y exclusivamente en los finales de fila** de la matriz de sincronización / escaleta como separador mayor de bloques pedagógicos hacia la fila siguiente.
+- **Prohibida en Micro-Cambios Internos**: Queda terminantemente prohibido utilizar la transición colorida para transiciones o reemplazos de elementos dentro de una misma fila (p. ej. conmutación de stickers, aparición de palabras o kickers). En su lugar, se utilizan cortes directos limpios o animaciones suaves locales.

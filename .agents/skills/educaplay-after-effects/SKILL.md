@@ -1,7 +1,7 @@
 ---
 name: educaplay-after-effects
 description: |
-  Capítulos de EducaPlay Secundaria (Corrientes) en Adobe After Effects: medir el máster con el motor (encuadre de la docente, Whisper, palabras-gatillo), escribir el data.ts del episodio, exportar el manifiesto y armar el .aep editable con la estética de la plataforma EducaPlay. REGLAS INFRANQUEABLES: (1) Siempre se debe generar y entregar primero la tabla de sincronización interactiva y editable (HTML) con botón para copiar correcciones al chat, para que el usuario pueda corregir guión, titulares y recursos antes de avanzar hacia After Effects. (2) Por defecto, y a menos que se indique lo contrario en la matriz mediante su casilla marcable, los subtítulos son una copia fiel de la escaleta correspondiente sincronizada con el diálogo, siguiendo al pie de la letra lo expuesto en la escaleta.
+  Capítulos de EducaPlay Secundaria (Corrientes) en Adobe After Effects: medir el máster con el motor (encuadre de la docente, Whisper, palabras-gatillo), escribir el data.ts del episodio, exportar el manifiesto y armar el .aep editable con la estética de la plataforma EducaPlay. REGLAS INFRANQUEABLES: (1) Siempre se debe generar y entregar primero la tabla de sincronización interactiva y editable (HTML) con botón para copiar correcciones al chat, para que el usuario pueda corregir guión, titulares y recursos antes de avanzar hacia After Effects. (2) Por defecto, y a menos que se indique lo contrario en la matriz mediante su casilla marcable, los subtítulos son una copia fiel de la escaleta correspondiente sincronizada con el diálogo, siguiendo al pie de la letra lo expuesto en la escaleta. (3) La transición colorida cuatricolor (cortinilla dinámica institucional de la muestra) se adapta obligatoriamente al formato horizontal (16:9 / 1920x1080) para los capítulos largos de EducaPlay, y su uso está restringido EXCLUSIVAMENTE a los FINALES DE FILA de la matriz/escaleta, jamás en micro-cambios internos.
 ---
 
 # EducaPlay en After Effects
@@ -102,7 +102,19 @@ La matriz `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html` debe incorporar oblig
 - **Barra de progreso visual**: Barra continua con porcentaje del 0% al 100% decorada con la paleta cuatricolor oficial de EducaPlay (cian `#5DCBE1`, rojo `#EA3355`, amarillo `#F5C042`, verde `#54B835`).
 - **Hitos secuenciales del armado**: Seguimiento visual de los 6 pasos críticos: (1) Validación editorial y fuentes Museo, (2) Verificación/transcodificación de assets, (3) Composición principal y capa CONTROL, (4) Construcción de bloques y máscaras, (5) Ensamblado de subtítulos esmerilados y evasión de lower-third, (6) Guardado de `.aep` y exportación de fotogramas de revisión.
 - **Consola de ejecución en vivo**: Registro en tiempo real de los logs de ExtendScript y del runner.
-- **Modo autónomo (Fallback)**: Si se abre el archivo HTML sin el servidor levantado, la interfaz cuenta con simulación matemática precisa del progreso para revisión sin errores de conexión.
+### Regla Infranqueable: Transición Colorida Oficial EducaPlay (Cortinilla Cuatricolor en 16:9)
+* **Origen y Referencia Visual**: Cortinilla dinámica enérgica observada en la muestra (`ae/AMB26-01-REEL.mp4`), estructurada a partir de la paleta cromática cuatricolor institucional de EducaPlay:
+  - **Cian / Turquesa**: `#5DCBE1` (o `#00B4D8`)
+  - **Rojo / Magenta**: `#EA3355` (o `#E6007E`)
+  - **Amarillo**: `#F5C042` (o `#FFD100`)
+  - **Verde**: `#54B835` (o `#2ECC71`)
+* **Adaptación Horizontal Mandatoria (16:9 - 1920×1080 px)**:
+  - La muestra de referencia del reel fue editada en formato vertical para redes sociales (`9:16` / `1080×1920 px`). Sin embargo, **los capítulos largos de EducaPlay Secundaria son estrictamente horizontales (`16:9` / `1920×1080 px`)**.
+  - La cortinilla dinámica en los episodios largos debe extenderse y barrer el lienzo horizontal completo de 1920×1080 px con una inclinación diagonal de ~-45° a -50°, cruzando la pantalla de extremo a extremo en ~10 a 14 frames (~0.4 a 0.5 s a 24/25 fps) con aceleración continua (`easeIn`/`easeOut`).
+* **Restricción Operativa Absoluta: EXCLUSIVAMENTE EN FINALES DE FILA**:
+  - **Uso único al cierre de fila**: La transición colorida actúa como un signo de puntuación sintáctica mayor entre bloques pedagógicos; se aplica **única y exclusivamente en los FINALES DE FILA** de la matriz de sincronización pre-edición / escaleta (al concluir el contenido de una fila para abrir la siguiente).
+  - **Prohibición total en micro-cambios internos**: Queda terminantemente prohibido utilizar la transición colorida dentro de una misma fila (p. ej., cuando un sticker conmuta a otro, cuando entra un titular secundario o cuando se revelan ítems sucesivos de una lista). Los eventos internos se resuelven con corte directo limpio o animaciones suaves locales (resorte/opacidad).
+  - **Documentación en la Matriz**: En `TABLA_SINCRONIZACION_PRE_EDICION_[CODIGO].html` y `.md`, cada fila que finalice con este recurso debe declarar explícitamente en la columna de indicación técnica: `"Cierre de fila con transición colorida cuatricolor (16:9) hacia fila [N+1]"`.
 
 ## Contenido del `data.ts`
 
@@ -147,7 +159,7 @@ Y sus piezas:
 - recursos de refuerzo como filas con miniatura;
 - checklists en baldosa gris con discos de color;
 - portada "Educaplay | Nivel Secundario";
-- barridos de bandas diagonales en los traslados.
+- barrido diagonal cuatricolor (cortinilla dinámica institucional): en capítulos largos es horizontal (16:9 / 1920×1080) y se usa EXCLUSIVAMENTE en los finales de fila de la matriz/escaleta (separador de bloques), jamás en micro-cambios internos dentro de una misma fila.
 
 **Movimiento:** `easeOutBack` regulado por `Rebote (%)`; con 0 no hay sobrepaso, que el sistema de
 Ambiente desaconseja.

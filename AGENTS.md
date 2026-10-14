@@ -48,6 +48,7 @@ npm run publicar -- <CODE>                    # todo lo anterior y, sólo si pas
 - **Nada se publica sin chequeo.** `npm run publicar` corre los verificadores y el armado en AE, y
   no toca git si algo falla. No hagas commit o push a mano para esquivarlo.
 - **Subtítulos:** copia fiel de la escaleta correspondiente por defecto, siguiendo al pie de la letra lo pautado y sincronizados temporalmente con el diálogo, salvo que se desmarque la casilla marcable de excepción en la matriz de sincronización. Sin resaltado por palabra, pastilla canónica, máximo dos líneas. Ver `docs/SUBTITULOS.md`.
+- **Transición colorida cuatricolor (finales de fila en 16:9):** La cortinilla dinámica con las cuatro bandas institucionales (cian `#5DCBE1`, rojo `#EA3355`, amarillo `#F5C042`, verde `#54B835`) vista en la muestra se adapta obligatoriamente al formato horizontal (`16:9` / `1920×1080 px`) de los capítulos largos de EducaPlay. Su aplicación está restringida **exclusivamente a los finales de fila** de la matriz / escaleta (cierre de bloque temático). Jamás debe utilizarse en micro-cambios internos dentro de una misma fila.
 - **Medios fuera del repo.** Másters, recursos, fuentes, `.aep` y el modelo de Whisper viven en
   disco local. Las entregas de episodios están en `EDUCAPLAY_EPISODES` (por defecto
   `~/Documents/EducaPlay/Secundaria /Ambiente`, **con un espacio antes de la barra**: entrecomillá
